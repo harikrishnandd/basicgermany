@@ -1,0 +1,261 @@
+/* Apple App Store Layout */
+
+/* ========== MAIN LAYOUT ========== */
+.app-container {
+    display: flex;
+    min-height: 100vh;
+}
+
+.main-content {
+    flex: 1;
+    margin-left: var(--sidebar-width);
+    padding: var(--space-40) var(--gutter-small);
+    max-width: calc(var(--content-max-width) + (var(--gutter-small) * 2));
+    width: 100%;
+    overflow-x: hidden;
+}
+
+/* ========== APPS GRID ========== */
+.apps-section {
+    margin-top: var(--space-40);
+}
+
+.apps-grid {
+    display: grid;
+    grid-template-columns: repeat(var(--grid-columns-mobile), 1fr);
+    gap: var(--grid-gap);
+}
+
+/* Horizontal scrolling for home page */
+.apps-grid-home {
+    display: grid;
+    grid-template-columns: none;
+    grid-template-rows: repeat(3, 1fr);
+    grid-auto-flow: column;
+    grid-auto-columns: minmax(300px, 1fr);
+    gap: var(--grid-gap);
+    overflow-x: auto;
+    overflow-y: hidden;
+    scroll-snap-type: x proximity;
+    -webkit-overflow-scrolling: touch;
+    padding-bottom: 8px;
+}
+
+.apps-grid-home > * {
+    scroll-snap-align: start;
+}
+
+/* Hide scrollbar completely */
+.apps-grid-home {
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+}
+
+.apps-grid-home::-webkit-scrollbar {
+    display: none;
+}
+
+/* Scroll navigation container */
+.scroll-nav-container {
+    position: relative;
+}
+
+/* Scroll navigation arrows */
+.scroll-nav-arrow {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    z-index: 10;
+    width: 40px;
+    height: 40px;
+    display: none;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    border: none;
+    background: transparent;
+    padding: 0;
+    color: var(--systemPrimary);
+    border-radius: 12px;
+}
+
+.scroll-nav-arrow svg {
+    width: 24px;
+    height: 24px;
+    fill: currentColor;
+}
+
+.scroll-nav-arrow:hover {
+    background: var(--systemQuaternary);
+}
+
+html[data-theme="dark"] .scroll-nav-arrow:hover {
+    background: rgba(255, 255, 255, 0.1);
+}
+
+.scroll-nav-arrow.visible {
+    display: flex;
+}
+
+.scroll-nav-arrow--left {
+    left: -32px;
+}
+
+.scroll-nav-arrow--right {
+    right: -32px;
+    transform: translateY(-50%) scaleX(-1);
+}
+
+.scroll-nav-arrow--right:hover {
+    transform: translateY(-50%) scaleX(-1);
+}
+
+/* ========== RESPONSIVE GRID ========== */
+
+/* Tablet - 740px */
+@media (min-width: 740px) {
+    .apps-grid-home {
+        grid-auto-columns: minmax(320px, 1fr);
+    }
+}
+
+/* ========== RESPONSIVE GRID ========== */
+
+/* Tablet - 740px */
+@media (min-width: 740px) {
+    .apps-grid:not(.apps-grid-home) {
+        grid-template-columns: repeat(var(--grid-columns-tablet), 1fr);
+    }
+}
+
+/* iPad Landscape - 1000px */
+/* OLD BREAKPOINT (mobile menu up to 1199px): */
+/* @media (min-width: 1000px) and (max-width: 1199px) { */
+/* NEW BREAKPOINT (desktop sidebar from 1024px): */
+@media (min-width: 1000px) and (max-width: 1023px) {
+    .apps-grid:not(.apps-grid-home) {
+        grid-template-columns: repeat(3, 1fr);
+    }
+}
+
+/* Desktop - 1024px (changed from 1200px to include iPad landscape) */
+/* OLD BREAKPOINT: @media (min-width: 1200px) { */
+@media (min-width: 1024px) {
+    .main-content {
+        padding: var(--space-40) var(--gutter-small);
+    }
+    
+    .apps-grid:not(.apps-grid-home) {
+        grid-template-columns: repeat(var(--grid-columns-desktop), 1fr);
+    }
+    
+    .apps-grid-home {
+        grid-auto-columns: minmax(340px, 1fr);
+    }
+}
+
+/* Large Desktop - 1320px */
+@media (min-width: 1320px) {
+    .main-content {
+        padding: var(--space-40) var(--gutter-small);
+    }
+    
+    .apps-grid-home {
+        grid-auto-columns: minmax(360px, 1fr);
+    }
+}
+
+/* XL Desktop - 1680px */
+@media (min-width: 1680px) {
+    .apps-grid:not(.apps-grid-home) {
+        grid-template-columns: repeat(var(--grid-columns-wide), 1fr);
+    }
+    
+    .apps-grid-home {
+        grid-auto-columns: minmax(380px, 1fr);
+    }
+}
+
+/* ========== MOBILE & TABLET LAYOUT ========== */
+/* OLD BREAKPOINT (mobile menu up to 1199px): */
+/* @media (max-width: 1199px) { */
+/* NEW BREAKPOINT (mobile menu only up to 1023px, iPad landscape uses desktop sidebar): */
+@media (max-width: 1023px) {
+    .main-content {
+        margin-left: 0;
+        padding: var(--space-24) var(--space-16);
+        padding-top: calc(60px + var(--space-24));
+    }
+    
+    .navigation-sidebar {
+        box-shadow: none;
+    }
+    
+    /* Ensure sections don't hide under fixed header when scrolling */
+    .hero-section,
+    .apps-section {
+        scroll-margin-top: 60px;
+    }
+    
+    /* Adjust arrow positioning for mobile */
+    .scroll-nav-arrow {
+        display: none !important;
+    }
+    
+    /* Horizontal categories adjustments */
+    .categories-horizontal-section {
+        margin: 0 0 24px 0;
+    }
+    
+    .categories-scroll-container {
+        gap: 8px;
+    }
+    
+    .category-pill {
+        padding: 8px 16px;
+        font-size: 14px;
+    }
+    
+    .category-pill-icon {
+        font-size: 18px;
+    }
+    
+    .category-pill-text {
+        font-size: 14px;
+    }
+}
+
+/* ========== SMALL MOBILE ========== */
+@media (max-width: 480px) {
+    .main-content {
+        padding: var(--space-16) var(--space-12);
+        padding-top: calc(60px + var(--space-16));
+    }
+    
+    .hero-section {
+        margin-bottom: var(--space-24);
+    }
+    
+    .apps-section {
+        margin-top: var(--space-24);
+    }
+    
+    .section-header {
+        margin-bottom: var(--space-16);
+    }
+    
+    /* Horizontal categories smaller on mobile */
+    .categories-horizontal-section {
+        margin: 0 0 16px 0;
+    }
+    
+    .category-pill {
+        padding: 6px 14px;
+        font-size: 13px;
+    }
+    
+    .category-pill-icon {
+        font-size: 16px;
+    }
+}

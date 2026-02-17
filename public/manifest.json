@@ -1,0 +1,27 @@
+{
+  "name": "Basic Germany",
+  "short_name": "Basic Germany",
+  "description": "Your starting point in Germany - Essential apps and resources for expats",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#272727",
+  "orientation": "portrait-primary",
+  "icons": [
+    {
+      "src": "/site-icon.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/site-icon.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ],
+  "categories": ["lifestyle", "utilities", "reference"],
+  "lang": "en",
+  "dir": "ltr"
+}

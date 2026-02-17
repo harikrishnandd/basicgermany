@@ -1,0 +1,21 @@
+rules_version = '2';
+
+service firebase.storage {
+  match /b/{bucket}/o {
+    
+    // Blog content - allow read to everyone
+    match /blog-content/{fileName} {
+      allow read: if true;
+      
+      // Allow write for blog markdown files
+      // WARNING: In production, implement proper Firebase Auth for admin access
+      allow write: if true; 
+    }
+    
+    // Default rule - deny all other access
+    match /{allPaths=**} {
+      allow read: if true;
+      allow write: if false;
+    }
+  }
+}

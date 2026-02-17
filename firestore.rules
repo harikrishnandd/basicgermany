@@ -1,0 +1,26 @@
+rules_version = '2';
+
+service cloud.firestore {
+  match /databases/{database}/documents {
+    
+    // Blog articles - allow read to everyone, write from admin
+    // Note: In production, implement proper Firebase Auth for admin access
+    match /blogArticles/{articleId} {
+      allow read: if true;
+      allow write: if true; // WARNING: Change this to use Firebase Auth in production
+    }
+    
+    // Blog articles with snake_case naming
+    match /blog_articles/{articleId} {
+      allow read: if true;
+      allow write: if true; // WARNING: Change this to use Firebase Auth in production
+    }
+    
+    // Allow read access to everything else
+    match /{document=**} {
+      allow read: if true;
+      allow write: if false;
+    }
+  }
+}
+

@@ -1,0 +1,22 @@
+@import './appstore-reset.css';
+@import './appstore-tokens.css';
+@import './appstore-components.css';
+@import './appstore-layout.css';
+@import './global-search.css';
+@import './skeleton.css';
+
+/* Loading spinner animation */
+@keyframes spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+body {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+    sans-serif;
+}
