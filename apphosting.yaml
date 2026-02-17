@@ -14,8 +14,14 @@ env:
   # These are available at build time and runtime
   - variable: NEXT_PUBLIC_ADMIN_PASSWORD
     secret: admin-password
+    availability:
+      - BUILD
+      - RUNTIME
   - variable: NEXT_PUBLIC_OPENAI_API_KEY
     secret: openai-api-key
+    availability:
+      - BUILD
+      - RUNTIME
 
   # Firebase config (already hardcoded in lib/firebase.js, but good practice to centralize)
   - variable: NEXT_PUBLIC_FIREBASE_API_KEY
