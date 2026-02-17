@@ -69,6 +69,12 @@ self.addEventListener('fetch', (event) => {
     return;
   }
 
+  // CRITICAL: Exclude admin routes and API routes from SW interception
+  // This prevents ERR_BLOCKED_BY_CLIENT and Firestore connection issues
+  if (isAdminRoute(url) || isApiRoute(url)) {
+    return; // Let the browser handle these directly
+  }
+
   // Handle different types of requests
   if (isStaticAsset(url)) {
     // Cache First strategy for static assets
@@ -86,6 +92,18 @@ self.addEventListener('fetch', (event) => {
 });
 
 // Helper functions to identify request types
+function isAdminRoute(url) {
+  // Exclude admin panel routes to prevent interference with Firestore operations
+  return url.pathname.startsWith('/admin/') || 
+         url.pathname === '/admin';
+}
+
+function isApiRoute(url) {
+  // Exclude API routes (especially revalidation) from SW interception
+  return url.pathname.startsWith('/api/') ||
+         url.pathname.startsWith('/_next/data/');
+}
+
 function isStaticAsset(url) {
   const staticExtensions = ['.png', '.jpg', '.jpeg', '.gif', '.svg', '.ico', '.woff', '.woff2', '.ttf', '.css'];
   return staticExtensions.some(ext => url.pathname.endsWith(ext)) ||
@@ -94,8 +112,10 @@ function isStaticAsset(url) {
 }
 
 function isFirestoreRequest(url) {
+  // Don't intercept Firebase/Firestore requests - let them pass through
   return url.hostname.includes('firestore.googleapis.com') ||
-         url.hostname.includes('firebase');
+         url.hostname.includes('firebasestorage.googleapis.com') ||
+         url.hostname.includes('firebase.google.com');
 }
 
 function isNavigationRequest(request) {

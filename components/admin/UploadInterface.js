@@ -158,35 +158,46 @@ export default function UploadInterface({ onArticlesProcessed }) {
 
       console.log('Saving article data:', articleData);
 
+      // Save/Update article to Firestore
+      let saveSuccess = false;
       if (isEditMode && article.id) {
         // Update existing article
         await updateBlogArticle(article.id, articleData);
         console.log('Article updated successfully');
-        alert(`Article "${article.title}" updated as ${status}!`);
+        saveSuccess = true;
       } else {
         // Create new article
         await createBlogArticle(articleData);
         console.log('Article saved successfully to Firestore');
-        alert(`Article "${article.title}" saved as ${status}!`);
+        saveSuccess = true;
       }
+
+      // CRITICAL: Wait a moment to ensure Firestore connection is fully settled
+      // This prevents ERR_BLOCKED_BY_CLIENT and connection termination issues
+      await new Promise(resolve => setTimeout(resolve, 500));
 
       // Trigger on-demand revalidation for ISR (for both new and updated articles)
-      try {
-        const revalidateResponse = await fetch('/api/revalidate', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ slug: article.slug })
-        });
+      if (saveSuccess) {
+        try {
+          const revalidateResponse = await fetch('/api/revalidate', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ slug: article.slug })
+          });
 
-        if (revalidateResponse.ok) {
-          console.log('Page revalidation triggered successfully for:', article.slug);
-        } else {
-          console.warn('Revalidation request failed');
+          if (revalidateResponse.ok) {
+            console.log('Page revalidation triggered successfully for:', article.slug);
+          } else {
+            console.warn('Revalidation request failed');
+          }
+        } catch (revalidateError) {
+          console.error('Failed to trigger revalidation:', revalidateError);
+          // Don't block the save if revalidation fails
         }
-      } catch (revalidateError) {
-        console.error('Failed to trigger revalidation:', revalidateError);
-        // Don't block the save if revalidation fails
       }
+
+      // Show success message after all operations complete
+      alert(`Article "${article.title}" ${isEditMode ? 'updated' : 'saved'} as ${status}!`);
 
       // Reset form
       setUploadedFile(null);
