@@ -162,31 +162,30 @@ export default function UploadInterface({ onArticlesProcessed }) {
         // Update existing article
         await updateBlogArticle(article.id, articleData);
         console.log('Article updated successfully');
-
-        // Trigger on-demand revalidation for ISR
-        try {
-          const revalidateResponse = await fetch('/api/revalidate', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ slug: article.slug })
-          });
-
-          if (revalidateResponse.ok) {
-            console.log('Page revalidation triggered successfully');
-          } else {
-            console.warn('Revalidation request failed');
-          }
-        } catch (revalidateError) {
-          console.error('Failed to trigger revalidation:', revalidateError);
-          // Don't block the save if revalidation fails
-        }
-
         alert(`Article "${article.title}" updated as ${status}!`);
       } else {
         // Create new article
         await createBlogArticle(articleData);
         console.log('Article saved successfully to Firestore');
         alert(`Article "${article.title}" saved as ${status}!`);
+      }
+
+      // Trigger on-demand revalidation for ISR (for both new and updated articles)
+      try {
+        const revalidateResponse = await fetch('/api/revalidate', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ slug: article.slug })
+        });
+
+        if (revalidateResponse.ok) {
+          console.log('Page revalidation triggered successfully for:', article.slug);
+        } else {
+          console.warn('Revalidation request failed');
+        }
+      } catch (revalidateError) {
+        console.error('Failed to trigger revalidation:', revalidateError);
+        // Don't block the save if revalidation fails
       }
 
       // Reset form

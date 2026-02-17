@@ -3,8 +3,11 @@ import ArticlePageClient from './ArticlePageClient';
 import { getArticleSlugs, getArticleData, getRelatedArticlesData } from './utils';
 import { generateArticleSchema, generateFAQSchema, generateHowToSchema, generateBreadcrumbSchema, generateOrganizationSchema } from '@/lib/schema';
 
-// Only allow pre-generated static paths
-export const dynamicParams = false;
+// Allow dynamic generation for new/updated articles
+export const dynamicParams = true;
+
+// Revalidate every hour as a safety net (on-demand revalidation is primary)
+export const revalidate = 3600;
 
 // Generate metadata for each article page
 export async function generateMetadata(props) {

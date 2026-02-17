@@ -6,10 +6,15 @@ export async function POST(request) {
 
         // Revalidate the specific article page
         revalidatePath(`/knowledge/${slug}`);
+        
+        // Also revalidate the knowledge listing pages to show updated articles
+        revalidatePath('/knowledge');
+        revalidatePath('/knowledge/all');
 
         return Response.json({
             revalidated: true,
             slug: slug,
+            paths: [`/knowledge/${slug}`, '/knowledge', '/knowledge/all'],
             timestamp: new Date().toISOString()
         });
     } catch (err) {
