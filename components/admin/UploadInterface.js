@@ -187,6 +187,17 @@ export default function UploadInterface({ onArticlesProcessed }) {
 
           if (revalidateResponse.ok) {
             console.log('Page revalidation triggered successfully for:', article.slug);
+            
+            // Show success message
+            alert(`Article "${article.title}" ${isEditMode ? 'updated' : 'saved'} as ${status}!`);
+            
+            // Force browser to fetch the latest revalidated content
+            // This makes the update feel instant to the admin
+            setTimeout(() => {
+              window.location.reload();
+            }, 1000);
+            
+            return; // Exit early to prevent form reset before reload
           } else {
             console.warn('Revalidation request failed');
           }
@@ -196,7 +207,7 @@ export default function UploadInterface({ onArticlesProcessed }) {
         }
       }
 
-      // Show success message after all operations complete
+      // Show success message if revalidation failed
       alert(`Article "${article.title}" ${isEditMode ? 'updated' : 'saved'} as ${status}!`);
 
       // Reset form
