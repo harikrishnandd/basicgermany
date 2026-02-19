@@ -1,7 +1,7 @@
 // Server component wrapper (no 'use client')
 import ArticlePageClient from './ArticlePageClient';
 import { getArticleSlugs, getArticleData, getRelatedArticlesData } from './utils';
-import { generateArticleSchema, generateFAQSchema, generateHowToSchema, generateBreadcrumbSchema, generateOrganizationSchema } from '@/lib/schema';
+import JsonLd from '@/components/SEO/JsonLd';
 
 // Allow dynamic generation for new/updated articles
 export const dynamicParams = true;
@@ -109,46 +109,18 @@ export default async function ArticlePage(props) {
     relatedArticles = await getRelatedArticlesData(article.id, article.category, 3);
   }
 
-  // Generate schema markup for SEO
-  const url = `https://basicgermany.com/knowledge/${article?.slug || params.slug}`;
-  const articleSchema = article ? generateArticleSchema(article, url) : null;
-  const faqSchema = article?.faqs ? generateFAQSchema(article.faqs) : null;
-  const howToSchema = article ? generateHowToSchema(article, url) : null;
-  const breadcrumbSchema = article ? generateBreadcrumbSchema(article.category, article.slug, article.title) : null;
-  const organizationSchema = generateOrganizationSchema();
-
+  // Automated SEO: Generate all schema markup using reusable JsonLd component
   return (
     <>
-      {/* Schema Markup for SEO */}
-      {articleSchema && (
-        <script
-          type="application/ld+json"
-          dangerouslySetInnerHTML={{ __html: JSON.stringify(articleSchema) }}
-        />
-      )}
-      {howToSchema && (
-        <script
-          type="application/ld+json"
-          dangerouslySetInnerHTML={{ __html: JSON.stringify(howToSchema) }}
-        />
-      )}
-      {faqSchema && (
-        <script
-          type="application/ld+json"
-          dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }}
-        />
-      )}
-      {breadcrumbSchema && (
-        <script
-          type="application/ld+json"
-          dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }}
-        />
-      )}
-      {organizationSchema && (
-        <script
-          type="application/ld+json"
-          dangerouslySetInnerHTML={{ __html: JSON.stringify(organizationSchema) }}
-        />
+      {/* Automated JSON-LD Schema for SEO */}
+      {article && (
+        <>
+          <JsonLd type="article" data={article} />
+          <JsonLd type="breadcrumb" data={{ category: article.category, slug: article.slug, title: article.title }} />
+          {article.faqs && <JsonLd type="faq" data={{ faqs: article.faqs }} />}
+          <JsonLd type="howto" data={article} />
+          <JsonLd type="organization" data={{}} />
+        </>
       )}
 
       <ArticlePageClient article={article} content={content} relatedArticles={relatedArticles} />
