@@ -186,48 +186,57 @@ export default function ProductHero() {
                   </div>
                 )}
 
-                {/* Content Overlay (Bottom-Left) */}
-                <div className={`hero-content-appstore ${isLight ? 'light' : 'dark'}`}>
-                  <motion.h1 
-                    className="hero-title-appstore"
-                    initial={{ opacity: 0, y: 20 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ delay: 0.2 }}
-                  >
-                    {banner.title}
-                  </motion.h1>
-                  <motion.p 
-                    className="hero-subtitle-1-appstore"
-                    initial={{ opacity: 0, y: 20 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ delay: 0.3 }}
-                  >
-                    {banner.subtitle1}
-                  </motion.p>
-                  <motion.p 
-                    className="hero-subtitle-2-appstore"
-                    initial={{ opacity: 0, y: 20 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ delay: 0.4 }}
-                  >
-                    {banner.subtitle2}
-                  </motion.p>
-                  
-                  {banner.ctaText && (
-                    <motion.button
-                      className={`hero-cta-appstore ${isLight ? 'light' : 'dark'}`}
-                      onClick={() => handleCTAClick(banner.ctaLink)}
-                      aria-label={banner.ctaText}
-                      initial={{ opacity: 0, scale: 0.9 }}
-                      animate={{ opacity: 1, scale: 1 }}
-                      transition={{ delay: 0.5 }}
-                      whileHover={{ scale: 1.05 }}
-                      whileTap={{ scale: 0.95 }}
-                    >
-                      {banner.ctaText}
-                    </motion.button>
-                  )}
-                </div>
+                {/* Glassmorphism Footer Bar */}
+                <motion.div 
+                  className="hero-footer-bar"
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: 0.3 }}
+                >
+                  <div className="hero-footer-content">
+                    <div className="hero-text-content">
+                      <motion.p 
+                        className="hero-eyebrow"
+                        initial={{ opacity: 0 }}
+                        animate={{ opacity: 1 }}
+                        transition={{ delay: 0.4 }}
+                      >
+                        {banner.subtitle1}
+                      </motion.p>
+                      <motion.h1 
+                        className="hero-title-refined"
+                        initial={{ opacity: 0 }}
+                        animate={{ opacity: 1 }}
+                        transition={{ delay: 0.5 }}
+                      >
+                        {banner.title}
+                      </motion.h1>
+                      <motion.p 
+                        className="hero-description"
+                        initial={{ opacity: 0 }}
+                        animate={{ opacity: 1 }}
+                        transition={{ delay: 0.6 }}
+                      >
+                        {banner.subtitle2}
+                      </motion.p>
+                    </div>
+                    
+                    {banner.ctaText && (
+                      <motion.button
+                        className="hero-cta-compact"
+                        onClick={() => handleCTAClick(banner.ctaLink)}
+                        aria-label={banner.ctaText}
+                        initial={{ opacity: 0, scale: 0.9 }}
+                        animate={{ opacity: 1, scale: 1 }}
+                        transition={{ delay: 0.7 }}
+                        whileHover={{ scale: 1.05 }}
+                        whileTap={{ scale: 0.95 }}
+                      >
+                        {banner.ctaText}
+                      </motion.button>
+                    )}
+                  </div>
+                </motion.div>
               </motion.div>
             );
           })}
