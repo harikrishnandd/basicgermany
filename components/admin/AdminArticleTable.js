@@ -212,7 +212,7 @@ export default function AdminArticleTable({ articles, onStatusChange, onDelete, 
 
                                 {article.status === 'published' && (
                                     <Link
-                                        href={`/knowledge/${article.slug}`}
+                                        href={`/knowledge/${article.slug}/`}
                                         target="_blank"
                                         rel="noopener noreferrer"
                                         className="action-button view"

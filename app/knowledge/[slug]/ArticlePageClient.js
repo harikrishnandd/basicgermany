@@ -274,7 +274,7 @@ export default function ArticlePageClient({ article: initialArticle, content: in
             <div className="article-error">
               <h1>Article Not Found</h1>
               <p>The article you're looking for doesn't exist or has been removed.</p>
-              <Link href="/knowledge" className="article-error-button">
+              <Link href="/knowledge/" className="article-error-button">
                 Back to Blog
               </Link>
             </div>
@@ -403,7 +403,7 @@ export default function ArticlePageClient({ article: initialArticle, content: in
               {relatedArticles.map((relatedArticle) => (
                 <Link
                   key={relatedArticle.slug}
-                  href={`/knowledge/${relatedArticle.slug}`}
+                  href={`/knowledge/${relatedArticle.slug}/`}
                   className="related-article-card"
                 >
                   <h3 className="related-article-title">{relatedArticle.title}</h3>

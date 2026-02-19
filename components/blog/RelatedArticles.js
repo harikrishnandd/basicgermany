@@ -12,7 +12,7 @@ export default function RelatedArticles({ articles }) {
         {articles.map(article => (
           <Link 
             key={article.id} 
-            href={`/knowledge/${article.slug}`}
+            href={`/knowledge/${article.slug}/`}
             style={{ textDecoration: 'none' }}
           >
             <article className="blog-card-compact">

@@ -58,7 +58,7 @@ export default function GlobalSearchResults({ searchResults, searchQuery }) {
             {knowledge.map(article => (
               <Link 
                 key={article.id} 
-                href={`/knowledge/${article.slug}`}
+                href={`/knowledge/${article.slug}/`}
                 className="knowledge-search-card"
               >
                 <div className="knowledge-card-header">
