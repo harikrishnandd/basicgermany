@@ -1,37 +1,59 @@
-import { getArticleSlugs } from './knowledge/[slug]/utils';
-import { collection, getDocs, query, where } from 'firebase/firestore';
+import { collection, getDocs, query, where, orderBy } from 'firebase/firestore';
 import { db } from '@/lib/firebase';
 
-// Enable dynamic generation for sitemap
+/**
+ * Dynamic Sitemap Generator
+ * Automatically discovers all published articles from Firestore
+ * Ensures new articles are found by crawlers within hours of publishing
+ */
 export const dynamic = 'force-dynamic';
-export const revalidate = 3600; // Regenerate hourly
+export const revalidate = 3600; // Regenerate every hour
 
 export default async function sitemap() {
   const baseUrl = 'https://basicgermany.com';
   
   try {
-    // Get all published articles with metadata
+    // Query Firestore for all published articles
     const articlesRef = collection(db, 'blogArticles');
-    const q = query(articlesRef, where('status', '==', 'published'));
+    const q = query(
+      articlesRef,
+      where('status', '==', 'published'),
+      orderBy('datePublished', 'desc')
+    );
+    
     const snapshot = await getDocs(q);
     
+    // Generate article URLs with proper lastModified dates
     const articleUrls = snapshot.docs.map(doc => {
       const data = doc.data();
+      
+      // Use actual article update date for accurate freshness signal
+      let lastModified = new Date();
+      if (data.dateUpdated?.toDate) {
+        lastModified = data.dateUpdated.toDate();
+      } else if (data.datePublished?.toDate) {
+        lastModified = data.datePublished.toDate();
+      } else if (data.dateUpdated) {
+        lastModified = new Date(data.dateUpdated);
+      } else if (data.datePublished) {
+        lastModified = new Date(data.datePublished);
+      }
+      
       return {
         url: `${baseUrl}/knowledge/${data.slug}`,
-        lastModified: data.dateUpdated?.toDate() || data.datePublished?.toDate() || new Date(),
+        lastModified: lastModified,
         changeFrequency: 'weekly',
         priority: 0.8,
       };
     });
     
-    // Static pages
+    // Static pages with high priority
     const staticPages = [
       {
         url: baseUrl,
         lastModified: new Date(),
         changeFrequency: 'daily',
-        priority: 1,
+        priority: 1.0,
       },
       {
         url: `${baseUrl}/knowledge`,
@@ -50,13 +72,20 @@ export default async function sitemap() {
     return [...staticPages, ...articleUrls];
   } catch (error) {
     console.error('Error generating sitemap:', error);
-    // Fallback to basic sitemap
+    
+    // Fallback to basic sitemap if Firestore query fails
     return [
       {
         url: baseUrl,
         lastModified: new Date(),
         changeFrequency: 'daily',
-        priority: 1,
+        priority: 1.0,
+      },
+      {
+        url: `${baseUrl}/knowledge`,
+        lastModified: new Date(),
+        changeFrequency: 'daily',
+        priority: 0.9,
       },
     ];
   }

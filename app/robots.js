@@ -1,10 +1,8 @@
-import { MetadataRoute } from 'next';
-
 /**
  * Robots.txt Configuration
  * Defines crawler access policies and sitemap location
  */
-export default function robots(): MetadataRoute.Robots {
+export default function robots() {
   return {
     rules: [
       {
