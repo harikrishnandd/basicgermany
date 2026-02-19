@@ -8,6 +8,7 @@ import OfficialResources from '@/components/OfficialResources';
 import SocialShare from '@/components/SocialShare';
 import Sidebar from '@/components/sidebar';
 import Breadcrumbs from '@/components/Breadcrumbs';
+import FAQSection from '@/components/Article/FAQSection';
 import { getCategories } from '@/lib/firestore';
 import '../../../app/blog-article.css';
 
@@ -385,20 +386,8 @@ export default function ArticlePageClient({ article: initialArticle, content: in
         {/* Official Resources */}
         <OfficialResources />
 
-        {/* FAQ Section - only if exists */}
-        {publicData.faqs && publicData.faqs.length > 0 && (
-          <section className="faq-section-clean">
-            <h2>Frequently Asked Questions</h2>
-            {publicData.faqs.map((faq, index) => (
-              <div key={index} className="faq-item-clean">
-                <h3 className="faq-question-clean">{faq.question}</h3>
-                <div className="faq-answer-clean">
-                  <p>{faq.answer}</p>
-                </div>
-              </div>
-            ))}
-          </section>
-        )}
+        {/* FAQ Accordion Section with SEO Schema */}
+        <FAQSection faqs={publicData.faqs} articleTitle={publicData.title} />
 
         {/* Author Bio with Stats - E-E-A-T Signal */}
         <AuthorBio 

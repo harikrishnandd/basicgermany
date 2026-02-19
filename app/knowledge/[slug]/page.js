@@ -110,6 +110,7 @@ export default async function ArticlePage(props) {
   }
 
   // Automated SEO: Generate all schema markup using reusable JsonLd component
+  // Note: FAQ schema is now generated within FAQSection component for better encapsulation
   return (
     <>
       {/* Automated JSON-LD Schema for SEO */}
@@ -117,7 +118,6 @@ export default async function ArticlePage(props) {
         <>
           <JsonLd type="article" data={article} />
           <JsonLd type="breadcrumb" data={{ category: article.category, slug: article.slug, title: article.title }} />
-          {article.faqs && <JsonLd type="faq" data={{ faqs: article.faqs }} />}
           <JsonLd type="howto" data={article} />
           <JsonLd type="organization" data={{}} />
         </>
