@@ -6,6 +6,7 @@ service firebase.storage {
     // Blog content - allow read to everyone
     match /blog-content/{fileName} {
       allow read: if true;
+      allow get: if true;  // Explicit get for metadata and CORS handling
       
       // Allow write for blog markdown files
       // WARNING: In production, implement proper Firebase Auth for admin access
