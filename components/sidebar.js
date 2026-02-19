@@ -150,9 +150,9 @@ export default function Sidebar({ categories, activeCategory, onCategoryChange, 
               </li>
               <li className={`navigation-item ${currentPage === 'products' ? 'active' : ''}`}>
                 <a 
-                  href="#"
+                  href="/products/"
                   className="navigation-link"
-                  onClick={(e) => { e.preventDefault(); setIsOpen(false); }}
+                  onClick={() => setIsOpen(false)}
                 >
                   <span className="navigation-icon">
                     <span className="material-symbols-outlined">shopping_bag</span>
