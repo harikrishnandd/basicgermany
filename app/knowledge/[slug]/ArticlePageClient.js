@@ -7,6 +7,7 @@ import AuthorBio from '@/components/AuthorBio';
 import OfficialResources from '@/components/OfficialResources';
 import SocialShare from '@/components/SocialShare';
 import Sidebar from '@/components/sidebar';
+import Breadcrumbs from '@/components/Breadcrumbs';
 import { getCategories } from '@/lib/firestore';
 import '../../../app/blog-article.css';
 
@@ -294,16 +295,11 @@ export default function ArticlePageClient({ article: initialArticle, content: in
       <main className="main-content">
         <div className="blog-article-page">
       <div className="blog-article-container">
-        {/* Breadcrumbs */}
-        <nav className="breadcrumbs" aria-label="Breadcrumb">
-          <Link href="/" className="breadcrumb-link">Home</Link>
-          <span className="breadcrumb-separator">/</span>
-          <Link href="/knowledge" className="breadcrumb-link">Knowledge</Link>
-          <span className="breadcrumb-separator">/</span>
-          <Link href={`/knowledge?category=${publicData.category}`} className="breadcrumb-link">
-            {publicData.category}
-          </Link>
-        </nav>
+        {/* Enhanced Breadcrumbs with schema.org microdata */}
+        <Breadcrumbs 
+          category={publicData.category} 
+          title={publicData.title}
+        />
 
         {/* Article Header */}
         <header className="article-header-clean">
