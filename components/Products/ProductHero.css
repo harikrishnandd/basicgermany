@@ -1,41 +1,46 @@
-/* ========== PRODUCT HERO CAROUSEL ========== */
+/* ========== APPLE APP STORE STYLE HERO CAROUSEL ========== */
 
-.product-hero {
+.product-hero-appstore {
   position: relative;
   width: 100%;
-  height: 500px;
+  height: 550px;
   overflow: hidden;
   background: var(--systemBackground);
+  padding: 40px 0;
 }
 
-.hero-carousel {
+.hero-carousel-container {
   position: relative;
   width: 100%;
   height: 100%;
+  overflow: visible;
 }
 
-.hero-slide {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  opacity: 0;
-  visibility: hidden;
-  transition: opacity 0.6s ease-in-out, visibility 0.6s ease-in-out;
+.hero-carousel-track {
   display: flex;
-  align-items: center;
-  justify-content: center;
+  gap: 16px;
+  padding: 0 calc(50% - 400px); /* Center peek effect */
+  will-change: transform;
 }
 
-.hero-slide.active {
-  opacity: 1;
-  visibility: visible;
-  z-index: 1;
+.hero-slide-appstore {
+  position: relative;
+  min-width: 800px;
+  width: 800px;
+  height: 470px;
+  border-radius: 32px; /* Squircle effect */
+  overflow: hidden;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3), 0 8px 24px rgba(0, 0, 0, 0.2);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  cursor: grab;
+}
+
+.hero-slide-appstore:active {
+  cursor: grabbing;
 }
 
 /* Background Image */
-.hero-image-wrapper {
+.hero-image-wrapper-appstore {
   position: absolute;
   top: 0;
   left: 0;
@@ -44,255 +49,357 @@
   z-index: 0;
 }
 
-.hero-image {
+.hero-image-appstore {
   width: 100%;
   height: 100%;
   object-fit: cover;
 }
 
-.hero-overlay {
+.hero-overlay-appstore {
   position: absolute;
   top: 0;
   left: 0;
   width: 100%;
   height: 100%;
   background: linear-gradient(
-    to bottom,
-    rgba(0, 0, 0, 0.3) 0%,
-    rgba(0, 0, 0, 0.6) 100%
+    to top,
+    rgba(0, 0, 0, 0.7) 0%,
+    rgba(0, 0, 0, 0.3) 50%,
+    rgba(0, 0, 0, 0.1) 100%
   );
   z-index: 1;
 }
 
-/* Content */
-.hero-content {
-  position: relative;
+/* Content Overlay (Bottom-Left) */
+.hero-content-appstore {
+  position: absolute;
+  bottom: 40px;
+  left: 40px;
+  right: 40px;
   z-index: 2;
-  max-width: 800px;
-  padding: 0 24px;
-  text-align: center;
+  text-align: left;
+}
+
+.hero-content-appstore.dark {
   color: #ffffff;
 }
 
-/* Typography Hierarchy */
-.hero-title {
-  font-size: 48px;
+.hero-content-appstore.light {
+  color: #000000;
+}
+
+/* Typography Hierarchy - App Store Style */
+.hero-title-appstore {
+  font-size: 52px;
   font-weight: 700;
-  line-height: 1.2;
-  margin: 0 0 16px 0;
-  color: #ffffff;
-  text-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
-}
-
-.hero-subtitle-1 {
-  font-size: 20px;
-  font-weight: 500;
-  line-height: 1.5;
+  line-height: 1.1;
   margin: 0 0 12px 0;
+  letter-spacing: -0.5px;
+}
+
+.hero-content-appstore.dark .hero-title-appstore {
   color: #ffffff;
-  text-shadow: 0 1px 4px rgba(0, 0, 0, 0.3);
+  text-shadow: 0 2px 12px rgba(0, 0, 0, 0.4);
 }
 
-.hero-subtitle-2 {
-  font-size: 16px;
+.hero-content-appstore.light .hero-title-appstore {
+  color: #000000;
+  text-shadow: 0 1px 3px rgba(255, 255, 255, 0.3);
+}
+
+.hero-subtitle-1-appstore {
+  font-size: 22px;
+  font-weight: 500;
+  line-height: 1.4;
+  margin: 0 0 8px 0;
+}
+
+.hero-content-appstore.dark .hero-subtitle-1-appstore {
+  color: rgba(255, 255, 255, 0.95);
+}
+
+.hero-content-appstore.light .hero-subtitle-1-appstore {
+  color: rgba(0, 0, 0, 0.85);
+}
+
+.hero-subtitle-2-appstore {
+  font-size: 17px;
   font-weight: 400;
-  line-height: 1.6;
-  margin: 0 0 32px 0;
-  color: rgba(255, 255, 255, 0.8);
-  text-shadow: 0 1px 4px rgba(0, 0, 0, 0.3);
+  line-height: 1.5;
+  margin: 0 0 24px 0;
 }
 
-/* CTA Button */
-.hero-cta {
+.hero-content-appstore.dark .hero-subtitle-2-appstore {
+  color: rgba(255, 255, 255, 0.7);
+}
+
+.hero-content-appstore.light .hero-subtitle-2-appstore {
+  color: rgba(0, 0, 0, 0.6);
+}
+
+/* CTA Button - App Store Style */
+.hero-cta-appstore {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  padding: 14px 32px;
-  min-height: 48px; /* Mobile touch target */
-  font-size: 16px;
+  padding: 10px 24px;
+  min-height: 44px;
+  font-size: 17px;
   font-weight: 600;
-  color: #ffffff;
-  background: var(--keyColor);
   border: none;
-  border-radius: 8px;
+  border-radius: 9999px; /* Fully rounded */
   cursor: pointer;
   transition: all 0.2s ease;
-  box-shadow: 0 4px 12px rgba(0, 122, 255, 0.3);
   text-decoration: none;
+  letter-spacing: -0.2px;
 }
 
-.hero-cta:hover {
+.hero-cta-appstore.dark {
+  background: #ffffff;
+  color: var(--keyColor);
+  box-shadow: 0 4px 16px rgba(255, 255, 255, 0.2);
+}
+
+.hero-cta-appstore.light {
+  background: var(--keyColor);
+  color: #ffffff;
+  box-shadow: 0 4px 16px rgba(0, 122, 255, 0.3);
+}
+
+.hero-cta-appstore.dark:hover {
+  background: #f0f0f0;
+  transform: scale(1.02);
+}
+
+.hero-cta-appstore.light:hover {
   background: #0056b3;
-  transform: translateY(-2px);
-  box-shadow: 0 6px 16px rgba(0, 122, 255, 0.4);
+  transform: scale(1.02);
 }
 
-.hero-cta:active {
-  transform: translateY(0);
-}
-
-/* Pagination Dots */
-.hero-pagination {
+/* Pagination Dots - App Store Style */
+.hero-pagination-appstore {
   position: absolute;
-  bottom: 24px;
+  bottom: -10px;
   left: 50%;
   transform: translateX(-50%);
   display: flex;
-  gap: 12px;
+  gap: 8px;
   z-index: 3;
 }
 
-.pagination-dot {
-  width: 12px;
-  height: 12px;
+.pagination-dot-appstore {
+  width: 8px;
+  height: 8px;
   border-radius: 50%;
-  background: rgba(255, 255, 255, 0.4);
-  border: 2px solid rgba(255, 255, 255, 0.6);
+  background: rgba(0, 0, 0, 0.2);
+  border: none;
   cursor: pointer;
   transition: all 0.3s ease;
   padding: 0;
-  min-width: 44px; /* Touch target */
-  min-height: 44px; /* Touch target */
+  min-width: 44px;
+  min-height: 44px;
   display: flex;
   align-items: center;
   justify-content: center;
+  position: relative;
 }
 
-.pagination-dot::before {
+.pagination-dot-appstore::before {
   content: '';
-  width: 12px;
-  height: 12px;
+  width: 8px;
+  height: 8px;
   border-radius: 50%;
-  background: rgba(255, 255, 255, 0.4);
-  transition: all 0.3s ease;
+  background: rgba(0, 0, 0, 0.2);
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
-.pagination-dot.active::before {
-  background: #ffffff;
-  width: 16px;
-  height: 16px;
+.pagination-dot-appstore.active::before {
+  background: rgba(0, 0, 0, 0.6);
+  width: 8px;
+  height: 8px;
 }
 
-.pagination-dot:hover::before {
-  background: rgba(255, 255, 255, 0.8);
+.pagination-dot-appstore:hover::before {
+  background: rgba(0, 0, 0, 0.4);
 }
 
-/* ========== RESPONSIVE ========== */
+/* ========== RESPONSIVE - APP STORE STYLE ========== */
 
 /* Tablet */
+@media (max-width: 1024px) {
+  .hero-carousel-track {
+    padding: 0 calc(50% - 350px);
+  }
+
+  .hero-slide-appstore {
+    min-width: 700px;
+    width: 700px;
+    height: 420px;
+  }
+
+  .hero-content-appstore {
+    bottom: 32px;
+    left: 32px;
+    right: 32px;
+  }
+
+  .hero-title-appstore {
+    font-size: 42px;
+  }
+
+  .hero-subtitle-1-appstore {
+    font-size: 19px;
+  }
+
+  .hero-subtitle-2-appstore {
+    font-size: 16px;
+  }
+}
+
+/* Mobile - Less Peek Effect */
 @media (max-width: 768px) {
-  .product-hero {
+  .product-hero-appstore {
+    height: 450px;
+    padding: 20px 0;
+  }
+
+  .hero-carousel-track {
+    padding: 0 calc(50% - 280px); /* Less peek on mobile */
+  }
+
+  .hero-slide-appstore {
+    min-width: 560px;
+    width: 560px;
+    height: 380px;
+    border-radius: 24px;
+  }
+
+  .hero-content-appstore {
+    bottom: 24px;
+    left: 24px;
+    right: 24px;
+  }
+
+  .hero-title-appstore {
+    font-size: 32px;
+    margin-bottom: 8px;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+
+  .hero-subtitle-1-appstore {
+    font-size: 17px;
+    margin-bottom: 6px;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+
+  .hero-subtitle-2-appstore {
+    font-size: 15px;
+    margin-bottom: 16px;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+
+  .hero-cta-appstore {
+    font-size: 16px;
+    padding: 9px 20px;
+  }
+}
+
+/* Small Mobile - Minimal Peek */
+@media (max-width: 480px) {
+  .product-hero-appstore {
     height: 400px;
   }
 
-  .hero-title {
-    font-size: 36px;
-    margin-bottom: 12px;
+  .hero-carousel-track {
+    padding: 0 20px; /* Minimal peek */
   }
 
-  .hero-subtitle-1 {
-    font-size: 18px;
-    margin-bottom: 10px;
+  .hero-slide-appstore {
+    min-width: calc(100vw - 40px);
+    width: calc(100vw - 40px);
+    height: 340px;
+    border-radius: 20px;
   }
 
-  .hero-subtitle-2 {
-    font-size: 15px;
-    margin-bottom: 24px;
+  .hero-content-appstore {
+    bottom: 20px;
+    left: 20px;
+    right: 20px;
   }
 
-  .hero-cta {
-    padding: 12px 28px;
-    font-size: 15px;
-  }
-}
-
-/* Mobile */
-@media (max-width: 480px) {
-  .product-hero {
-    height: 350px;
-  }
-
-  .hero-content {
-    padding: 0 16px;
-  }
-
-  .hero-title {
+  .hero-title-appstore {
     font-size: 28px;
-    margin-bottom: 10px;
-    /* Prevent text overflow */
-    display: -webkit-box;
-    -webkit-line-clamp: 2;
-    -webkit-box-orient: vertical;
-    overflow: hidden;
   }
 
-  .hero-subtitle-1 {
+  .hero-subtitle-1-appstore {
     font-size: 16px;
-    margin-bottom: 8px;
-    /* Prevent text overflow */
-    display: -webkit-box;
-    -webkit-line-clamp: 2;
-    -webkit-box-orient: vertical;
-    overflow: hidden;
   }
 
-  .hero-subtitle-2 {
+  .hero-subtitle-2-appstore {
     font-size: 14px;
-    margin-bottom: 20px;
-    /* Prevent text overflow */
-    display: -webkit-box;
-    -webkit-line-clamp: 2;
-    -webkit-box-orient: vertical;
-    overflow: hidden;
+    margin-bottom: 14px;
   }
 
-  .hero-cta {
-    padding: 12px 24px;
-    font-size: 14px;
-    min-height: 44px; /* Ensure touch target */
-    width: 100%;
-    max-width: 280px;
+  .hero-cta-appstore {
+    font-size: 15px;
+    padding: 8px 18px;
   }
 
-  .hero-pagination {
-    bottom: 16px;
-  }
-
-  .pagination-dot {
-    min-width: 44px;
-    min-height: 44px;
+  .hero-pagination-appstore {
+    bottom: -15px;
   }
 }
 
 /* Dark Mode Support */
 @media (prefers-color-scheme: dark) {
-  .hero-overlay {
+  .hero-overlay-appstore {
     background: linear-gradient(
-      to bottom,
-      rgba(0, 0, 0, 0.4) 0%,
-      rgba(0, 0, 0, 0.7) 100%
+      to top,
+      rgba(0, 0, 0, 0.8) 0%,
+      rgba(0, 0, 0, 0.4) 50%,
+      rgba(0, 0, 0, 0.2) 100%
     );
+  }
+
+  .pagination-dot-appstore::before {
+    background: rgba(255, 255, 255, 0.3);
+  }
+
+  .pagination-dot-appstore.active::before {
+    background: rgba(255, 255, 255, 0.8);
   }
 }
 
 /* Print */
 @media print {
-  .product-hero {
+  .product-hero-appstore {
     height: auto;
     page-break-inside: avoid;
   }
 
-  .hero-pagination {
+  .hero-carousel-track {
+    padding: 0;
+  }
+
+  .hero-slide-appstore {
+    width: 100% !important;
+    min-width: 100% !important;
+  }
+
+  .hero-slide-appstore:not(:first-child) {
     display: none;
   }
 
-  .hero-slide {
-    position: relative;
-    opacity: 1 !important;
-    visibility: visible !important;
-  }
-
-  .hero-slide:not(:first-child) {
+  .hero-pagination-appstore {
     display: none;
   }
 }
