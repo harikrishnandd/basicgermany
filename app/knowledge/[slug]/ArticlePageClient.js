@@ -405,6 +405,7 @@ export default function ArticlePageClient({ article: initialArticle, content: in
                   key={relatedArticle.slug}
                   href={`/knowledge/${relatedArticle.slug}/`}
                   className="related-article-card"
+                  prefetch={false}
                 >
                   <h3 className="related-article-title">{relatedArticle.title}</h3>
                   {relatedArticle.excerpt && (

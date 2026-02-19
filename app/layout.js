@@ -1,5 +1,6 @@
 import "./globals.css";
 import ServiceWorkerRegistration from "@/components/ServiceWorkerRegistration";
+import NavigationHandler from "@/components/NavigationHandler";
 
 export const metadata = {
   title: "Basic Germany - Your starting point in Germany",
@@ -34,6 +35,7 @@ export default function RootLayout({ children }) {
       </head>
       <body className="antialiased">
         <ServiceWorkerRegistration />
+        <NavigationHandler />
         {children}
       </body>
     </html>

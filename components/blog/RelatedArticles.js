@@ -14,6 +14,7 @@ export default function RelatedArticles({ articles }) {
             key={article.id} 
             href={`/knowledge/${article.slug}/`}
             style={{ textDecoration: 'none' }}
+            prefetch={false}
           >
             <article className="blog-card-compact">
               <div className="blog-card-compact-image">

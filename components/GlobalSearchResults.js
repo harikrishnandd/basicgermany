@@ -60,6 +60,7 @@ export default function GlobalSearchResults({ searchResults, searchQuery }) {
                 key={article.id} 
                 href={`/knowledge/${article.slug}/`}
                 className="knowledge-search-card"
+                prefetch={false}
               >
                 <div className="knowledge-card-header">
                   <span className="knowledge-card-category">{article.category}</span>

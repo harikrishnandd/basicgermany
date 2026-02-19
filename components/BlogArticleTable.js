@@ -70,7 +70,7 @@ export default function BlogArticleTable({ articles }) {
               </div>
               
               <div className="col-title">
-                <Link href={`/knowledge/${article.slug}/`} className="article-title-link">
+                <Link href={`/knowledge/${article.slug}/`} className="article-title-link" prefetch={false}>
                   {article.title}
                 </Link>
               </div>
@@ -84,7 +84,7 @@ export default function BlogArticleTable({ articles }) {
               </div>
               
               <div className="col-action">
-                <Link href={`/knowledge/${article.slug}/`} className="read-button">
+                <Link href={`/knowledge/${article.slug}/`} className="read-button" prefetch={false}>
                   <span>Read</span>
                   <span className="material-symbols-outlined">arrow_right_alt</span>
                 </Link>
