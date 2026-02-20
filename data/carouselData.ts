@@ -1,9 +1,8 @@
 import { CarouselCard } from '@/components/ProductCarousel';
 
 /**
- * Sample Carousel Data
- * 
- * This data can be moved to a CMS or Firestore in the future
+ * Carousel Data for Products Page
+ * Can be moved to CMS/Firestore in the future
  */
 export const carouselData: CarouselCard[] = [
   {
@@ -13,27 +12,27 @@ export const carouselData: CarouselCard[] = [
     subtitle: 'Navigate your new life with confidence. Curated tools for banking, transport, and daily living.',
     ctaText: 'Explore Apps',
     ctaLink: '/knowledge/',
-    imageUrl: 'https://images.pexels.com/photos/1200450/pexels-photo-1200450.jpeg',
-    theme: 'green',
+    imageUrl: 'https://images.pexels.com/photos/1200450/pexels-photo-1200450.jpeg?auto=compress&cs=tinysrgb&w=1200',
+    theme: 'green' as const,
   },
   {
     id: '2',
-    category: 'NOW STREAMING',
-    title: 'Knowledge Hub',
-    subtitle: 'Everything you need to know about Germany. From Anmeldung to tax registration.',
-    ctaText: 'Read Articles',
+    category: 'FEATURED',
+    title: 'Banking & Finance Guide',
+    subtitle: 'Open your German bank account and manage finances with ease.',
+    ctaText: 'Learn More',
     ctaLink: '/knowledge/',
-    imageUrl: 'https://images.pexels.com/photos/5504137/pexels-photo-5504137.jpeg',
-    theme: 'dark',
+    imageUrl: 'https://images.pexels.com/photos/5504137/pexels-photo-5504137.jpeg?auto=compress&cs=tinysrgb&w=1200',
+    theme: 'dark' as const,
   },
   {
     id: '3',
-    category: 'FEATURED',
-    title: 'Community Resources',
-    subtitle: 'Connect with fellow expats. Share experiences and get advice from those who\'ve been there.',
-    ctaText: 'Join Community',
+    category: 'FROM THE EDITORS',
+    title: 'Visa & Bureaucracy Help',
+    subtitle: 'Step-by-step guidance for residence permits and registration.',
+    ctaText: 'Get Started',
     ctaLink: '/knowledge/',
-    imageUrl: 'https://images.pexels.com/photos/1117132/pexels-photo-1117132.jpeg',
-    theme: 'purple',
+    imageUrl: 'https://images.pexels.com/photos/1117132/pexels-photo-1117132.jpeg?auto=compress&cs=tinysrgb&w=1200',
+    theme: 'purple' as const,
   },
 ];
