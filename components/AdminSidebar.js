@@ -6,12 +6,24 @@ export default function AdminSidebar({ onSearch, activePage = '', onLogout }) {
   const [isOpen, setIsOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
   const [theme, setTheme] = useState('light');
-  const [expandedSections, setExpandedSections] = useState({
-    apps: false,
-    news: false,
-    knowledge: true, // Open by default since admin is under Knowledge Hub
-    products: false
-  });
+  
+  // Determine which section should be expanded based on activePage
+  const getInitialExpandedSections = () => {
+    if (activePage === 'content-management') {
+      return { apps: false, news: false, knowledge: true, products: false };
+    } else if (activePage === 'banner' || activePage === 'items') {
+      return { apps: false, news: false, knowledge: false, products: true };
+    }
+    // Default: all collapsed
+    return { apps: false, news: false, knowledge: false, products: false };
+  };
+
+  const [expandedSections, setExpandedSections] = useState(getInitialExpandedSections());
+
+  // Update expanded sections when activePage changes
+  useEffect(() => {
+    setExpandedSections(getInitialExpandedSections());
+  }, [activePage]);
 
   useEffect(() => {
     const savedTheme = localStorage.getItem('theme');
