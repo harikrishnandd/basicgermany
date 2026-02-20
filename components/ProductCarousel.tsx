@@ -3,7 +3,6 @@
 import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
-import Image from 'next/image';
 
 /**
  * CarouselCard Interface
@@ -51,6 +50,18 @@ export default function ProductCarousel({ cards }: ProductCarouselProps) {
   const swipeConfidenceThreshold = 10000;
   const swipePower = (offset: number, velocity: number) => {
     return Math.abs(offset) * velocity;
+  };
+
+  const getThemeBackground = (theme: CarouselCard['theme']) => {
+    switch (theme) {
+      case 'green':
+        return 'bg-gradient-to-br from-emerald-600 via-green-700 to-teal-800';
+      case 'purple':
+        return 'bg-gradient-to-br from-purple-600 via-violet-700 to-indigo-800';
+      case 'dark':
+      default:
+        return 'bg-gradient-to-br from-gray-800 via-gray-900 to-black';
+    }
   };
 
   const paginate = (newDirection: number) => {
@@ -131,25 +142,11 @@ export default function ProductCarousel({ cards }: ProductCarouselProps) {
               }}
               className="absolute inset-0 w-full h-full cursor-grab active:cursor-grabbing"
             >
-              {/* Background Image - CONSTRAINED */}
-              <div className="absolute inset-0 w-full h-full overflow-hidden">
-                <Image
-                  src={currentCard.imageUrl}
-                  alt={currentCard.title}
-                  fill
-                  priority={currentIndex === 0}
-                  sizes="(max-width: 640px) 100vw, 1200px"
-                  quality={85}
-                  style={{
-                    objectFit: 'cover',
-                    objectPosition: 'center',
-                  }}
-                />
-              </div>
+              {/* Solid Color Background */}
+              <div className={`absolute inset-0 w-full h-full ${getThemeBackground(currentCard.theme)}`} />
 
-              {/* Gradient Overlays */}
-              <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/50 to-transparent pointer-events-none" />
-              <div className="absolute inset-0 bg-gradient-to-r from-black/30 via-transparent to-transparent pointer-events-none" />
+              {/* Subtle Gradient Overlay for depth */}
+              <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent pointer-events-none" />
 
               {/* Content Container */}
               <div className="absolute inset-0 flex flex-col justify-end p-6 sm:p-8 lg:p-10 pointer-events-none">
