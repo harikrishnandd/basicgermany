@@ -4,6 +4,7 @@
 @import './appstore-layout.css';
 @import './global-search.css';
 @import './skeleton.css';
+@import './carousel.css';
 
 /* Loading spinner animation */
 @keyframes spin {
