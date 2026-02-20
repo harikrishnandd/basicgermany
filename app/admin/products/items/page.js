@@ -4,7 +4,7 @@ import { useState, useEffect } from 'react';
 import { isAuthenticated, authenticate, logout } from '../../../../lib/auth';
 import AdminSidebar from '../../../../components/AdminSidebar';
 import { PageHeader, EmptyState } from '../../../../components/admin/AdminComponents';
-import '../../../admin.css';
+import '../../../styles/admin.css';
 
 export default function ItemsManagementPage() {
   const [authenticated, setAuthenticated] = useState(false);

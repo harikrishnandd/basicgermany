@@ -1,10 +1,10 @@
-@import './appstore-reset.css';
-@import './appstore-tokens.css';
-@import './appstore-components.css';
-@import './appstore-layout.css';
-@import './global-search.css';
-@import './skeleton.css';
-@import './carousel.css';
+@import './styles/appstore-reset.css';
+@import './styles/appstore-tokens.css';
+@import './styles/appstore-components.css';
+@import './styles/appstore-layout.css';
+@import './styles/global-search.css';
+@import './styles/skeleton.css';
+@import './styles/carousel.css';
 
 /* Loading spinner animation */
 @keyframes spin {

@@ -10,7 +10,7 @@ import Sidebar from '@/components/sidebar';
 import Breadcrumbs from '@/components/Breadcrumbs';
 import FAQSection from '@/components/Article/FAQSection';
 import { getCategories } from '@/lib/firestore';
-import '../../../app/blog-article.css';
+import '../../../app/styles/blog-article.css';
 
 // Slugify function to create URL-friendly IDs from heading text
 function slugify(text) {

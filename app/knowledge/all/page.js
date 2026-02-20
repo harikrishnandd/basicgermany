@@ -8,8 +8,8 @@ import BlogArticleTable from '@/components/BlogArticleTable';
 import GlobalSearchResults from '@/components/GlobalSearchResults';
 import { LoadingSpinner } from '@/components/Skeleton';
 import Link from 'next/link';
-import '../blog-homepage.css';
-import './all-articles.css';
+import '../../styles/blog-homepage.css';
+import '../../styles/all-articles.css';
 
 export default function AllArticlesPage() {
   const [articles, setArticles] = useState([]);

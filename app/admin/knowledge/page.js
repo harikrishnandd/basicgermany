@@ -7,7 +7,7 @@ import UploadInterface from '../../../components/admin/UploadInterface';
 import ReviewInterface from '../../../components/admin/ReviewInterface';
 import ManagementDashboard from '../../../components/admin/ManagementDashboard';
 import { TabNavigation, PageHeader } from '../../../components/admin/AdminComponents';
-import '../../admin.css';
+import '../../styles/admin.css';
 
 export default function AdminBlogPage() {
   const [authenticated, setAuthenticated] = useState(false);

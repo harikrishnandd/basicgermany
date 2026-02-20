@@ -8,7 +8,7 @@ import BannerList from '../../../../components/admin/BannerList';
 import BannerForm from '../../../../components/admin/BannerForm';
 import MigrateBanners from '../../../../components/admin/MigrateBanners';
 import { getBanners, deleteBanner } from '../../../../lib/services/bannerService';
-import '../../../admin.css';
+import '../../../styles/admin.css';
 
 export default function BannerManagementPage() {
   const [authenticated, setAuthenticated] = useState(false);

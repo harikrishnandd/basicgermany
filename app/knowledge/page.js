@@ -8,7 +8,7 @@ import BlogArticleTable from '@/components/BlogArticleTable';
 import GlobalSearchResults from '@/components/GlobalSearchResults';
 import { HeroSkeleton, TopicCardSkeleton, ArticleTableSkeleton, SectionHeaderSkeleton, LoadingSpinner } from '@/components/Skeleton';
 import Link from 'next/link';
-import './blog-homepage.css';
+import '../styles/blog-homepage.css';
 
 export default function BlogPage() {
   const [articles, setArticles] = useState([]);
