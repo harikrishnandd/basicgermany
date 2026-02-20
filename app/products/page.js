@@ -2,7 +2,8 @@
 
 import { useState, useEffect } from 'react';
 import Sidebar from '@/components/sidebar';
-import ProductHero from '@/components/Products/ProductHero';
+import ProductCarousel from '@/components/ProductCarousel';
+import { carouselData } from '@/data/carouselData';
 import { getCategories } from '@/lib/firestore';
 
 export default function ProductsPage() {
@@ -24,7 +25,7 @@ export default function ProductsPage() {
       />
       <main className="main-content">
         <div className="products-page">
-          <ProductHero />
+          <ProductCarousel cards={carouselData} />
           
           {/* Future product sections will go here */}
           <section className="products-content" style={{ padding: '40px 20px' }}>
