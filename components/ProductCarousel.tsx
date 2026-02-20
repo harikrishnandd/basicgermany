@@ -55,12 +55,12 @@ export default function ProductCarousel({ cards }: ProductCarouselProps) {
   const getThemeBackground = (theme: CarouselCard['theme']) => {
     switch (theme) {
       case 'green':
-        return 'bg-gradient-to-br from-emerald-600 via-green-700 to-teal-800';
+        return 'from-emerald-500 via-teal-600 to-cyan-700';
       case 'purple':
-        return 'bg-gradient-to-br from-purple-600 via-violet-700 to-indigo-800';
+        return 'from-purple-500 via-fuchsia-600 to-pink-700';
       case 'dark':
       default:
-        return 'bg-gradient-to-br from-gray-800 via-gray-900 to-black';
+        return 'from-slate-700 via-gray-800 to-zinc-900';
     }
   };
 
@@ -140,13 +140,10 @@ export default function ProductCarousel({ cards }: ProductCarouselProps) {
                   paginate(-1);
                 }
               }}
-              className="absolute inset-0 w-full h-full cursor-grab active:cursor-grabbing"
+              className={`absolute inset-0 w-full h-full cursor-grab active:cursor-grabbing bg-gradient-to-br ${getThemeBackground(currentCard.theme)}`}
             >
-              {/* Solid Color Background */}
-              <div className={`absolute inset-0 w-full h-full ${getThemeBackground(currentCard.theme)}`} />
-
               {/* Subtle Gradient Overlay for depth */}
-              <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent pointer-events-none" />
+              <div className="absolute inset-0 bg-gradient-to-t from-black/30 to-transparent pointer-events-none" />
 
               {/* Content Container */}
               <div className="absolute inset-0 flex flex-col justify-end p-6 sm:p-8 lg:p-10 pointer-events-none">
