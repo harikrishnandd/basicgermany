@@ -1,7 +1,6 @@
 'use client';
 
 import { useState } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
 
 /**
@@ -28,51 +27,25 @@ interface ProductCarouselProps {
  */
 export default function ProductCarousel({ cards }: ProductCarouselProps) {
   const [currentIndex, setCurrentIndex] = useState(0);
-  const [direction, setDirection] = useState(0);
 
-  const slideVariants = {
-    enter: (direction: number) => ({
-      x: direction > 0 ? 1000 : -1000,
-      opacity: 0,
-    }),
-    center: {
-      zIndex: 1,
-      x: 0,
-      opacity: 1,
-    },
-    exit: (direction: number) => ({
-      zIndex: 0,
-      x: direction < 0 ? 1000 : -1000,
-      opacity: 0,
-    }),
+  const handleNext = () => {
+    setCurrentIndex((prev) => (prev + 1) % cards.length);
   };
 
-  const swipeConfidenceThreshold = 10000;
-  const swipePower = (offset: number, velocity: number) => {
-    return Math.abs(offset) * velocity;
+  const handlePrev = () => {
+    setCurrentIndex((prev) => (prev - 1 + cards.length) % cards.length);
   };
 
-  const getThemeBackground = (theme: CarouselCard['theme']) => {
+  const getGradient = (theme: CarouselCard['theme']) => {
     switch (theme) {
       case 'green':
-        return 'from-emerald-500 via-teal-600 to-cyan-700';
+        return 'linear-gradient(135deg, #10b981 0%, #059669 100%)';
       case 'purple':
-        return 'from-purple-500 via-fuchsia-600 to-pink-700';
+        return 'linear-gradient(135deg, #a855f7 0%, #9333ea 100%)';
       case 'dark':
       default:
-        return 'from-slate-700 via-gray-800 to-zinc-900';
+        return 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)';
     }
-  };
-
-  const paginate = (newDirection: number) => {
-    setDirection(newDirection);
-    setCurrentIndex((prevIndex) => {
-      if (newDirection === 1) {
-        return prevIndex === cards.length - 1 ? 0 : prevIndex + 1;
-      } else {
-        return prevIndex === 0 ? cards.length - 1 : prevIndex - 1;
-      }
-    });
   };
 
   const currentCard = cards[currentIndex];
@@ -82,152 +55,63 @@ export default function ProductCarousel({ cards }: ProductCarouselProps) {
   }
 
   return (
-    <div className="relative w-full max-w-[1200px] mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12">
-      {/* Navigation Buttons */}
-      <button
-        onClick={() => paginate(-1)}
-        aria-label="Previous slide"
-        className="absolute left-2 sm:left-4 top-[calc(50%-24px)] sm:top-[calc(50%-20px)] -translate-y-1/2 z-20 
-                   w-10 h-10 sm:w-12 sm:h-12 
-                   bg-white/95 hover:bg-white 
-                   rounded-full shadow-lg hover:shadow-xl 
-                   flex items-center justify-center 
-                   transition-all duration-200 
-                   hover:scale-110 active:scale-95
-                   backdrop-blur-sm"
+    <section className="hero-section">
+      <div 
+        className="hero-card"
+        style={{ background: getGradient(currentCard.theme) }}
       >
-        <ChevronLeft className="w-5 h-5 sm:w-6 sm:h-6 text-gray-800" strokeWidth={2.5} />
-      </button>
-
-      <button
-        onClick={() => paginate(1)}
-        aria-label="Next slide"
-        className="absolute right-2 sm:right-4 top-[calc(50%-24px)] sm:top-[calc(50%-20px)] -translate-y-1/2 z-20 
-                   w-10 h-10 sm:w-12 sm:h-12 
-                   bg-white/95 hover:bg-white 
-                   rounded-full shadow-lg hover:shadow-xl 
-                   flex items-center justify-center 
-                   transition-all duration-200 
-                   hover:scale-110 active:scale-95
-                   backdrop-blur-sm"
-      >
-        <ChevronRight className="w-5 h-5 sm:w-6 sm:h-6 text-gray-800" strokeWidth={2.5} />
-      </button>
-
-      {/* Carousel Container - FIXED HEIGHT */}
-      <div className="relative w-full h-[350px] sm:h-[400px] lg:h-[450px] overflow-hidden rounded-2xl sm:rounded-3xl shadow-2xl bg-gray-900">
-          <AnimatePresence initial={false} custom={direction}>
-            <motion.div
-              key={currentCard.id}
-              custom={direction}
-              variants={slideVariants}
-              initial="enter"
-              animate="center"
-              exit="exit"
-              transition={{
-                x: { type: 'spring', stiffness: 300, damping: 30 },
-                opacity: { duration: 0.2 },
-              }}
-              drag="x"
-              dragConstraints={{ left: 0, right: 0 }}
-              dragElastic={1}
-              onDragEnd={(e, { offset, velocity }) => {
-                const swipe = swipePower(offset.x, velocity.x);
-
-                if (swipe < -swipeConfidenceThreshold) {
-                  paginate(1);
-                } else if (swipe > swipeConfidenceThreshold) {
-                  paginate(-1);
-                }
-              }}
-              className={`absolute inset-0 w-full h-full cursor-grab active:cursor-grabbing bg-gradient-to-br ${getThemeBackground(currentCard.theme)}`}
+        {/* Navigation Arrows */}
+        {cards.length > 1 && (
+          <>
+            <button
+              onClick={handlePrev}
+              aria-label="Previous"
+              className="absolute left-4 top-1/2 -translate-y-1/2 z-10 w-12 h-12 bg-white/20 hover:bg-white/30 backdrop-blur-sm rounded-full shadow-lg flex items-center justify-center transition-all"
             >
-              {/* Subtle Gradient Overlay for depth */}
-              <div className="absolute inset-0 bg-gradient-to-t from-black/30 to-transparent pointer-events-none" />
+              <ChevronLeft className="w-6 h-6 text-white" />
+            </button>
+            <button
+              onClick={handleNext}
+              aria-label="Next"
+              className="absolute right-4 top-1/2 -translate-y-1/2 z-10 w-12 h-12 bg-white/20 hover:bg-white/30 backdrop-blur-sm rounded-full shadow-lg flex items-center justify-center transition-all"
+            >
+              <ChevronRight className="w-6 h-6 text-white" />
+            </button>
+          </>
+        )}
 
-              {/* Content Container */}
-              <div className="absolute inset-0 flex flex-col justify-end p-6 sm:p-8 lg:p-10 pointer-events-none">
-                <div className="max-w-2xl pointer-events-auto">
-                  {/* Category Label */}
-                  <motion.p
-                    initial={{ opacity: 0, y: 20 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ delay: 0.1 }}
-                    className="text-[10px] sm:text-xs font-bold tracking-widest uppercase mb-1.5 sm:mb-2
-                             text-white/90"
-                  >
-                    {currentCard.category}
-                  </motion.p>
+        <div className="hero-content">
+          <p className="text-xs sm:text-sm font-bold uppercase tracking-wider text-white/90 mb-2">
+            {currentCard.category}
+          </p>
+          <h1 className="hero-title">{currentCard.title}</h1>
+          <p className="hero-subtitle">{currentCard.subtitle}</p>
+          <a
+            href={currentCard.ctaLink}
+            className="inline-block mt-4 px-6 py-3 bg-white/20 hover:bg-white/30 backdrop-blur-md border border-white/30 rounded-full text-white font-semibold transition-all"
+          >
+            {currentCard.ctaText}
+          </a>
+        </div>
 
-                  {/* Title */}
-                  <motion.h2
-                    initial={{ opacity: 0, y: 20 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ delay: 0.2 }}
-                    className="text-2xl sm:text-3xl lg:text-4xl 
-                             font-bold leading-tight mb-2 sm:mb-3
-                             text-white drop-shadow-lg"
-                  >
-                    {currentCard.title}
-                  </motion.h2>
-
-                  {/* Subtitle */}
-                  <motion.p
-                    initial={{ opacity: 0, y: 20 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ delay: 0.3 }}
-                    className="text-sm sm:text-base lg:text-lg 
-                             leading-relaxed mb-4 sm:mb-5
-                             text-white/90 max-w-xl line-clamp-2"
-                  >
-                    {currentCard.subtitle}
-                  </motion.p>
-
-                  {/* CTA Button */}
-                  <motion.a
-                    initial={{ opacity: 0, y: 20 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ delay: 0.4 }}
-                    href={currentCard.ctaLink}
-                    className="inline-flex items-center justify-center
-                             px-5 sm:px-7 py-2 sm:py-2.5
-                             bg-white/20 hover:bg-white/30
-                             backdrop-blur-md
-                             border border-white/30 hover:border-white/50
-                             rounded-full
-                             text-white font-semibold
-                             text-sm sm:text-base
-                             transition-all duration-200
-                             hover:-translate-y-0.5 hover:shadow-xl
-                             active:scale-95"
-                  >
-                    {currentCard.ctaText}
-                  </motion.a>
-                </div>
-              </div>
-            </motion.div>
-          </AnimatePresence>
+        {/* Pagination Dots */}
+        {cards.length > 1 && (
+          <div className="absolute bottom-6 left-1/2 -translate-x-1/2 flex gap-2 z-10">
+            {cards.map((_, index) => (
+              <button
+                key={index}
+                onClick={() => setCurrentIndex(index)}
+                aria-label={`Go to slide ${index + 1}`}
+                className={`transition-all rounded-full ${
+                  index === currentIndex
+                    ? 'w-8 h-2 bg-white'
+                    : 'w-2 h-2 bg-white/50 hover:bg-white/70'
+                }`}
+              />
+            ))}
+          </div>
+        )}
       </div>
-
-      {/* Pagination Dots */}
-      <div className="flex justify-center items-center gap-2 mt-6">
-        {cards.map((_, index) => (
-          <button
-            key={index}
-            onClick={() => {
-              setDirection(index > currentIndex ? 1 : -1);
-              setCurrentIndex(index);
-            }}
-            aria-label={`Go to slide ${index + 1}`}
-            className={`transition-all duration-300 rounded-full
-                       ${
-                         index === currentIndex
-                           ? 'w-8 h-2 bg-gray-800'
-                           : 'w-2 h-2 bg-gray-300 hover:bg-gray-400'
-                       }`}
-          />
-        ))}
-      </div>
-    </div>
+    </section>
   );
 }
