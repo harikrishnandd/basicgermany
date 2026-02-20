@@ -6,7 +6,8 @@ import AdminSidebar from '../../../../components/AdminSidebar';
 import { PageHeader, TabNavigation, EmptyState } from '../../../../components/admin/AdminComponents';
 import BannerList from '../../../../components/admin/BannerList';
 import BannerForm from '../../../../components/admin/BannerForm';
-import { getAllBanners, deleteBanner } from '../../../../lib/firestore';
+import MigrateBanners from '../../../../components/admin/MigrateBanners';
+import { getBanners, deleteBanner } from '../../../../lib/services/bannerService';
 import '../../../admin.css';
 
 export default function BannerManagementPage() {
@@ -30,7 +31,7 @@ export default function BannerManagementPage() {
 
   const loadBanners = async () => {
     setLoading(true);
-    const fetchedBanners = await getAllBanners();
+    const fetchedBanners = await getBanners();
     setBanners(fetchedBanners);
     setLoading(false);
   };
@@ -105,6 +106,10 @@ export default function BannerManagementPage() {
   const handleFormCancel = () => {
     setActiveTab('list');
     setEditingBanner(null);
+  };
+
+  const handleMigrationComplete = async (results) => {
+    await loadBanners();
   };
 
   if (!authenticated) {
@@ -257,15 +262,18 @@ export default function BannerManagementPage() {
                   <div className="spinner" />
                 </div>
               ) : banners.length === 0 ? (
-                <EmptyState
-                  icon="view_carousel"
-                  title="No banners yet"
-                  description="Create your first banner to display on the Products page carousel"
-                  action={{
-                    label: 'Add New Banner',
-                    onClick: handleAddNew
-                  }}
-                />
+                <>
+                  <EmptyState
+                    icon="view_carousel"
+                    title="No banners yet"
+                    description="Migrate existing hardcoded banners or create your first banner manually"
+                    action={{
+                      label: 'Add New Banner',
+                      onClick: handleAddNew
+                    }}
+                  />
+                  <MigrateBanners onComplete={handleMigrationComplete} />
+                </>
               ) : (
                 <BannerList
                   banners={banners}

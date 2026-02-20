@@ -1,7 +1,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { createBanner, updateBanner } from '../../lib/firestore';
+import { addBanner, updateBanner } from '../../lib/services/bannerService';
 
 export default function BannerForm({ banner, onSuccess, onCancel }) {
   const [formData, setFormData] = useState({
@@ -73,7 +73,7 @@ export default function BannerForm({ banner, onSuccess, onCancel }) {
       if (banner) {
         result = await updateBanner(banner.id, formData);
       } else {
-        result = await createBanner(formData);
+        result = await addBanner(formData);
       }
 
       if (result.success) {
