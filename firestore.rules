@@ -16,6 +16,12 @@ service cloud.firestore {
       allow write: if true; // WARNING: Change this to use Firebase Auth in production
     }
     
+    // Banners collection - allow read to everyone, write from admin
+    match /banners/{bannerId} {
+      allow read: if true;
+      allow write: if true; // WARNING: Change this to use Firebase Auth in production
+    }
+    
     // Allow read access to everything else
     match /{document=**} {
       allow read: if true;
