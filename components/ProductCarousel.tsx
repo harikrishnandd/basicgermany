@@ -103,30 +103,8 @@ export default function ProductCarousel({ cards }: ProductCarouselProps) {
         <ChevronRight className="w-5 h-5 sm:w-6 sm:h-6 text-gray-800" strokeWidth={2.5} />
       </button>
 
-      {/* Carousel Container - EXPLICIT HEIGHT CONTROL */}
-      <div 
-        className="relative w-full overflow-hidden rounded-2xl sm:rounded-3xl shadow-2xl bg-gray-900"
-        style={{
-          height: '350px',
-          maxHeight: '350px',
-        }}
-      >
-        <style jsx>{`
-          @media (min-width: 640px) {
-            .carousel-container {
-              height: 400px !important;
-              max-height: 400px !important;
-            }
-          }
-          @media (min-width: 1024px) {
-            .carousel-container {
-              height: 450px !important;
-              max-height: 450px !important;
-            }
-          }
-        `}</style>
-        
-        <div className="carousel-container relative w-full h-full">
+      {/* Carousel Container - FIXED HEIGHT */}
+      <div className="relative w-full h-[350px] sm:h-[400px] lg:h-[450px] overflow-hidden rounded-2xl sm:rounded-3xl shadow-2xl bg-gray-900">
           <AnimatePresence initial={false} custom={direction}>
             <motion.div
               key={currentCard.id}
@@ -235,7 +213,6 @@ export default function ProductCarousel({ cards }: ProductCarouselProps) {
               </div>
             </motion.div>
           </AnimatePresence>
-        </div>
       </div>
 
       {/* Pagination Dots */}
