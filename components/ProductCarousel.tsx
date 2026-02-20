@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
 import Image from 'next/image';
@@ -25,107 +25,209 @@ interface ProductCarouselProps {
 
 /**
  * ProductCarousel Component
- * Simplified implementation for better compatibility
+ * Apple App Store-style carousel with smooth animations
  */
 export default function ProductCarousel({ cards }: ProductCarouselProps) {
   const [currentIndex, setCurrentIndex] = useState(0);
+  const [direction, setDirection] = useState(0);
 
-  // Debug log
-  console.log('ProductCarousel rendering with', cards.length, 'cards');
-  console.log('Current index:', currentIndex);
-
-  const goToNext = () => {
-    setCurrentIndex((prev) => (prev + 1) % cards.length);
+  const slideVariants = {
+    enter: (direction: number) => ({
+      x: direction > 0 ? 1000 : -1000,
+      opacity: 0,
+    }),
+    center: {
+      zIndex: 1,
+      x: 0,
+      opacity: 1,
+    },
+    exit: (direction: number) => ({
+      zIndex: 0,
+      x: direction < 0 ? 1000 : -1000,
+      opacity: 0,
+    }),
   };
 
-  const goToPrev = () => {
-    setCurrentIndex((prev) => (prev - 1 + cards.length) % cards.length);
+  const swipeConfidenceThreshold = 10000;
+  const swipePower = (offset: number, velocity: number) => {
+    return Math.abs(offset) * velocity;
+  };
+
+  const paginate = (newDirection: number) => {
+    setDirection(newDirection);
+    setCurrentIndex((prevIndex) => {
+      if (newDirection === 1) {
+        return prevIndex === cards.length - 1 ? 0 : prevIndex + 1;
+      } else {
+        return prevIndex === 0 ? cards.length - 1 : prevIndex - 1;
+      }
+    });
   };
 
   const currentCard = cards[currentIndex];
 
   if (!currentCard) {
-    console.error('No current card found');
     return null;
   }
 
   return (
-    <div className="relative w-full max-w-7xl mx-auto px-4 py-12">
-      {/* Navigation Arrows */}
+    <div className="relative w-full max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12">
+      {/* Navigation Buttons */}
       <button
-        onClick={goToPrev}
-        aria-label="Previous"
-        className="absolute left-2 top-1/2 -translate-y-1/2 z-10 w-12 h-12 bg-white rounded-full shadow-lg flex items-center justify-center hover:bg-gray-50 transition-colors"
+        onClick={() => paginate(-1)}
+        aria-label="Previous slide"
+        className="absolute left-2 sm:left-4 top-1/2 -translate-y-1/2 z-20 
+                   w-10 h-10 sm:w-12 sm:h-12 
+                   bg-white/95 hover:bg-white 
+                   rounded-full shadow-lg hover:shadow-xl 
+                   flex items-center justify-center 
+                   transition-all duration-200 
+                   hover:scale-110 active:scale-95
+                   backdrop-blur-sm"
       >
-        <ChevronLeft className="w-6 h-6 text-gray-800" />
+        <ChevronLeft className="w-5 h-5 sm:w-6 sm:h-6 text-gray-800" strokeWidth={2.5} />
       </button>
 
       <button
-        onClick={goToNext}
-        aria-label="Next"
-        className="absolute right-2 top-1/2 -translate-y-1/2 z-10 w-12 h-12 bg-white rounded-full shadow-lg flex items-center justify-center hover:bg-gray-50 transition-colors"
+        onClick={() => paginate(1)}
+        aria-label="Next slide"
+        className="absolute right-2 sm:right-4 top-1/2 -translate-y-1/2 z-20 
+                   w-10 h-10 sm:w-12 sm:h-12 
+                   bg-white/95 hover:bg-white 
+                   rounded-full shadow-lg hover:shadow-xl 
+                   flex items-center justify-center 
+                   transition-all duration-200 
+                   hover:scale-110 active:scale-95
+                   backdrop-blur-sm"
       >
-        <ChevronRight className="w-6 h-6 text-gray-800" />
+        <ChevronRight className="w-5 h-5 sm:w-6 sm:h-6 text-gray-800" strokeWidth={2.5} />
       </button>
 
       {/* Carousel Container */}
-      <div className="overflow-hidden">
-        <AnimatePresence mode="wait">
+      <div className="relative w-full h-[300px] sm:h-[400px] lg:h-[500px] overflow-hidden rounded-2xl sm:rounded-3xl shadow-2xl">
+        <AnimatePresence initial={false} custom={direction}>
           <motion.div
             key={currentCard.id}
-            initial={{ opacity: 0, x: 100 }}
-            animate={{ opacity: 1, x: 0 }}
-            exit={{ opacity: 0, x: -100 }}
-            transition={{ duration: 0.3 }}
-            className="relative w-full h-[400px] md:h-[500px] rounded-2xl overflow-hidden"
+            custom={direction}
+            variants={slideVariants}
+            initial="enter"
+            animate="center"
+            exit="exit"
+            transition={{
+              x: { type: 'spring', stiffness: 300, damping: 30 },
+              opacity: { duration: 0.2 },
+            }}
+            drag="x"
+            dragConstraints={{ left: 0, right: 0 }}
+            dragElastic={1}
+            onDragEnd={(e, { offset, velocity }) => {
+              const swipe = swipePower(offset.x, velocity.x);
+
+              if (swipe < -swipeConfidenceThreshold) {
+                paginate(1);
+              } else if (swipe > swipeConfidenceThreshold) {
+                paginate(-1);
+              }
+            }}
+            className="absolute inset-0 w-full h-full cursor-grab active:cursor-grabbing"
           >
             {/* Background Image */}
-            <div className="absolute inset-0">
+            <div className="absolute inset-0 w-full h-full">
               <Image
                 src={currentCard.imageUrl}
                 alt={currentCard.title}
                 fill
                 className="object-cover"
-                priority
-                sizes="(max-width: 768px) 100vw, 1200px"
+                priority={currentIndex === 0}
+                sizes="(max-width: 640px) 100vw, (max-width: 1024px) 90vw, 1400px"
+                quality={90}
               />
             </div>
 
-            {/* Gradient Overlay */}
-            <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent" />
+            {/* Gradient Overlays */}
+            <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/50 to-transparent" />
+            <div className="absolute inset-0 bg-gradient-to-r from-black/30 via-transparent to-transparent" />
 
-            {/* Content */}
-            <div className="absolute bottom-0 left-0 right-0 p-8 md:p-12 text-white">
-              <p className="text-xs md:text-sm font-semibold tracking-wider uppercase mb-2 opacity-80">
-                {currentCard.category}
-              </p>
-              <h2 className="text-3xl md:text-5xl font-bold mb-3">
-                {currentCard.title}
-              </h2>
-              <p className="text-lg md:text-xl mb-6 opacity-90 max-w-2xl">
-                {currentCard.subtitle}
-              </p>
-              <a
-                href={currentCard.ctaLink}
-                className="inline-block px-6 py-3 bg-white/20 backdrop-blur-md border border-white/30 rounded-full text-white font-semibold hover:bg-white/30 transition-all hover:-translate-y-0.5"
-              >
-                {currentCard.ctaText}
-              </a>
+            {/* Content Container */}
+            <div className="absolute inset-0 flex flex-col justify-end p-6 sm:p-8 lg:p-12">
+              <div className="max-w-3xl">
+                {/* Category Label */}
+                <motion.p
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: 0.1 }}
+                  className="text-[10px] sm:text-xs font-bold tracking-widest uppercase mb-2 sm:mb-3
+                           text-white/90"
+                >
+                  {currentCard.category}
+                </motion.p>
+
+                {/* Title */}
+                <motion.h2
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: 0.2 }}
+                  className="text-2xl sm:text-4xl lg:text-5xl xl:text-6xl 
+                           font-bold leading-tight mb-2 sm:mb-4
+                           text-white drop-shadow-lg"
+                >
+                  {currentCard.title}
+                </motion.h2>
+
+                {/* Subtitle */}
+                <motion.p
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: 0.3 }}
+                  className="text-sm sm:text-lg lg:text-xl 
+                           leading-relaxed mb-4 sm:mb-6
+                           text-white/90 max-w-2xl"
+                >
+                  {currentCard.subtitle}
+                </motion.p>
+
+                {/* CTA Button */}
+                <motion.a
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: 0.4 }}
+                  href={currentCard.ctaLink}
+                  className="inline-flex items-center justify-center
+                           px-6 sm:px-8 py-2.5 sm:py-3
+                           bg-white/20 hover:bg-white/30
+                           backdrop-blur-md
+                           border border-white/30 hover:border-white/50
+                           rounded-full
+                           text-white font-semibold
+                           text-sm sm:text-base
+                           transition-all duration-200
+                           hover:-translate-y-0.5 hover:shadow-xl
+                           active:scale-95"
+                >
+                  {currentCard.ctaText}
+                </motion.a>
+              </div>
             </div>
           </motion.div>
         </AnimatePresence>
       </div>
 
-      {/* Dots Indicator */}
-      <div className="flex justify-center gap-2 mt-6">
+      {/* Pagination Dots */}
+      <div className="flex justify-center items-center gap-2 mt-6">
         {cards.map((_, index) => (
           <button
             key={index}
-            onClick={() => setCurrentIndex(index)}
-            className={`w-2 h-2 rounded-full transition-all ${
-              index === currentIndex ? 'bg-gray-800 w-8' : 'bg-gray-300'
-            }`}
+            onClick={() => {
+              setDirection(index > currentIndex ? 1 : -1);
+              setCurrentIndex(index);
+            }}
             aria-label={`Go to slide ${index + 1}`}
+            className={`transition-all duration-300 rounded-full
+                       ${
+                         index === currentIndex
+                           ? 'w-8 h-2 bg-gray-800'
+                           : 'w-2 h-2 bg-gray-300 hover:bg-gray-400'
+                       }`}
           />
         ))}
       </div>
