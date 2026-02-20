@@ -224,10 +224,31 @@ export default function AdminSidebar({ onSearch, activePage = '', onLogout }) {
                 </button>
                 {expandedSections.products && (
                   <ul className="navigation-submenu">
-                    <li className="navigation-item submenu-item">
-                      <span className="navigation-link disabled" style={{ paddingLeft: 'var(--space-48)', color: 'var(--systemTertiary)', cursor: 'default' }}>
-                        <span className="navigation-text">No items yet</span>
-                      </span>
+                    <li className={`navigation-item submenu-item ${activePage === 'banner' ? 'active' : ''}`}>
+                      <a
+                        href="/admin/products/banner"
+                        className="navigation-link"
+                        style={{ paddingLeft: 'var(--space-48)' }}
+                        onClick={() => setIsOpen(false)}
+                      >
+                        <span className="navigation-icon">
+                          <span className="material-symbols-outlined">view_carousel</span>
+                        </span>
+                        <span className="navigation-text">Banner</span>
+                      </a>
+                    </li>
+                    <li className={`navigation-item submenu-item ${activePage === 'items' ? 'active' : ''}`}>
+                      <a
+                        href="/admin/products/items"
+                        className="navigation-link"
+                        style={{ paddingLeft: 'var(--space-48)' }}
+                        onClick={() => setIsOpen(false)}
+                      >
+                        <span className="navigation-icon">
+                          <span className="material-symbols-outlined">inventory_2</span>
+                        </span>
+                        <span className="navigation-text">Items</span>
+                      </a>
                     </li>
                   </ul>
                 )}

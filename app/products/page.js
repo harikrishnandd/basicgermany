@@ -3,15 +3,31 @@
 import { useState, useEffect } from 'react';
 import Sidebar from '@/components/sidebar';
 import ProductCarousel from '@/components/ProductCarousel';
-import { carouselData } from '@/data/carouselData';
-import { getCategories } from '@/lib/firestore';
+import { getCategories, getAllBanners } from '@/lib/firestore';
 
 export default function ProductsPage() {
   const [appCategories, setAppCategories] = useState([]);
+  const [banners, setBanners] = useState([]);
+  const [loading, setLoading] = useState(true);
 
-  // Fetch categories for sidebar
+  // Fetch categories and banners
   useEffect(() => {
-    getCategories().then(setAppCategories).catch(console.error);
+    const fetchData = async () => {
+      try {
+        const [categories, fetchedBanners] = await Promise.all([
+          getCategories(),
+          getAllBanners()
+        ]);
+        setAppCategories(categories);
+        setBanners(fetchedBanners);
+      } catch (error) {
+        console.error('Error fetching data:', error);
+      } finally {
+        setLoading(false);
+      }
+    };
+    
+    fetchData();
   }, []);
 
   return (
@@ -27,7 +43,35 @@ export default function ProductsPage() {
         <div className="products-page">
           {/* Hero Carousel Section */}
           <section className="w-full bg-gradient-to-b from-gray-50 to-white dark:from-gray-900 dark:to-gray-950">
-            <ProductCarousel cards={carouselData} />
+            {loading ? (
+              <div style={{ 
+                minHeight: '400px', 
+                display: 'flex', 
+                alignItems: 'center', 
+                justifyContent: 'center' 
+              }}>
+                <div className="spinner" />
+              </div>
+            ) : banners.length > 0 ? (
+              <ProductCarousel cards={banners} />
+            ) : (
+              <div style={{
+                minHeight: '400px',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                flexDirection: 'column',
+                gap: 'var(--space-16)',
+                padding: 'var(--space-32)'
+              }}>
+                <span className="material-symbols-outlined" style={{ fontSize: '48px', color: 'var(--systemTertiary)' }}>
+                  view_carousel
+                </span>
+                <p style={{ color: 'var(--systemSecondary)', fontSize: 'var(--fs-body)' }}>
+                  No banners available yet
+                </p>
+              </div>
+            )}
           </section>
           
           {/* Products Content Section */}
