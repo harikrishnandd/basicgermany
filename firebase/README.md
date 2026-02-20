@@ -4,11 +4,18 @@ This directory contains all Firebase-related configuration files.
 
 ## Files
 
+### Security & Rules
 - **`firestore.rules`** - Firestore security rules
 - **`firestore.indexes.json`** - Firestore database indexes
 - **`storage.rules`** - Firebase Storage security rules
+
+### CORS Configuration
 - **`cors.json`** - CORS configuration for Firebase Storage
 - **`storage-cors.json`** - Additional storage CORS settings
+
+### App Hosting
+- **`apphosting.yaml`** - Firebase App Hosting configuration
+- **`apphosting.yaml.secure`** - Secure App Hosting configuration
 
 ## Deployment
 
