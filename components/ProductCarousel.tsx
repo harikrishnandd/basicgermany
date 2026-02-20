@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
 import Image from 'next/image';
@@ -25,7 +25,7 @@ interface ProductCarouselProps {
 
 /**
  * ProductCarousel Component
- * Apple App Store-style carousel with smooth animations
+ * Apple App Store-style carousel with CONTROLLED HEIGHT
  */
 export default function ProductCarousel({ cards }: ProductCarouselProps) {
   const [currentIndex, setCurrentIndex] = useState(0);
@@ -71,12 +71,12 @@ export default function ProductCarousel({ cards }: ProductCarouselProps) {
   }
 
   return (
-    <div className="relative w-full max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12">
+    <div className="relative w-full max-w-[1200px] mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12">
       {/* Navigation Buttons */}
       <button
         onClick={() => paginate(-1)}
         aria-label="Previous slide"
-        className="absolute left-2 sm:left-4 top-1/2 -translate-y-1/2 z-20 
+        className="absolute left-2 sm:left-4 top-[calc(50%-24px)] sm:top-[calc(50%-20px)] -translate-y-1/2 z-20 
                    w-10 h-10 sm:w-12 sm:h-12 
                    bg-white/95 hover:bg-white 
                    rounded-full shadow-lg hover:shadow-xl 
@@ -91,7 +91,7 @@ export default function ProductCarousel({ cards }: ProductCarouselProps) {
       <button
         onClick={() => paginate(1)}
         aria-label="Next slide"
-        className="absolute right-2 sm:right-4 top-1/2 -translate-y-1/2 z-20 
+        className="absolute right-2 sm:right-4 top-[calc(50%-24px)] sm:top-[calc(50%-20px)] -translate-y-1/2 z-20 
                    w-10 h-10 sm:w-12 sm:h-12 
                    bg-white/95 hover:bg-white 
                    rounded-full shadow-lg hover:shadow-xl 
@@ -103,113 +103,139 @@ export default function ProductCarousel({ cards }: ProductCarouselProps) {
         <ChevronRight className="w-5 h-5 sm:w-6 sm:h-6 text-gray-800" strokeWidth={2.5} />
       </button>
 
-      {/* Carousel Container */}
-      <div className="relative w-full h-[300px] sm:h-[400px] lg:h-[500px] overflow-hidden rounded-2xl sm:rounded-3xl shadow-2xl">
-        <AnimatePresence initial={false} custom={direction}>
-          <motion.div
-            key={currentCard.id}
-            custom={direction}
-            variants={slideVariants}
-            initial="enter"
-            animate="center"
-            exit="exit"
-            transition={{
-              x: { type: 'spring', stiffness: 300, damping: 30 },
-              opacity: { duration: 0.2 },
-            }}
-            drag="x"
-            dragConstraints={{ left: 0, right: 0 }}
-            dragElastic={1}
-            onDragEnd={(e, { offset, velocity }) => {
-              const swipe = swipePower(offset.x, velocity.x);
+      {/* Carousel Container - EXPLICIT HEIGHT CONTROL */}
+      <div 
+        className="relative w-full overflow-hidden rounded-2xl sm:rounded-3xl shadow-2xl bg-gray-900"
+        style={{
+          height: '350px',
+          maxHeight: '350px',
+        }}
+      >
+        <style jsx>{`
+          @media (min-width: 640px) {
+            .carousel-container {
+              height: 400px !important;
+              max-height: 400px !important;
+            }
+          }
+          @media (min-width: 1024px) {
+            .carousel-container {
+              height: 450px !important;
+              max-height: 450px !important;
+            }
+          }
+        `}</style>
+        
+        <div className="carousel-container relative w-full h-full">
+          <AnimatePresence initial={false} custom={direction}>
+            <motion.div
+              key={currentCard.id}
+              custom={direction}
+              variants={slideVariants}
+              initial="enter"
+              animate="center"
+              exit="exit"
+              transition={{
+                x: { type: 'spring', stiffness: 300, damping: 30 },
+                opacity: { duration: 0.2 },
+              }}
+              drag="x"
+              dragConstraints={{ left: 0, right: 0 }}
+              dragElastic={1}
+              onDragEnd={(e, { offset, velocity }) => {
+                const swipe = swipePower(offset.x, velocity.x);
 
-              if (swipe < -swipeConfidenceThreshold) {
-                paginate(1);
-              } else if (swipe > swipeConfidenceThreshold) {
-                paginate(-1);
-              }
-            }}
-            className="absolute inset-0 w-full h-full cursor-grab active:cursor-grabbing"
-          >
-            {/* Background Image */}
-            <div className="absolute inset-0 w-full h-full">
-              <Image
-                src={currentCard.imageUrl}
-                alt={currentCard.title}
-                fill
-                className="object-cover"
-                priority={currentIndex === 0}
-                sizes="(max-width: 640px) 100vw, (max-width: 1024px) 90vw, 1400px"
-                quality={90}
-              />
-            </div>
-
-            {/* Gradient Overlays */}
-            <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/50 to-transparent" />
-            <div className="absolute inset-0 bg-gradient-to-r from-black/30 via-transparent to-transparent" />
-
-            {/* Content Container */}
-            <div className="absolute inset-0 flex flex-col justify-end p-6 sm:p-8 lg:p-12">
-              <div className="max-w-3xl">
-                {/* Category Label */}
-                <motion.p
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ delay: 0.1 }}
-                  className="text-[10px] sm:text-xs font-bold tracking-widest uppercase mb-2 sm:mb-3
-                           text-white/90"
-                >
-                  {currentCard.category}
-                </motion.p>
-
-                {/* Title */}
-                <motion.h2
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ delay: 0.2 }}
-                  className="text-2xl sm:text-4xl lg:text-5xl xl:text-6xl 
-                           font-bold leading-tight mb-2 sm:mb-4
-                           text-white drop-shadow-lg"
-                >
-                  {currentCard.title}
-                </motion.h2>
-
-                {/* Subtitle */}
-                <motion.p
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ delay: 0.3 }}
-                  className="text-sm sm:text-lg lg:text-xl 
-                           leading-relaxed mb-4 sm:mb-6
-                           text-white/90 max-w-2xl"
-                >
-                  {currentCard.subtitle}
-                </motion.p>
-
-                {/* CTA Button */}
-                <motion.a
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ delay: 0.4 }}
-                  href={currentCard.ctaLink}
-                  className="inline-flex items-center justify-center
-                           px-6 sm:px-8 py-2.5 sm:py-3
-                           bg-white/20 hover:bg-white/30
-                           backdrop-blur-md
-                           border border-white/30 hover:border-white/50
-                           rounded-full
-                           text-white font-semibold
-                           text-sm sm:text-base
-                           transition-all duration-200
-                           hover:-translate-y-0.5 hover:shadow-xl
-                           active:scale-95"
-                >
-                  {currentCard.ctaText}
-                </motion.a>
+                if (swipe < -swipeConfidenceThreshold) {
+                  paginate(1);
+                } else if (swipe > swipeConfidenceThreshold) {
+                  paginate(-1);
+                }
+              }}
+              className="absolute inset-0 w-full h-full cursor-grab active:cursor-grabbing"
+            >
+              {/* Background Image - CONSTRAINED */}
+              <div className="absolute inset-0 w-full h-full overflow-hidden">
+                <Image
+                  src={currentCard.imageUrl}
+                  alt={currentCard.title}
+                  fill
+                  priority={currentIndex === 0}
+                  sizes="(max-width: 640px) 100vw, 1200px"
+                  quality={85}
+                  style={{
+                    objectFit: 'cover',
+                    objectPosition: 'center',
+                  }}
+                />
               </div>
-            </div>
-          </motion.div>
-        </AnimatePresence>
+
+              {/* Gradient Overlays */}
+              <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/50 to-transparent pointer-events-none" />
+              <div className="absolute inset-0 bg-gradient-to-r from-black/30 via-transparent to-transparent pointer-events-none" />
+
+              {/* Content Container */}
+              <div className="absolute inset-0 flex flex-col justify-end p-6 sm:p-8 lg:p-10 pointer-events-none">
+                <div className="max-w-2xl pointer-events-auto">
+                  {/* Category Label */}
+                  <motion.p
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ delay: 0.1 }}
+                    className="text-[10px] sm:text-xs font-bold tracking-widest uppercase mb-1.5 sm:mb-2
+                             text-white/90"
+                  >
+                    {currentCard.category}
+                  </motion.p>
+
+                  {/* Title */}
+                  <motion.h2
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ delay: 0.2 }}
+                    className="text-2xl sm:text-3xl lg:text-4xl 
+                             font-bold leading-tight mb-2 sm:mb-3
+                             text-white drop-shadow-lg"
+                  >
+                    {currentCard.title}
+                  </motion.h2>
+
+                  {/* Subtitle */}
+                  <motion.p
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ delay: 0.3 }}
+                    className="text-sm sm:text-base lg:text-lg 
+                             leading-relaxed mb-4 sm:mb-5
+                             text-white/90 max-w-xl line-clamp-2"
+                  >
+                    {currentCard.subtitle}
+                  </motion.p>
+
+                  {/* CTA Button */}
+                  <motion.a
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ delay: 0.4 }}
+                    href={currentCard.ctaLink}
+                    className="inline-flex items-center justify-center
+                             px-5 sm:px-7 py-2 sm:py-2.5
+                             bg-white/20 hover:bg-white/30
+                             backdrop-blur-md
+                             border border-white/30 hover:border-white/50
+                             rounded-full
+                             text-white font-semibold
+                             text-sm sm:text-base
+                             transition-all duration-200
+                             hover:-translate-y-0.5 hover:shadow-xl
+                             active:scale-95"
+                  >
+                    {currentCard.ctaText}
+                  </motion.a>
+                </div>
+              </div>
+            </motion.div>
+          </AnimatePresence>
+        </div>
       </div>
 
       {/* Pagination Dots */}
