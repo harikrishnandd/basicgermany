@@ -4,6 +4,17 @@
 .hero-section .scroll-nav-arrow {
     color: rgba(255, 255, 255, 0.9);
     display: flex !important; /* Override mobile hide rule */
+    z-index: 100;
+    width: 40px;
+    height: 40px;
+    background: rgba(0, 0, 0, 0.3); /* Debug: visible background */
+    border-radius: 50%;
+}
+
+.hero-section .scroll-nav-arrow svg {
+    width: 24px;
+    height: 24px;
+    fill: currentColor;
 }
 
 .hero-section .scroll-nav-arrow--left {
