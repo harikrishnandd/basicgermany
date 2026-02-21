@@ -55,7 +55,20 @@ export default function ProductCarousel({ cards }: ProductCarouselProps) {
 
   return (
     <section className="hero-section">
-      <div style={{ position: 'relative' }}>
+      <div className="scroll-nav-container">
+        {cards.length > 1 && (
+          <button
+            onClick={handlePrev}
+            className="scroll-nav-arrow scroll-nav-arrow--left visible"
+            aria-label="Previous"
+            type="button"
+          >
+            <svg viewBox="0 0 9 31" xmlns="http://www.w3.org/2000/svg">
+              <path d="M5.275 29.46a1.61 1.61 0 0 0 1.456 1.077c1.018 0 1.772-.737 1.772-1.737 0-.526-.277-1.186-.449-1.62l-4.68-11.912L8.05 3.363c.172-.442.45-1.116.45-1.625A1.702 1.702 0 0 0 6.728.002a1.603 1.603 0 0 0-1.456 1.09L.675 12.774c-.301.775-.677 1.744-.677 2.495 0 .754.376 1.705.677 2.498L5.272 29.46Z" />
+            </svg>
+          </button>
+        )}
+        
         <div 
           className="hero-card"
           style={{ background: getGradient(currentCard.theme), position: 'relative' }}
@@ -90,6 +103,19 @@ export default function ProductCarousel({ cards }: ProductCarouselProps) {
             </div>
           )}
         </div>
+        
+        {cards.length > 1 && (
+          <button
+            onClick={handleNext}
+            className="scroll-nav-arrow scroll-nav-arrow--right visible"
+            aria-label="Next"
+            type="button"
+          >
+            <svg viewBox="0 0 9 31" xmlns="http://www.w3.org/2000/svg">
+              <path d="M5.275 29.46a1.61 1.61 0 0 0 1.456 1.077c1.018 0 1.772-.737 1.772-1.737 0-.526-.277-1.186-.449-1.62l-4.68-11.912L8.05 3.363c.172-.442.45-1.116.45-1.625A1.702 1.702 0 0 0 6.728.002a1.603 1.603 0 0 0-1.456 1.09L.675 12.774c-.301.775-.677 1.744-.677 2.495 0 .754.376 1.705.677 2.498L5.272 29.46Z" />
+            </svg>
+          </button>
+        )}
       </div>
     </section>
   );
