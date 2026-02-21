@@ -62,9 +62,9 @@ export default function ProductCarousel({ cards }: ProductCarouselProps) {
         >
 
         <div className="hero-content">
-          <p className="text-xs sm:text-sm font-bold uppercase tracking-wider text-white/90 mb-2">
+          <span className="category-label">
             {currentCard.category}
-          </p>
+          </span>
           <h1 className="hero-title">{currentCard.title}</h1>
           <p className="hero-subtitle">{currentCard.subtitle}</p>
           <a

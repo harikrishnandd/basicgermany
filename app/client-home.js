@@ -224,8 +224,8 @@ export default function ClientHome() {
         {activeCategory === 'all' && !searchQuery && mustHaveApps.length > 0 && (
           <section className="apps-section">
             <div className="section-header">
-              <h2 className="section-title">Must try in Germany</h2>
-              <p className="section-subtitle">Essential apps you shouldn't miss</p>
+              <h2 className="section-title">A must try in Germany</h2>
+              <p className="section-subtitle">We think these apps and services will help you big time in Germany</p>
             </div>
             <ScrollNav className="apps-grid apps-grid-home">
               {mustHaveApps.map(app => (
@@ -240,7 +240,7 @@ export default function ClientHome() {
           <section className="apps-section">
             <div className="section-header">
               <h2 className="section-title">Setting up Life</h2>
-              <p className="section-subtitle">Apps to help you settle into your new life in Germany</p>
+              <p className="section-subtitle">Apps to help you settle into your new life fast in Germany</p>
             </div>
             <ScrollNav className="apps-grid apps-grid-home">
               {settleApps.map(app => (
@@ -256,12 +256,12 @@ export default function ClientHome() {
             {activeCategory === 'all' && !searchQuery ? (
               <>
                 <h2 className="section-title">Discover Apps</h2>
-                <p className="section-subtitle">Find the best apps to start your life in Germany with clarity — without the noise.</p>
+                <p className="section-subtitle">Find the best apps and services to start your life in Germany with clarity.</p>
               </>
             ) : searchQuery ? (
               <>
                 <h2 className="section-title">Search Results</h2>
-                <p className="section-subtitle">Apps matching "{searchQuery}"</p>
+                <p className="section-subtitle">Results matching "{searchQuery}"</p>
               </>
             ) : (
               <>

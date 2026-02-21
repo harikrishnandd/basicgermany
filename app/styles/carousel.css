@@ -1,5 +1,29 @@
 /* Product Carousel Styles */
 
+/* Category Label */
+.category-label {
+    display: inline-block;
+    padding: 6px 12px;
+    background: rgba(255, 255, 255, 0.2);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border-radius: 8px;
+    font-size: 12px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: rgba(255, 255, 255, 0.95);
+    margin-bottom: 12px;
+    border: 1px solid rgba(255, 255, 255, 0.3);
+}
+
+@media (min-width: 640px) {
+    .category-label {
+        font-size: 14px;
+        padding: 8px 16px;
+    }
+}
+
 .carousel-arrow {
     position: absolute;
     top: 50%;
