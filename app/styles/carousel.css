@@ -3,6 +3,7 @@
 /* Carousel Arrow Positioning - Keep them visible */
 .hero-section .scroll-nav-arrow {
     color: rgba(255, 255, 255, 0.9);
+    display: flex !important; /* Override mobile hide rule */
 }
 
 .hero-section .scroll-nav-arrow--left {
