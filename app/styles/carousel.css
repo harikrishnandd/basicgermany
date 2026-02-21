@@ -1,5 +1,25 @@
 /* Product Carousel Styles */
 
+/* Carousel Arrow Positioning - Keep them visible */
+.hero-section .scroll-nav-arrow--left {
+    left: 16px;
+}
+
+.hero-section .scroll-nav-arrow--right {
+    right: 16px;
+}
+
+/* Desktop - move arrows outside */
+@media (min-width: 1024px) {
+    .hero-section .scroll-nav-arrow--left {
+        left: -48px;
+    }
+    
+    .hero-section .scroll-nav-arrow--right {
+        right: -48px;
+    }
+}
+
 /* Category Label */
 .category-label {
     display: inline-block;
