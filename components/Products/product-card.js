@@ -85,7 +85,7 @@ export default function ProductCard({ product }) {
         </div>
         <p className="app-description">{product.description}</p>
         <button 
-          onClick={(e) => { e.stopPropagation(); openModal(); }}
+          onClick={(e) => { e.stopPropagation(); handleDownload(); }}
           className="app-button"
         >
           Get
