@@ -51,12 +51,6 @@ export default function ClientProductsPage({ categories, banners, templateCatego
                 {/* Section Header */}
                 <div className="section-header">
                   <div style={{ display: 'flex', alignItems: 'center', gap: 'var(--space-12)' }}>
-                    <span className="material-symbols-outlined" style={{ 
-                      fontSize: '32px', 
-                      color: 'var(--keyColor)' 
-                    }}>
-                      {category.icon}
-                    </span>
                     <div>
                       <h2 style={{ 
                         fontSize: 'var(--fs-largeTitle)', 

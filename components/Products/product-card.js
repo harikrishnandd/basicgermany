@@ -48,19 +48,31 @@ export default function ProductCard({ product }) {
         <div className="app-header-row">
           <h3 className="app-name">{product.name}</h3>
         </div>
-        <p className="app-subtitle" style={{
-          display: 'inline-block',
+        {/* Pricing Pill */}
+        <div style={{
+          display: 'inline-flex',
+          alignItems: 'center',
+          gap: '4px',
           width: 'fit-content',
           padding: '4px 12px',
-          background: 'var(--systemQuinary)',
+          background: product.free ? 'rgba(34, 197, 94, 0.1)' : 'var(--systemQuinary)',
           borderRadius: '12px',
           fontSize: 'var(--fs-caption1)',
           fontWeight: 'var(--fw-medium)',
-          color: 'var(--systemSecondary)',
+          color: product.free ? 'rgb(22, 163, 74)' : 'var(--systemSecondary)',
           marginBottom: 'var(--space-8)'
         }}>
-          {product.category || 'Template'}
-        </p>
+          {product.free ? (
+            <span>Free</span>
+          ) : (
+            <>
+              <span className="material-symbols-outlined" style={{ fontSize: '14px' }}>
+                {product.currency || 'payments'}
+              </span>
+              <span>{product.price || '0'}</span>
+            </>
+          )}
+        </div>
         <p className="app-description">{product.description}</p>
         <button 
           onClick={(e) => { e.stopPropagation(); handleDownload(); }}
