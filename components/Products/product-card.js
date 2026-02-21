@@ -150,7 +150,13 @@ export default function ProductCard({ product }) {
             onMouseOver={(e) => e.target.style.background = 'rgba(255, 255, 255, 0.25)'}
             onMouseOut={(e) => e.target.style.background = 'rgba(255, 255, 255, 0.15)'}
           >
-            <span className="material-symbols-outlined" style={{ fontSize: '20px', color: 'white' }}>
+            <span className="material-symbols-outlined" style={{ 
+              fontSize: '20px', 
+              color: 'white',
+              background: 'none',
+              display: 'block',
+              lineHeight: 1
+            }}>
               close
             </span>
           </button>
