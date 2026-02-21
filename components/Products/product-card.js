@@ -50,6 +50,7 @@ export default function ProductCard({ product }) {
         </div>
         <p className="app-subtitle" style={{
           display: 'inline-block',
+          width: 'fit-content',
           padding: '4px 12px',
           background: 'var(--systemQuinary)',
           borderRadius: '12px',
