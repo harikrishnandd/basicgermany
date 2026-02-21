@@ -137,7 +137,7 @@ export default function ProductCard({ product }) {
               width: '32px',
               height: '32px',
               borderRadius: '50%',
-              background: 'var(--systemQuaternary)',
+              background: 'transparent',
               border: 'none',
               display: 'flex',
               alignItems: 'center',
@@ -146,10 +146,10 @@ export default function ProductCard({ product }) {
               zIndex: 10,
               transition: 'background var(--transition-fast)'
             }}
-            onMouseOver={(e) => e.target.style.background = 'var(--systemTertiary)'}
-            onMouseOut={(e) => e.target.style.background = 'var(--systemQuaternary)'}
+            onMouseOver={(e) => e.target.style.background = 'var(--systemQuaternary)'}
+            onMouseOut={(e) => e.target.style.background = 'transparent'}
           >
-            <span className="material-symbols-outlined" style={{ fontSize: '20px', color: 'var(--systemPrimary)' }}>
+            <span className="material-symbols-outlined" style={{ fontSize: '20px', color: 'white' }}>
               close
             </span>
           </button>
