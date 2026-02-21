@@ -137,17 +137,18 @@ export default function ProductCard({ product }) {
               width: '32px',
               height: '32px',
               borderRadius: '50%',
-              background: 'transparent',
+              background: 'rgba(255, 255, 255, 0.15)',
               border: 'none',
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'center',
               cursor: 'pointer',
               zIndex: 10,
-              transition: 'background var(--transition-fast)'
+              transition: 'background var(--transition-fast)',
+              padding: 0
             }}
-            onMouseOver={(e) => e.target.style.background = 'var(--systemQuaternary)'}
-            onMouseOut={(e) => e.target.style.background = 'transparent'}
+            onMouseOver={(e) => e.target.style.background = 'rgba(255, 255, 255, 0.25)'}
+            onMouseOut={(e) => e.target.style.background = 'rgba(255, 255, 255, 0.15)'}
           >
             <span className="material-symbols-outlined" style={{ fontSize: '20px', color: 'white' }}>
               close
