@@ -1,6 +1,10 @@
 /* Product Carousel Styles */
 
 /* Carousel Arrow Positioning - Keep them visible */
+.hero-section .scroll-nav-arrow {
+    color: rgba(255, 255, 255, 0.9);
+}
+
 .hero-section .scroll-nav-arrow--left {
     left: 16px;
 }
