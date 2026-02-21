@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from 'react';
 
-export default function Sidebar({ categories, activeCategory, onCategoryChange, onSearch, currentPage = 'home' }) {
+export default function Sidebar({ categories, activeCategory, onCategoryChange, onSearch, currentPage = 'home', templateCategories = [] }) {
   const [isOpen, setIsOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
   const [theme, setTheme] = useState('light');
@@ -193,6 +193,30 @@ export default function Sidebar({ categories, activeCategory, onCategoryChange, 
               ))}
             </ul>
           </div>
+
+          {/* Template Categories - Only show if sidebar: true */}
+          {currentPage === 'products' && templateCategories && templateCategories.length > 0 && (
+            <div className="navigation-section">
+              <ul className="navigation-list categories-list">
+                {templateCategories
+                  .filter(category => category.sidebar !== false)
+                  .map((category) => (
+                    <li key={category.id} className="navigation-item">
+                      <a 
+                        href={`#${category.id}`}
+                        className="navigation-link"
+                        onClick={() => setIsOpen(false)}
+                      >
+                        <span className="navigation-icon">
+                          <span className="material-symbols-outlined">{category.icon || 'inventory_2'}</span>
+                        </span>
+                        <span className="navigation-text">{category.name}</span>
+                      </a>
+                    </li>
+                  ))}
+              </ul>
+            </div>
+          )}
         </nav>
 
         {/* Theme Toggle */}

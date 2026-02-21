@@ -2,11 +2,12 @@
 
 import Sidebar from '@/components/sidebar';
 import ProductCarousel from '@/components/ProductCarousel';
+import ProductCard from '@/components/Products/product-card';
 
 /**
  * Client Component - Receives server-fetched data as props
  */
-export default function ClientProductsPage({ categories, banners }) {
+export default function ClientProductsPage({ categories, banners, templateCategories }) {
   return (
     <div className="app-container">
       <Sidebar 
@@ -15,6 +16,7 @@ export default function ClientProductsPage({ categories, banners }) {
         onCategoryChange={() => {}} 
         onSearch={() => {}} 
         currentPage="products"
+        templateCategories={templateCategories}
       />
       <main className="main-content">
         <div className="products-page">
@@ -42,33 +44,72 @@ export default function ClientProductsPage({ categories, banners }) {
             )}
           </section>
           
-          {/* Products Content Section */}
-          <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 sm:py-16 lg:py-20">
-            <div className="space-y-4">
-              <h2 className="text-3xl sm:text-4xl font-bold text-gray-900 dark:text-white">
-                Our Products
-              </h2>
-              <p className="text-lg text-gray-600 dark:text-gray-400 max-w-3xl leading-relaxed">
-                Discover our curated selection of products designed to make your life in Germany easier.
-                From essential apps to comprehensive guides, we've got everything you need to settle in smoothly.
-              </p>
-            </div>
-
-            {/* Product Grid - Placeholder for future content */}
-            <div className="mt-12 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-              {/* These will be populated with actual products later */}
-              {[1, 2, 3].map((item) => (
-                <div
-                  key={item}
-                  className="bg-white dark:bg-gray-800 rounded-2xl p-6 shadow-sm hover:shadow-md transition-shadow duration-200 border border-gray-100 dark:border-gray-700"
-                >
-                  <div className="aspect-video bg-gray-100 dark:bg-gray-700 rounded-xl mb-4 animate-pulse" />
-                  <div className="h-6 bg-gray-100 dark:bg-gray-700 rounded mb-3 animate-pulse" />
-                  <div className="h-4 bg-gray-100 dark:bg-gray-700 rounded w-2/3 animate-pulse" />
+          {/* Template Categories Sections */}
+          {templateCategories && templateCategories.length > 0 ? (
+            templateCategories.map((category) => (
+              <section key={category.id} className="apps-section" id={category.id}>
+                {/* Section Header */}
+                <div className="section-header">
+                  <div style={{ display: 'flex', alignItems: 'center', gap: 'var(--space-12)' }}>
+                    <span className="material-symbols-outlined" style={{ 
+                      fontSize: '32px', 
+                      color: 'var(--keyColor)' 
+                    }}>
+                      {category.icon}
+                    </span>
+                    <div>
+                      <h2 style={{ 
+                        fontSize: 'var(--fs-largeTitle)', 
+                        fontWeight: 'var(--fw-bold)',
+                        color: 'var(--systemPrimary)',
+                        marginBottom: 'var(--space-4)'
+                      }}>
+                        {category.name}
+                      </h2>
+                      {category.description && (
+                        <p style={{ 
+                          fontSize: 'var(--fs-body)', 
+                          color: 'var(--systemSecondary)' 
+                        }}>
+                          {category.description}
+                        </p>
+                      )}
+                    </div>
+                  </div>
                 </div>
-              ))}
-            </div>
-          </section>
+
+                {/* Product Grid */}
+                {category.template && category.template.length > 0 ? (
+                  <div className="apps-grid">
+                    {category.template.map((product, index) => (
+                      <ProductCard key={`${category.id}-${index}`} product={product} />
+                    ))}
+                  </div>
+                ) : (
+                  <div style={{
+                    padding: 'var(--space-32)',
+                    textAlign: 'center',
+                    color: 'var(--systemTertiary)'
+                  }}>
+                    <p>No templates available in this category yet.</p>
+                  </div>
+                )}
+              </section>
+            ))
+          ) : (
+            <section className="apps-section">
+              <div style={{
+                padding: 'var(--space-48)',
+                textAlign: 'center',
+                color: 'var(--systemTertiary)'
+              }}>
+                <span className="material-symbols-outlined" style={{ fontSize: '64px', marginBottom: 'var(--space-16)' }}>
+                  inventory_2
+                </span>
+                <p style={{ fontSize: 'var(--fs-title3)' }}>No product templates available yet.</p>
+              </div>
+            </section>
+          )}
         </div>
       </main>
     </div>

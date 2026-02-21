@@ -1,6 +1,7 @@
 import ClientProductsPage from './client-page';
 import { getBanners } from '@/lib/services/bannerService';
 import { getCategories } from '@/lib/firestore';
+import { getTemplateCategories } from '@/lib/services/templateService';
 
 /**
  * Server Component - Fetches data on server for better SEO and performance
@@ -11,10 +12,15 @@ export const dynamic = 'force-dynamic'; // Always fetch fresh data
 
 export default async function ProductsPage() {
   // Fetch data on server side
-  const [categories, banners] = await Promise.all([
+  const [categories, banners, templateCategories] = await Promise.all([
     getCategories(),
-    getBanners()
+    getBanners(),
+    getTemplateCategories()
   ]);
 
-  return <ClientProductsPage categories={categories} banners={banners} />;
+  return <ClientProductsPage 
+    categories={categories} 
+    banners={banners} 
+    templateCategories={templateCategories}
+  />;
 }
