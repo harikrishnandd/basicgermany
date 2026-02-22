@@ -22,6 +22,9 @@ export async function generateStaticParams() {
 export default async function ProductSectionPage({ params }) {
   const { sectionId } = params;
   
+  // Debug: Log what's being requested
+  console.log('Dynamic route requested sectionId:', sectionId);
+  
   // Fetch section data and categories
   const [section, categories, allSections] = await Promise.all([
     getProductSection(sectionId),
@@ -29,8 +32,13 @@ export default async function ProductSectionPage({ params }) {
     getAllProductSections()
   ]);
 
+  // Debug: Log available sections
+  console.log('Available sections:', allSections.map(s => s.id));
+  console.log('Found section:', section ? section.id : 'null');
+
   // If section doesn't exist, show 404
   if (!section) {
+    console.log('Section not found, showing 404 for:', sectionId);
     notFound();
   }
 
