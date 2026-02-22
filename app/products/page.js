@@ -7,7 +7,7 @@ import { getAllProductSections } from '@/lib/services/productsService';
  * Server Component - Fetches data on server for better SEO and performance
  * Revalidates every 60 seconds to show fresh banner data
  */
-export const revalidate = 60; // Revalidate every 60 seconds
+export const revalidate = 5; // Revalidate every 5 seconds for testing
 export const dynamic = 'force-dynamic'; // Always fetch fresh data
 
 export default async function ProductsPage() {

@@ -66,14 +66,8 @@ export async function getAllProductSections(): Promise<ProductSection[]> {
       });
     });
     
-    // Debug: Log priority values before sorting
-    console.log('Sections before sorting:', sections.map(s => ({ id: s.id, name: s.name, priority: s.priority })));
-    
     // Sort sections by priority (ascending order)
     sections.sort((a, b) => a.priority - b.priority);
-    
-    // Debug: Log priority values after sorting
-    console.log('Sections after sorting:', sections.map(s => ({ id: s.id, name: s.name, priority: s.priority })));
     
     return sections;
   } catch (error) {
