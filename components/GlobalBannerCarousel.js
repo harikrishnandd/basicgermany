@@ -1,9 +1,9 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, memo } from 'react';
 import { getBannersByPlacement } from '../lib/services/bannerService';
 
-export default function GlobalBannerCarousel({ placement }) {
+function GlobalBannerCarousel({ placement }) {
   const [banners, setBanners] = useState([]);
   const [currentSlide, setCurrentSlide] = useState(0);
   const [loading, setLoading] = useState(true);
@@ -223,3 +223,5 @@ export default function GlobalBannerCarousel({ placement }) {
     </div>
   );
 }
+
+export default memo(GlobalBannerCarousel);
