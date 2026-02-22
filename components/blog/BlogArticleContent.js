@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useState, useRef } from 'react';
+import { useEffect, useState, useRef, useCallback } from 'react';
 import { marked } from 'marked';
 import { parseShortcodes, fetchProductData, createProductCardHTML, createAdCardHTML } from '../../lib/shortcode-parser';
 
@@ -15,13 +15,21 @@ if (typeof window !== 'undefined') {
 export default function BlogArticleContent({ content, onTocExtracted }) {
   const [html, setHtml] = useState('');
   const [loading, setLoading] = useState(false);
+  const [processed, setProcessed] = useState(false);
   const contentRef = useRef(null);
+  const onTocExtractedRef = useRef(onTocExtracted);
+
+  // Update ref when callback changes
+  useEffect(() => {
+    onTocExtractedRef.current = onTocExtracted;
+  }, [onTocExtracted]);
 
   useEffect(() => {
-    if (content) {
+    if (content && !processed) {
       processContent(content);
+      setProcessed(true);
     }
-  }, [content, onTocExtracted]);
+  }, [content, processed]);
 
   const processContent = async (content) => {
     setLoading(true);
@@ -55,9 +63,9 @@ export default function BlogArticleContent({ content, onTocExtracted }) {
     
     setHtml(htmlContent);
     
-    // Pass TOC items to parent
-    if (onTocExtracted) {
-      onTocExtracted(tocItems);
+    // Pass TOC items to parent using ref
+    if (onTocExtractedRef.current) {
+      onTocExtractedRef.current(tocItems);
     }
     
     // Process shortcodes after DOM is ready
@@ -72,6 +80,11 @@ export default function BlogArticleContent({ content, onTocExtracted }) {
     // Find all shortcode elements
     const productElements = contentRef.current.querySelectorAll('.shortcode-product');
     const adElements = contentRef.current.querySelectorAll('.shortcode-ad');
+
+    console.log('Found shortcodes:', {
+      products: productElements.length,
+      ads: adElements.length
+    });
 
     // Process PRODUCT shortcodes
     if (productElements.length > 0) {
@@ -102,7 +115,7 @@ export default function BlogArticleContent({ content, onTocExtracted }) {
     }
 
     // Process AD shortcodes
-    adElements.forEach(element => {
+    adElements.forEach((element, index) => {
       const params = {
         name: element.dataset.name,
         price: element.dataset.price,
@@ -111,7 +124,26 @@ export default function BlogArticleContent({ content, onTocExtracted }) {
         bg: element.dataset.bg
       };
       
-      element.innerHTML = createAdCardHTML(params);
+      console.log(`Processing AD ${index}:`, params);
+      
+      if (params.name) {
+        element.innerHTML = createAdCardHTML(params);
+      } else {
+        // Fallback for missing required params
+        element.innerHTML = `<div style="
+          padding: 16px; 
+          background: ${params.bg || 'var(--systemQuinary)'}; 
+          border-radius: 12px; 
+          text-align: center; 
+          color: var(--systemSecondary);
+          border: var(--keylineBorder);
+        ">
+          <span className="material-symbols-outlined" style="font-size: 48px; display: block; margin-bottom: 8px;">
+            error
+          </span>
+          <p style="margin: 0; font-size: 14px;">AD card missing required parameters</p>
+        </div>`;
+      }
     });
 
     setLoading(false);

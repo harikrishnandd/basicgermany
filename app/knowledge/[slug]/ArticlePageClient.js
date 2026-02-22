@@ -2,13 +2,13 @@
 
 import { useState, useEffect, useRef } from 'react';
 import Link from 'next/link';
-import { marked } from 'marked';
 import AuthorBio from '@/components/AuthorBio';
 import OfficialResources from '@/components/OfficialResources';
 import SocialShare from '@/components/SocialShare';
 import Sidebar from '@/components/sidebar';
 import Breadcrumbs from '@/components/Breadcrumbs';
 import FAQSection from '@/components/Article/FAQSection';
+import BlogArticleContent from '@/components/blog/BlogArticleContent';
 import { getCategories } from '@/lib/firestore';
 import '../../../app/styles/blog-article.css';
 
@@ -51,7 +51,6 @@ export default function ArticlePageClient({ article: initialArticle, content: in
   const [content, setContent] = useState(initialContent);
   const [relatedArticles, setRelatedArticles] = useState(initialRelatedArticles || []);
   const [loading, setLoading] = useState(false);
-  const [htmlContent, setHtmlContent] = useState('');
   const [appCategories, setAppCategories] = useState([]);
   const [tocItems, setTocItems] = useState([]);
   const [activeId, setActiveId] = useState('');
@@ -76,75 +75,10 @@ export default function ArticlePageClient({ article: initialArticle, content: in
     fetchCategories();
   }, []);
   
-  // Configure marked for better HTML output
-  useEffect(() => {
-    marked.setOptions({
-      breaks: true,
-      gfm: true,
-      headerIds: true
-    });
-  }, []);
-
-  useEffect(() => {
-    // Article and content are already provided as props from server component
-    // Convert markdown to HTML and extract TOC
-    if (content) {
-      let html = marked(content);
-      const updatedHtml = extractTableOfContents(html);
-      if (updatedHtml) {
-        html = updatedHtml;
-      }
-      setHtmlContent(html);
-    }
-    
-    // Set page title and meta tags
-    if (publicData && typeof document !== 'undefined') {
-      document.title = `${publicData.title} | BasicGermany Blog`;
-      
-      // Update meta description (from SEO data, not visible)
-      const metaDescription = document.querySelector('meta[name="description"]');
-      if (metaDescription && seoData?.metaDescription) {
-        metaDescription.setAttribute('content', seoData.metaDescription);
-      }
-    }
-  }, [publicData, content, seoData]);
-  
-  // Update IDs in the actual DOM after content is rendered
-  useEffect(() => {
-    if (contentRef.current && tocItems.length > 0) {
-      const headings = contentRef.current.querySelectorAll('h2, h3');
-      headings.forEach((heading) => {
-        const id = slugify(heading.textContent);
-        heading.id = id;
-      });
-    }
-  }, [htmlContent, tocItems]);
-  
-  // Track active heading with Intersection Observer
-  useEffect(() => {
-    if (!contentRef.current || tocItems.length === 0) return;
-    
-    const observer = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          if (entry.isIntersecting) {
-            setActiveId(entry.target.id);
-          }
-        });
-      },
-      {
-        rootMargin: '-100px 0px -66% 0px', // Trigger when heading is near top
-        threshold: 0
-      }
-    );
-    
-    const headings = contentRef.current.querySelectorAll('h2[id], h3[id]');
-    headings.forEach((heading) => observer.observe(heading));
-    
-    return () => {
-      headings.forEach((heading) => observer.unobserve(heading));
-    };
-  }, [htmlContent, tocItems]);
+  // Handle TOC extraction from BlogArticleContent
+  const handleTocExtracted = (tocItems) => {
+    setTocItems(tocItems);
+  };
   
   // Handle smooth scrolling for TOC links
   const handleTocClick = (e, id) => {
@@ -380,7 +314,7 @@ export default function ArticlePageClient({ article: initialArticle, content: in
 
         {/* Article Content */}
         <article className="article-content-clean" ref={contentRef}>
-          <div dangerouslySetInnerHTML={{ __html: htmlContent }} />
+          <BlogArticleContent content={content} onTocExtracted={handleTocExtracted} />
         </article>
 
         {/* Official Resources */}
