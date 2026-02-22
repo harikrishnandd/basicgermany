@@ -574,12 +574,12 @@ const DynamicSearch = () => {
       position: 'sticky',
       top: '0',
       zIndex: 10,
-      background: 'var(--navSidebarBG)',
       padding: '16px 0',
       marginBottom: '32px'
     }}>
       <div className="search-wrapper" style={{
-        maxWidth: '600px',
+        width: '65%',
+        maxWidth: '800px',
         margin: '0 auto',
         position: 'relative'
       }}>
@@ -592,7 +592,8 @@ const DynamicSearch = () => {
             position: 'absolute',
             left: '16px',
             color: 'var(--systemSecondary)',
-            fontSize: '20px'
+            fontSize: '20px',
+            pointerEvents: 'none'
           }}>
             search
           </span>
@@ -606,7 +607,7 @@ const DynamicSearch = () => {
               padding: '16px 16px 16px 48px',
               borderRadius: '24px',
               border: '1px solid var(--borderColor)',
-              background: 'var(--cardBg)',
+              background: 'var(--systemSecondary)',
               fontSize: '16px',
               color: 'var(--systemPrimary)',
               outline: 'none',
