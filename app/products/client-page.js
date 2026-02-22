@@ -3,11 +3,12 @@
 import Sidebar from '@/components/sidebar';
 import ProductCarousel from '@/components/ProductCarousel';
 import ProductCard from '@/components/Products/product-card';
+import Link from 'next/link';
 
 /**
  * Client Component - Receives server-fetched data as props
  */
-export default function ClientProductsPage({ categories, banners, templateCategories }) {
+export default function ClientProductsPage({ categories, banners, productSections }) {
   return (
     <div className="app-container">
       <Sidebar 
@@ -16,7 +17,7 @@ export default function ClientProductsPage({ categories, banners, templateCatego
         onCategoryChange={() => {}} 
         onSearch={() => {}} 
         currentPage="products"
-        templateCategories={templateCategories}
+        productSections={productSections}
       />
       <main className="main-content">
         <div className="products-page">
@@ -44,39 +45,70 @@ export default function ClientProductsPage({ categories, banners, templateCatego
             )}
           </section>
           
-          {/* Template Categories Sections */}
-          {templateCategories && templateCategories.length > 0 ? (
-            templateCategories.map((category) => (
-              <section key={category.id} className="apps-section" id={category.id}>
-                {/* Section Header */}
+          {/* Product Sections */}
+          {productSections && productSections.length > 0 ? (
+            productSections.map((section) => (
+              <section key={section.id} className="apps-section" id={section.id}>
+                {/* Section Header with See All Link */}
                 <div className="section-header">
-                  <div style={{ display: 'flex', alignItems: 'center', gap: 'var(--space-12)' }}>
-                    <div>
-                      <h2 style={{ 
-                        fontSize: 'var(--fs-largeTitle)', 
-                        fontWeight: 'var(--fw-bold)',
-                        color: 'var(--systemPrimary)',
-                        marginBottom: 'var(--space-4)'
+                  <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', width: '100%' }}>
+                    <div style={{ display: 'flex', alignItems: 'center', gap: 'var(--space-12)' }}>
+                      <span className="material-symbols-outlined" style={{ 
+                        fontSize: '32px', 
+                        color: 'var(--keyColor)' 
                       }}>
-                        {category.name}
-                      </h2>
-                      {category.description && (
-                        <p style={{ 
-                          fontSize: 'var(--fs-body)', 
-                          color: 'var(--systemSecondary)' 
+                        {section.icon}
+                      </span>
+                      <div>
+                        <h2 style={{ 
+                          fontSize: 'var(--fs-largeTitle)', 
+                          fontWeight: 'var(--fw-bold)',
+                          color: 'var(--systemPrimary)',
+                          marginBottom: 'var(--space-4)'
                         }}>
-                          {category.description}
-                        </p>
-                      )}
+                          {section.name}
+                        </h2>
+                        {section.description && (
+                          <p style={{ 
+                            fontSize: 'var(--fs-body)', 
+                            color: 'var(--systemSecondary)' 
+                          }}>
+                            {section.description}
+                          </p>
+                        )}
+                      </div>
                     </div>
+                    {section.items && section.items.length > 0 && (
+                      <Link 
+                        href={`/products/${section.id}`}
+                        style={{
+                          fontSize: 'var(--fs-body)',
+                          color: 'var(--keyColor)',
+                          textDecoration: 'none',
+                          fontWeight: 'var(--fw-medium)',
+                          display: 'flex',
+                          alignItems: 'center',
+                          gap: 'var(--space-4)',
+                          transition: 'opacity var(--transition-fast)',
+                          cursor: 'pointer'
+                        }}
+                        onMouseOver={(e) => e.target.style.opacity = '0.7'}
+                        onMouseOut={(e) => e.target.style.opacity = '1'}
+                      >
+                        See All
+                        <span className="material-symbols-outlined" style={{ fontSize: '18px' }}>
+                          arrow_forward
+                        </span>
+                      </Link>
+                    )}
                   </div>
                 </div>
 
-                {/* Product Grid */}
-                {category.template && category.template.length > 0 ? (
+                {/* Product Grid - Show first 6 items on main page */}
+                {section.items && section.items.length > 0 ? (
                   <div className="apps-grid">
-                    {category.template.map((product, index) => (
-                      <ProductCard key={`${category.id}-${index}`} product={product} />
+                    {section.items.slice(0, 6).map((product, index) => (
+                      <ProductCard key={`${section.id}-${index}`} product={product} />
                     ))}
                   </div>
                 ) : (
@@ -85,7 +117,7 @@ export default function ClientProductsPage({ categories, banners, templateCatego
                     textAlign: 'center',
                     color: 'var(--systemTertiary)'
                   }}>
-                    <p>No templates available in this category yet.</p>
+                    <p>No items available in this section yet.</p>
                   </div>
                 )}
               </section>
@@ -100,7 +132,7 @@ export default function ClientProductsPage({ categories, banners, templateCatego
                 <span className="material-symbols-outlined" style={{ fontSize: '64px', marginBottom: 'var(--space-16)' }}>
                   inventory_2
                 </span>
-                <p style={{ fontSize: 'var(--fs-title3)' }}>No product templates available yet.</p>
+                <p style={{ fontSize: 'var(--fs-title3)' }}>No product sections available yet.</p>
               </div>
             </section>
           )}
