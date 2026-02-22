@@ -14,7 +14,10 @@ export default function BannerForm({ banner, onSuccess, onCancel }) {
     ctaLink: '',
     position: 1,
     placement: 'apps',
-    isActive: true
+    isActive: true,
+    backgroundType: 'theme',
+    gradientColors: ['#6ee7b7', '#3b82f6'],
+    gradientAngle: 135
   });
   const [saving, setSaving] = useState(false);
   const [error, setError] = useState('');
@@ -40,7 +43,10 @@ export default function BannerForm({ banner, onSuccess, onCancel }) {
         ctaLink: banner.ctaLink || '',
         position: banner.position || 1,
         placement: banner.placement || 'apps',
-        isActive: banner.isActive !== undefined ? banner.isActive : true
+        isActive: banner.isActive !== undefined ? banner.isActive : true,
+        backgroundType: banner.backgroundType || 'theme',
+        gradientColors: banner.gradientColors || ['#6ee7b7', '#3b82f6'],
+        gradientAngle: banner.gradientAngle || 135
       });
     }
   }, [banner]);
@@ -50,7 +56,14 @@ export default function BannerForm({ banner, onSuccess, onCancel }) {
     setFormData(prev => ({
       ...prev,
       [name]: type === 'checkbox' ? e.target.checked : 
-              name === 'position' ? parseInt(value) || 1 : value
+              name === 'position' || name === 'gradientAngle' ? parseInt(value) || 1 : value
+    }));
+  };
+
+  const handleGradientColorChange = (index, color) => {
+    setFormData(prev => ({
+      ...prev,
+      gradientColors: prev.gradientColors.map((c, i) => i === index ? color : c)
     }));
   };
 
@@ -102,7 +115,11 @@ export default function BannerForm({ banner, onSuccess, onCancel }) {
     }
   };
 
-  const getThemePreview = (theme) => {
+  const getThemePreview = (theme, backgroundType, gradientColors, gradientAngle) => {
+    if (backgroundType === 'customGradient' && gradientColors.length >= 2) {
+      return `linear-gradient(${gradientAngle}deg, ${gradientColors[0]}, ${gradientColors[1]})`;
+    }
+    
     switch (theme) {
       case 'green':
         return 'linear-gradient(135deg, #10b981 0%, #059669 100%)';
@@ -237,7 +254,7 @@ export default function BannerForm({ banner, onSuccess, onCancel }) {
             </p>
           </div>
 
-          {/* Theme */}
+          {/* Background Type */}
           <div style={{ marginBottom: 'var(--space-20)' }}>
             <label style={{
               display: 'block',
@@ -246,70 +263,273 @@ export default function BannerForm({ banner, onSuccess, onCancel }) {
               color: 'var(--systemPrimary)',
               marginBottom: 'var(--space-8)'
             }}>
-              Theme (Background Gradient) <span style={{ color: 'var(--systemRed)' }}>*</span>
+              Background Type <span style={{ color: 'var(--systemRed)' }}>*</span>
             </label>
             <div style={{ display: 'flex', gap: 'var(--space-12)' }}>
-              {['green', 'purple', 'dark'].map((theme) => (
-                <label
-                  key={theme}
-                  style={{
-                    flex: 1,
-                    cursor: 'pointer',
-                    position: 'relative'
-                  }}
-                >
-                  <input
-                    type="radio"
-                    name="theme"
-                    value={theme}
-                    checked={formData.theme === theme}
-                    onChange={handleChange}
-                    style={{ display: 'none' }}
-                  />
-                  <div
+              <label style={{ cursor: 'pointer' }}>
+                <input
+                  type="radio"
+                  name="backgroundType"
+                  value="theme"
+                  checked={formData.backgroundType === 'theme'}
+                  onChange={handleChange}
+                  style={{ marginRight: 'var(--space-8)' }}
+                />
+                Predefined Theme
+              </label>
+              <label style={{ cursor: 'pointer' }}>
+                <input
+                  type="radio"
+                  name="backgroundType"
+                  value="customGradient"
+                  checked={formData.backgroundType === 'customGradient'}
+                  onChange={handleChange}
+                  style={{ marginRight: 'var(--space-8)' }}
+                />
+                Custom Gradient
+              </label>
+            </div>
+          </div>
+
+          {/* Theme Selection - Only show for predefined themes */}
+          {formData.backgroundType === 'theme' && (
+            <div style={{ marginBottom: 'var(--space-20)' }}>
+              <label style={{
+                display: 'block',
+                fontSize: 'var(--fs-body)',
+                fontWeight: 'var(--fw-semibold)',
+                color: 'var(--systemPrimary)',
+                marginBottom: 'var(--space-8)'
+              }}>
+                Theme <span style={{ color: 'var(--systemRed)' }}>*</span>
+              </label>
+              <div style={{ display: 'flex', gap: 'var(--space-12)' }}>
+                {['green', 'purple', 'dark'].map((theme) => (
+                  <label
+                    key={theme}
                     style={{
-                      height: '80px',
-                      background: getThemePreview(theme),
-                      borderRadius: 'var(--radius-medium)',
-                      border: formData.theme === theme ? '3px solid var(--keyColor)' : '2px solid var(--systemQuinary)',
-                      display: 'flex',
-                      alignItems: 'center',
-                      justifyContent: 'center',
-                      transition: 'all var(--transition-fast)',
+                      flex: 1,
+                      cursor: 'pointer',
                       position: 'relative'
                     }}
                   >
-                    {formData.theme === theme && (
-                      <span className="material-symbols-outlined" style={{
-                        position: 'absolute',
-                        top: 'var(--space-8)',
-                        right: 'var(--space-8)',
-                        color: 'white',
-                        background: 'var(--keyColor)',
-                        borderRadius: '50%',
-                        width: '24px',
-                        height: '24px',
+                    <input
+                      type="radio"
+                      name="theme"
+                      value={theme}
+                      checked={formData.theme === theme}
+                      onChange={handleChange}
+                      style={{ display: 'none' }}
+                    />
+                    <div
+                      style={{
+                        height: '80px',
+                        background: getThemePreview(theme, formData.backgroundType, formData.gradientColors, formData.gradientAngle),
+                        borderRadius: 'var(--radius-medium)',
+                        border: formData.theme === theme ? '3px solid var(--keyColor)' : '2px solid var(--systemQuinary)',
                         display: 'flex',
                         alignItems: 'center',
                         justifyContent: 'center',
-                        fontSize: '16px'
+                        transition: 'all var(--transition-fast)',
+                        position: 'relative'
+                      }}
+                    >
+                      {formData.theme === theme && (
+                        <span className="material-symbols-outlined" style={{
+                          position: 'absolute',
+                          top: 'var(--space-8)',
+                          right: 'var(--space-8)',
+                          color: 'white',
+                          background: 'var(--keyColor)',
+                          borderRadius: '50%',
+                          width: '24px',
+                          height: '24px',
+                          display: 'flex',
+                          alignItems: 'center',
+                          justifyContent: 'center',
+                          fontSize: '16px'
+                        }}>
+                          check
+                        </span>
+                      )}
+                      <span style={{
+                        color: 'white',
+                        fontSize: 'var(--fs-footnote)',
+                        fontWeight: 'var(--fw-semibold)',
+                        textTransform: 'capitalize'
                       }}>
-                        check
+                        {theme}
                       </span>
-                    )}
-                    <span style={{
-                      color: 'white',
-                      fontSize: 'var(--fs-footnote)',
-                      fontWeight: 'var(--fw-semibold)',
-                      textTransform: 'capitalize'
-                    }}>
-                      {theme}
-                    </span>
-                  </div>
-                </label>
-              ))}
+                    </div>
+                  </label>
+                ))}
+              </div>
             </div>
-          </div>
+          )}
+
+          {/* Custom Gradient Controls - Only show for custom gradients */}
+          {formData.backgroundType === 'customGradient' && (
+            <div style={{ marginBottom: 'var(--space-20)' }}>
+              <label style={{
+                display: 'block',
+                fontSize: 'var(--fs-body)',
+                fontWeight: 'var(--fw-semibold)',
+                color: 'var(--systemPrimary)',
+                marginBottom: 'var(--space-8)'
+              }}>
+                Custom Gradient <span style={{ color: 'var(--systemRed)' }}>*</span>
+              </label>
+              
+              {/* Gradient Preview */}
+              <div style={{
+                height: '80px',
+                background: getThemePreview(formData.theme, formData.backgroundType, formData.gradientColors, formData.gradientAngle),
+                borderRadius: 'var(--radius-medium)',
+                border: '2px solid var(--systemQuinary)',
+                marginBottom: 'var(--space-16)',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center'
+              }}>
+                <span style={{
+                  color: 'white',
+                  fontSize: 'var(--fs-footnote)',
+                  fontWeight: 'var(--fw-semibold)',
+                  textShadow: '0 1px 2px rgba(0,0,0,0.3)'
+                }}>
+                  Preview
+                </span>
+              </div>
+
+              {/* Color Inputs */}
+              <div style={{ display: 'flex', gap: 'var(--space-16)', marginBottom: 'var(--space-16)' }}>
+                <div style={{ flex: 1 }}>
+                  <label style={{
+                    display: 'block',
+                    fontSize: 'var(--fs-caption)',
+                    fontWeight: 'var(--fw-medium)',
+                    color: 'var(--systemPrimary)',
+                    marginBottom: 'var(--space-4)'
+                  }}>
+                    Color 1
+                  </label>
+                  <div style={{ display: 'flex', gap: 'var(--space-8)' }}>
+                    <input
+                      type="color"
+                      value={formData.gradientColors[0]}
+                      onChange={(e) => handleGradientColorChange(0, e.target.value)}
+                      style={{
+                        width: '50px',
+                        height: '40px',
+                        border: 'var(--keylineBorder)',
+                        borderRadius: 'var(--radius-medium)',
+                        cursor: 'pointer'
+                      }}
+                    />
+                    <input
+                      type="text"
+                      value={formData.gradientColors[0]}
+                      onChange={(e) => handleGradientColorChange(0, e.target.value)}
+                      placeholder="#6ee7b7"
+                      style={{
+                        flex: 1,
+                        padding: 'var(--space-8) var(--space-12)',
+                        background: 'var(--systemSenary)',
+                        border: 'var(--keylineBorder)',
+                        borderRadius: 'var(--radius-medium)',
+                        fontSize: 'var(--fs-body)',
+                        color: 'var(--systemPrimary)',
+                        outline: 'none'
+                      }}
+                    />
+                  </div>
+                </div>
+                
+                <div style={{ flex: 1 }}>
+                  <label style={{
+                    display: 'block',
+                    fontSize: 'var(--fs-caption)',
+                    fontWeight: 'var(--fw-medium)',
+                    color: 'var(--systemPrimary)',
+                    marginBottom: 'var(--space-4)'
+                  }}>
+                    Color 2
+                  </label>
+                  <div style={{ display: 'flex', gap: 'var(--space-8)' }}>
+                    <input
+                      type="color"
+                      value={formData.gradientColors[1]}
+                      onChange={(e) => handleGradientColorChange(1, e.target.value)}
+                      style={{
+                        width: '50px',
+                        height: '40px',
+                        border: 'var(--keylineBorder)',
+                        borderRadius: 'var(--radius-medium)',
+                        cursor: 'pointer'
+                      }}
+                    />
+                    <input
+                      type="text"
+                      value={formData.gradientColors[1]}
+                      onChange={(e) => handleGradientColorChange(1, e.target.value)}
+                      placeholder="#3b82f6"
+                      style={{
+                        flex: 1,
+                        padding: 'var(--space-8) var(--space-12)',
+                        background: 'var(--systemSenary)',
+                        border: 'var(--keylineBorder)',
+                        borderRadius: 'var(--radius-medium)',
+                        fontSize: 'var(--fs-body)',
+                        color: 'var(--systemPrimary)',
+                        outline: 'none'
+                      }}
+                    />
+                  </div>
+                </div>
+              </div>
+
+              {/* Angle Control */}
+              <div>
+                <label style={{
+                  display: 'block',
+                  fontSize: 'var(--fs-caption)',
+                  fontWeight: 'var(--fw-medium)',
+                  color: 'var(--systemPrimary)',
+                  marginBottom: 'var(--space-4)'
+                }}>
+                  Gradient Angle: {formData.gradientAngle}°
+                </label>
+                <input
+                  type="range"
+                  name="gradientAngle"
+                  min="0"
+                  max="360"
+                  value={formData.gradientAngle}
+                  onChange={handleChange}
+                  style={{
+                    width: '100%',
+                    height: '6px',
+                    borderRadius: '3px',
+                    background: 'var(--systemQuinary)',
+                    outline: 'none'
+                  }}
+                />
+                <div style={{
+                  display: 'flex',
+                  justifyContent: 'space-between',
+                  fontSize: 'var(--fs-caption)',
+                  color: 'var(--systemTertiary)',
+                  marginTop: 'var(--space-4)'
+                }}>
+                  <span>0°</span>
+                  <span>90°</span>
+                  <span>180°</span>
+                  <span>270°</span>
+                  <span>360°</span>
+                </div>
+              </div>
+            </div>
+          )}
 
           {/* Image URL */}
           <div style={{ marginBottom: 'var(--space-20)' }}>

@@ -30,6 +30,9 @@ export interface Banner {
   position: number;
   placement: string;
   isActive: boolean;
+  backgroundType: 'theme' | 'customGradient';
+  gradientColors: string[];
+  gradientAngle: number;
   createdAt?: Date | Timestamp;
   updatedAt?: Date | Timestamp;
 }
@@ -63,6 +66,9 @@ export async function getBanners(): Promise<Banner[]> {
         position: data.position || 0,
         placement: data.placement || 'products',
         isActive: data.isActive !== undefined ? data.isActive : true,
+        backgroundType: data.backgroundType || 'theme',
+        gradientColors: data.gradientColors || [],
+        gradientAngle: data.gradientAngle || 135,
         createdAt: data.createdAt?.toDate?.() || data.createdAt,
         updatedAt: data.updatedAt?.toDate?.() || data.updatedAt
       });
@@ -96,6 +102,9 @@ export async function getBannerById(bannerId: string): Promise<Banner | null> {
         position: data.position || 0,
         placement: data.placement || 'products',
         isActive: data.isActive !== undefined ? data.isActive : true,
+        backgroundType: data.backgroundType || 'theme',
+        gradientColors: data.gradientColors || [],
+        gradientAngle: data.gradientAngle || 135,
         createdAt: data.createdAt?.toDate?.() || data.createdAt,
         updatedAt: data.updatedAt?.toDate?.() || data.updatedAt
       };
@@ -183,6 +192,9 @@ export async function getBannersByPlacement(placement: string): Promise<Banner[]
         position: data.position || 0,
         placement: data.placement || placement,
         isActive: data.isActive !== undefined ? data.isActive : true,
+        backgroundType: data.backgroundType || 'theme',
+        gradientColors: data.gradientColors || [],
+        gradientAngle: data.gradientAngle || 135,
         createdAt: data.createdAt?.toDate?.() || data.createdAt,
         updatedAt: data.updatedAt?.toDate?.() || data.updatedAt
       });

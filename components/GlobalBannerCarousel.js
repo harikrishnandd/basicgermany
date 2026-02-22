@@ -43,7 +43,14 @@ export default function GlobalBannerCarousel({ placement }) {
     return null;
   }
 
-  const getThemeStyles = (theme) => {
+  const getThemeStyles = (theme, backgroundType, gradientColors, gradientAngle) => {
+    if (backgroundType === 'customGradient' && gradientColors.length >= 2) {
+      return {
+        background: `linear-gradient(${gradientAngle}deg, ${gradientColors[0]}, ${gradientColors[1]})`,
+        accent: gradientColors[0]
+      };
+    }
+    
     switch (theme) {
       case 'green':
         return {
@@ -65,7 +72,7 @@ export default function GlobalBannerCarousel({ placement }) {
   };
 
   const currentBanner = banners[currentSlide];
-  const themeStyles = getThemeStyles(currentBanner.theme);
+  const themeStyles = getThemeStyles(currentBanner.theme, currentBanner.backgroundType, currentBanner.gradientColors, currentBanner.gradientAngle);
 
   return (
     <div className="global-banner-carousel" style={{
@@ -84,7 +91,7 @@ export default function GlobalBannerCarousel({ placement }) {
         transform: `translateX(-${currentSlide * 100}%)`
       }}>
         {banners.map((banner, index) => {
-          const bannerTheme = getThemeStyles(banner.theme);
+          const bannerTheme = getThemeStyles(banner.theme, banner.backgroundType, banner.gradientColors, banner.gradientAngle);
           return (
             <div key={banner.id} className="banner-slide" style={{
               minWidth: '100%',
@@ -106,6 +113,19 @@ export default function GlobalBannerCarousel({ placement }) {
                   right: 0,
                   bottom: 0,
                   background: 'rgba(0,0,0,0.3)',
+                  zIndex: 1
+                }} />
+              )}
+              
+              {/* Dark overlay for custom gradients to ensure text readability */}
+              {banner.backgroundType === 'customGradient' && (
+                <div style={{
+                  position: 'absolute',
+                  top: 0,
+                  left: 0,
+                  right: 0,
+                  bottom: 0,
+                  background: 'rgba(0,0,0,0.2)',
                   zIndex: 1
                 }} />
               )}

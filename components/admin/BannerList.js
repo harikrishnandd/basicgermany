@@ -1,7 +1,11 @@
 'use client';
 
 export default function BannerList({ banners, onEdit, onDelete }) {
-  const getThemeColor = (theme) => {
+  const getThemeColor = (theme, backgroundType, gradientColors, gradientAngle) => {
+    if (backgroundType === 'customGradient' && gradientColors.length >= 2) {
+      return `linear-gradient(${gradientAngle}deg, ${gradientColors[0]}, ${gradientColors[1]})`;
+    }
+    
     switch (theme) {
       case 'green':
         return 'linear-gradient(135deg, #10b981 0%, #059669 100%)';
@@ -43,7 +47,7 @@ export default function BannerList({ banners, onEdit, onDelete }) {
             <div
               style={{
                 height: '120px',
-                background: getThemeColor(banner.theme),
+                background: getThemeColor(banner.theme, banner.backgroundType, banner.gradientColors, banner.gradientAngle),
                 display: 'flex',
                 alignItems: 'flex-end',
                 padding: 'var(--space-16)',
