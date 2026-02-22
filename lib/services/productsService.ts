@@ -1,5 +1,6 @@
 import { db } from '../firebase';
 import { collection, doc, getDoc, getDocs, setDoc, updateDoc, deleteDoc, arrayUnion, arrayRemove } from 'firebase/firestore';
+import { syncGlobalCategory, syncGlobalCategoryOnDelete } from './globalCategoriesService';
 
 export interface ProductItem {
   name: string;
@@ -199,23 +200,33 @@ export async function addProductItem(
     }
     
     const data = docSnapshot.data();
+    const sectionName = data.name || sectionId;
     
-    // Find the array key
+    // Find the array key and determine type
     let arrayKey = 'items'; // Default
+    let itemType: 'products' | 'templates' = 'products';
+    
     if (data[sectionId] && Array.isArray(data[sectionId])) {
       arrayKey = sectionId;
     } else if (data.template && Array.isArray(data.template)) {
       arrayKey = 'template';
+      itemType = 'templates';
     } else {
       const foundKey = Object.keys(data).find(key => Array.isArray(data[key]));
       if (foundKey) {
         arrayKey = foundKey;
+        if (foundKey === 'template') {
+          itemType = 'templates';
+        }
       }
     }
     
     await updateDoc(docRef, {
       [arrayKey]: arrayUnion(item)
     });
+
+    // Sync global categories
+    await syncGlobalCategory(null, sectionName, itemType);
     
     return true;
   } catch (error) {
@@ -240,23 +251,33 @@ export async function removeProductItem(
     }
     
     const data = docSnapshot.data();
+    const sectionName = data.name || sectionId;
     
-    // Find the array key
-    let arrayKey = 'items';
+    // Find the array key and determine type
+    let arrayKey = 'items'; // Default
+    let itemType: 'products' | 'templates' = 'products';
+    
     if (data[sectionId] && Array.isArray(data[sectionId])) {
       arrayKey = sectionId;
     } else if (data.template && Array.isArray(data.template)) {
       arrayKey = 'template';
+      itemType = 'templates';
     } else {
       const foundKey = Object.keys(data).find(key => Array.isArray(data[key]));
       if (foundKey) {
         arrayKey = foundKey;
+        if (foundKey === 'template') {
+          itemType = 'templates';
+        }
       }
     }
     
     await updateDoc(docRef, {
       [arrayKey]: arrayRemove(item)
     });
+
+    // Sync global categories
+    await syncGlobalCategoryOnDelete(sectionName, itemType);
     
     return true;
   } catch (error) {
