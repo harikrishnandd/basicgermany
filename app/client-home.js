@@ -8,14 +8,12 @@ import ScrollNav from '@/components/scroll-nav';
 import GlobalSearchResults from '@/components/GlobalSearchResults';
 import { AppGridSkeleton, CategoryPillSkeleton, HeroSkeleton, SectionHeaderSkeleton, LoadingSpinner } from '@/components/Skeleton';
 import { getAllApps, getCategories, globalSearch } from '@/lib/firestore';
-import { getAllProductSections } from '@/lib/services/productsService';
 
 export default function ClientHome() {
   const [activeCategory, setActiveCategory] = useState('all');
   const [searchQuery, setSearchQuery] = useState('');
   const [apps, setApps] = useState([]);
   const [categories, setCategories] = useState([]);
-  const [productSections, setProductSections] = useState([]);
   const [loading, setLoading] = useState(true);
   const [searchResults, setSearchResults] = useState({ apps: [], knowledge: [], news: [], products: [] });
   const [isSearching, setIsSearching] = useState(false);
@@ -34,14 +32,12 @@ export default function ClientHome() {
   useEffect(() => {
     async function fetchData() {
       try {
-        const [appsData, categoriesData, productSectionsData] = await Promise.all([
+        const [appsData, categoriesData] = await Promise.all([
           getAllApps(),
-          getCategories(),
-          getAllProductSections()
+          getCategories()
         ]);
         setApps(appsData.apps || []);
         setCategories(categoriesData || []);
-        setProductSections(productSectionsData || []);
       } catch (error) {
         console.error('Error fetching data:', error);
       } finally {
@@ -161,7 +157,6 @@ export default function ClientHome() {
         onCategoryChange={handleCategoryChange} 
         onSearch={setSearchQuery} 
         currentPage="home"
-        productSections={productSections}
       />
       
       <main className="main-content">

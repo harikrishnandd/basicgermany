@@ -1,13 +1,15 @@
 'use client';
 
 import { useState, useEffect } from 'react';
+import { getAllProductSections } from '@/lib/services/productsService';
 
-export default function Sidebar({ categories, activeCategory, onCategoryChange, onSearch, currentPage = 'home', productSections = [], onProductCategoryChange }) {
+export default function Sidebar({ categories, activeCategory, onCategoryChange, onSearch, currentPage = 'home', onProductCategoryChange }) {
   const [isOpen, setIsOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
   const [theme, setTheme] = useState('light');
+  const [productSections, setProductSections] = useState([]);
 
-  useEffect(() => {
+useEffect(() => {
     const savedTheme = localStorage.getItem('theme');
     const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
     const initialTheme = savedTheme || (prefersDark ? 'dark' : 'light');
@@ -19,6 +21,27 @@ export default function Sidebar({ categories, activeCategory, onCategoryChange, 
     if (favicon) {
       favicon.href = initialTheme === 'light' ? '/site-icon-light.png' : '/site-icon.png';
     }
+  }, []);
+
+  // Fetch product sections with automatic refresh
+  useEffect(() => {
+    const fetchProductSections = async () => {
+      try {
+        const sections = await getAllProductSections();
+        setProductSections(sections);
+      } catch (error) {
+        console.error('Error fetching product sections:', error);
+      }
+    };
+
+    // Initial fetch
+    fetchProductSections();
+
+    // Poll for updates every 30 seconds to catch Firebase changes
+    const intervalId = setInterval(fetchProductSections, 30000);
+
+    // Cleanup interval on unmount
+    return () => clearInterval(intervalId);
   }, []);
 
   const toggleTheme = () => {

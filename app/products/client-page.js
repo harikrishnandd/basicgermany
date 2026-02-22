@@ -55,7 +55,6 @@ export default function ClientProductsPage({ categories, banners, productSection
         onCategoryChange={() => {}} 
         onSearch={() => {}} 
         currentPage="products"
-        productSections={productSections}
         onProductCategoryChange={handleCategoryChange}
       />
       <main className="main-content">
