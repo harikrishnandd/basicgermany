@@ -190,7 +190,7 @@
 }
 
 .faq-item {
-    background: var(--systemQuinary);
+    background: var(--cardBg);
     border-radius: var(--radius-medium);
     overflow: hidden;
     border: 1px solid var(--separatorNonOpaque);
