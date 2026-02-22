@@ -40,7 +40,16 @@ export default function BlogArticleContent({ content, onTocExtracted }) {
     // Check for shortcodes in raw content
     const hasProduct = content?.includes('[PRODUCT:');
     const hasAd = content?.includes('[AD:');
-    console.log('Shortcodes in raw content:', { hasProduct, hasAd });
+    const adIndex = content?.indexOf('[AD:');
+    const productIndex = content?.indexOf('[PRODUCT:');
+    console.log('Shortcodes in raw content:', { 
+      hasProduct, 
+      hasAd, 
+      adIndex, 
+      productIndex,
+      contentAroundAd: adIndex >= 0 ? content.substring(adIndex, adIndex + 200) : 'not found',
+      contentAroundProduct: productIndex >= 0 ? content.substring(productIndex, productIndex + 100) : 'not found'
+    });
     
     // Parse markdown and extract headings for TOC
     const tocItems = [];
