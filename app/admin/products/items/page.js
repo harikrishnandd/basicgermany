@@ -434,6 +434,21 @@ export default function ItemsManagementPage() {
                     <tr key={index} style={{ borderBottom: 'var(--keylineBorder)' }}>
                       <td style={{ padding: 'var(--space-16)' }}>
                         <div style={{ display: 'flex', alignItems: 'center', gap: 'var(--space-12)' }}>
+                          <div style={{
+                            width: '32px',
+                            height: '32px',
+                            borderRadius: 'var(--radius-small)',
+                            background: 'var(--keyColor)',
+                            color: 'white',
+                            display: 'flex',
+                            alignItems: 'center',
+                            justifyContent: 'center',
+                            fontSize: 'var(--fs-footnote)',
+                            fontWeight: 'var(--fw-semibold)',
+                            flexShrink: 0
+                          }}>
+                            {index}
+                          </div>
                           {item.logo ? (
                             <img 
                               src={item.logo} 
