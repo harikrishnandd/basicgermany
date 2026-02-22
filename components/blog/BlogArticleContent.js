@@ -34,6 +34,9 @@ export default function BlogArticleContent({ content, onTocExtracted }) {
   const processContent = async (content) => {
     setLoading(true);
     
+    console.log('Raw content length:', content?.length);
+    console.log('Content preview:', content?.substring(0, 500));
+    
     // Parse markdown and extract headings for TOC
     const tocItems = [];
     
@@ -47,7 +50,7 @@ export default function BlogArticleContent({ content, onTocExtracted }) {
       if (level >= 2 && level <= 3) {
         tocItems.push({
           id,
-          text: text,
+          text: raw, // Use raw text instead of HTML-processed text
           level
         });
       }
@@ -57,9 +60,11 @@ export default function BlogArticleContent({ content, onTocExtracted }) {
 
     // Parse shortcodes first
     const contentWithShortcodes = parseShortcodes(content);
+    console.log('After shortcode parsing:', contentWithShortcodes?.substring(0, 500));
     
     // Convert markdown to HTML
     let htmlContent = marked(contentWithShortcodes, { renderer });
+    console.log('After markdown conversion:', htmlContent?.substring(0, 500));
     
     setHtml(htmlContent);
     
