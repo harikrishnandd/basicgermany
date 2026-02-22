@@ -225,29 +225,31 @@ useEffect(() => {
                   .filter(section => section.sidebar === true)
                   .map((section) => (
                     <li key={section.id} className="navigation-item">
-                      <button 
-                        className="navigation-link"
-                        onClick={() => {
-                          if (onProductCategoryChange) {
-                            onProductCategoryChange(section.name);
-                          }
-                          setIsOpen(false);
-                        }}
-                        style={{
-                          background: 'none',
-                          border: 'none',
-                          width: '100%',
-                          textAlign: 'left',
-                          cursor: 'pointer',
-                          padding: '0',
-                          font: 'inherit'
-                        }}
-                      >
-                        <span className="navigation-icon">
-                          <span className="material-symbols-outlined">{section.icon || 'inventory_2'}</span>
-                        </span>
-                        <span className="navigation-text">{section.name}</span>
-                      </button>
+                      {currentPage === 'products' && onProductCategoryChange ? (
+                        <button 
+                          onClick={() => { 
+                            onProductCategoryChange(section.name); 
+                            setIsOpen(false); 
+                          }}
+                          className="navigation-link"
+                        >
+                          <span className="navigation-icon">
+                            <span className="material-symbols-outlined">{section.icon || 'inventory_2'}</span>
+                          </span>
+                          <span className="navigation-text">{section.name}</span>
+                        </button>
+                      ) : (
+                        <a 
+                          href={`/products?category=${encodeURIComponent(section.name)}`}
+                          className="navigation-link"
+                          onClick={() => setIsOpen(false)}
+                        >
+                          <span className="navigation-icon">
+                            <span className="material-symbols-outlined">{section.icon || 'inventory_2'}</span>
+                          </span>
+                          <span className="navigation-text">{section.name}</span>
+                        </a>
+                      )}
                     </li>
                   ))}
               </ul>
