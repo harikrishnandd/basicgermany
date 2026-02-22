@@ -78,6 +78,25 @@ export default function ArticlePageClient({ article: initialArticle, content: in
   // Handle TOC extraction from BlogArticleContent
   const handleTocExtracted = (tocItems) => {
     setTocItems(tocItems);
+    
+    // Only set initial collapsed state once on first load
+    if (!tocInitialized.current && tocItems.length > 0) {
+      tocInitialized.current = true;
+      
+      // Collapse all sections with children by default
+      const h2Items = tocItems.filter(item => item.level === 2);
+      const itemsToCollapse = new Set();
+      h2Items.forEach((item) => {
+        // Check if this h2 has any h3 children
+        const nextH2Index = tocItems.findIndex((i, idx) => idx > tocItems.indexOf(item) && i.level === 2);
+        const endIndex = nextH2Index === -1 ? tocItems.length : nextH2Index;
+        const hasChildren = tocItems.slice(tocItems.indexOf(item) + 1, endIndex).some(i => i.level === 3);
+        if (hasChildren) {
+          itemsToCollapse.add(item.id);
+        }
+      });
+      setCollapsedSections(itemsToCollapse);
+    }
   };
   
   // Handle smooth scrolling for TOC links

@@ -105,7 +105,7 @@ export default function BlogArticleContent({ content, onTocExtracted }) {
             color: var(--systemSecondary);
             border: var(--keylineBorder);
           ">
-            <span className="material-symbols-outlined" style="font-size: 48px; display: block; margin-bottom: 8px;">
+            <span class="material-symbols-outlined" style="font-size: 48px; display: block; margin-bottom: 8px;">
               error
             </span>
             <p style="margin: 0; font-size: 14px;">${error || 'Product not available'}</p>
@@ -138,7 +138,7 @@ export default function BlogArticleContent({ content, onTocExtracted }) {
           color: var(--systemSecondary);
           border: var(--keylineBorder);
         ">
-          <span className="material-symbols-outlined" style="font-size: 48px; display: block; margin-bottom: 8px;">
+          <span class="material-symbols-outlined" style="font-size: 48px; display: block; margin-bottom: 8px;">
             error
           </span>
           <p style="margin: 0; font-size: 14px;">AD card missing required parameters</p>
