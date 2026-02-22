@@ -10,12 +10,12 @@ import GlobalSearchResults from '@/components/GlobalSearchResults';
 import { AppGridSkeleton, CategoryPillSkeleton, HeroSkeleton, SectionHeaderSkeleton, LoadingSpinner } from '@/components/Skeleton';
 import { getAllApps, getCategories, globalSearch } from '@/lib/firestore';
 
-export default function ClientHome({ initialData = { apps: [], categories: [] } }) {
+export default function ClientHome() {
   const [activeCategory, setActiveCategory] = useState('all');
   const [searchQuery, setSearchQuery] = useState('');
-  const [apps, setApps] = useState(initialData.apps);
-  const [categories, setCategories] = useState(initialData.categories);
-  const [loading, setLoading] = useState(!initialData.apps.length);
+  const [apps, setApps] = useState([]);
+  const [categories, setCategories] = useState([]);
+  const [loading, setLoading] = useState(true);
   const [searchResults, setSearchResults] = useState({ apps: [], knowledge: [], news: [], products: [] });
   const [isSearching, setIsSearching] = useState(false);
 
