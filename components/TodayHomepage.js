@@ -12,7 +12,7 @@ import { AppGridSkeleton, CategoryPillSkeleton, HeroSkeleton, SectionHeaderSkele
 import '@/app/styles/today-homepage.css';
 
 // Lazy loading component
-const LazySection = ({ children, threshold = 0.1 }) => {
+const LazySection = ({ children, threshold = 0.1, minHeight = '200px' }) => {
   const [isVisible, setIsVisible] = useState(false);
   const ref = useRef();
 
@@ -35,8 +35,8 @@ const LazySection = ({ children, threshold = 0.1 }) => {
   }, [threshold]);
 
   return (
-    <div ref={ref} style={{ minHeight: '200px' }}>
-      {isVisible ? children : <div style={{ height: '200px' }} />}
+    <div ref={ref} style={{ minHeight }}>
+      {isVisible ? children : <div style={{ height: minHeight }} />}
     </div>
   );
 };
@@ -779,7 +779,7 @@ export default function TodayHomepage() {
         </section>
         
         {/* Featured Categories */}
-        <LazySection>
+        <LazySection minHeight="40px">
           <section className="featured-categories" style={{ marginBottom: '24px' }}>
             <div className="categories-scroll" style={{
               display: 'flex',
