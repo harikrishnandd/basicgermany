@@ -18,6 +18,7 @@ export interface ProductSection {
   description: string;
   icon: string;
   sidebar: boolean;
+  priority: number;
   items: ProductItem[];
 }
 
@@ -60,9 +61,13 @@ export async function getAllProductSections(): Promise<ProductSection[]> {
         description: data.description || '',
         icon: data.icon || 'inventory_2',
         sidebar: data.sidebar !== false, // Default to true
+        priority: data.priority !== undefined ? data.priority : 99, // Default to 99 if missing
         items: items
       });
     });
+    
+    // Sort sections by priority (ascending order)
+    sections.sort((a, b) => a.priority - b.priority);
     
     return sections;
   } catch (error) {
@@ -119,6 +124,7 @@ export async function getProductSection(sectionId: string): Promise<ProductSecti
       description: data.description || '',
       icon: data.icon || 'inventory_2',
       sidebar: data.sidebar !== false,
+      priority: data.priority !== undefined ? data.priority : 99, // Default to 99 if missing
       items: items
     };
   } catch (error) {

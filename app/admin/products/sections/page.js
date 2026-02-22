@@ -24,7 +24,8 @@ export default function ProductSectionsAdmin() {
     name: '',
     description: '',
     icon: 'inventory_2',
-    sidebar: true
+    sidebar: true,
+    priority: 99
   });
 
   const [newItem, setNewItem] = useState({
@@ -41,7 +42,8 @@ export default function ProductSectionsAdmin() {
     name: '',
     description: '',
     icon: '',
-    sidebar: true
+    sidebar: true,
+    priority: 99
   });
 
   useEffect(() => {
@@ -61,13 +63,14 @@ export default function ProductSectionsAdmin() {
       name: newSection.name,
       description: newSection.description,
       icon: newSection.icon,
-      sidebar: newSection.sidebar
+      sidebar: newSection.sidebar,
+      priority: newSection.priority
     });
 
     if (success) {
       alert('Section created successfully!');
       setShowCreateModal(false);
-      setNewSection({ id: '', name: '', description: '', icon: 'inventory_2', sidebar: true });
+      setNewSection({ id: '', name: '', description: '', icon: 'inventory_2', sidebar: true, priority: 99 });
       loadSections();
     } else {
       alert('Failed to create section');
@@ -149,7 +152,8 @@ export default function ProductSectionsAdmin() {
       name: section.name,
       description: section.description,
       icon: section.icon,
-      sidebar: section.sidebar
+      sidebar: section.sidebar,
+      priority: section.priority
     });
     setShowMetadataModal(true);
   };
@@ -222,7 +226,7 @@ export default function ProductSectionsAdmin() {
                     )}
                   </h2>
                   <p style={{ color: '#666', fontSize: '14px' }}>{section.description}</p>
-                  <p style={{ color: '#999', fontSize: '12px', marginTop: '4px' }}>ID: {section.id}</p>
+                  <p style={{ color: '#999', fontSize: '12px', marginTop: '4px' }}>ID: {section.id} • Priority: {section.priority}</p>
                 </div>
               </div>
               <div style={{ display: 'flex', gap: '8px' }}>
@@ -413,7 +417,7 @@ export default function ProductSectionsAdmin() {
                   }}
                 />
               </div>
-              <div style={{ marginBottom: '24px' }}>
+              <div style={{ marginBottom: '16px' }}>
                 <label style={{ display: 'flex', alignItems: 'center', gap: '8px', cursor: 'pointer' }}>
                   <input
                     type="checkbox"
@@ -423,6 +427,27 @@ export default function ProductSectionsAdmin() {
                   />
                   <span style={{ fontWeight: '600' }}>Show in Sidebar</span>
                 </label>
+              </div>
+              <div style={{ marginBottom: '24px' }}>
+                <label style={{ display: 'block', marginBottom: '8px', fontWeight: '600' }}>Priority</label>
+                <input
+                  type="number"
+                  value={newSection.priority}
+                  onChange={(e) => setNewSection({ ...newSection, priority: parseInt(e.target.value) || 99 })}
+                  min="0"
+                  max="99"
+                  placeholder="0 = highest priority, 99 = lowest"
+                  style={{
+                    width: '100%',
+                    padding: '12px',
+                    border: '1px solid #e0e0e0',
+                    borderRadius: '8px',
+                    fontSize: '16px'
+                  }}
+                />
+                <div style={{ fontSize: '12px', color: '#666', marginTop: '4px' }}>
+                  Lower numbers appear first (0 = highest priority, 99 = lowest)
+                </div>
               </div>
               <div style={{ display: 'flex', gap: '12px', justifyContent: 'flex-end' }}>
                 <button
@@ -529,7 +554,7 @@ export default function ProductSectionsAdmin() {
                   }}
                 />
               </div>
-              <div style={{ marginBottom: '24px' }}>
+              <div style={{ marginBottom: '16px' }}>
                 <label style={{ display: 'flex', alignItems: 'center', gap: '8px', cursor: 'pointer' }}>
                   <input
                     type="checkbox"
@@ -539,6 +564,27 @@ export default function ProductSectionsAdmin() {
                   />
                   <span style={{ fontWeight: '600' }}>Show in Sidebar</span>
                 </label>
+              </div>
+              <div style={{ marginBottom: '24px' }}>
+                <label style={{ display: 'block', marginBottom: '8px', fontWeight: '600' }}>Priority</label>
+                <input
+                  type="number"
+                  value={metadata.priority}
+                  onChange={(e) => setMetadata({ ...metadata, priority: parseInt(e.target.value) || 99 })}
+                  min="0"
+                  max="99"
+                  placeholder="0 = highest priority, 99 = lowest"
+                  style={{
+                    width: '100%',
+                    padding: '12px',
+                    border: '1px solid #e0e0e0',
+                    borderRadius: '8px',
+                    fontSize: '16px'
+                  }}
+                />
+                <div style={{ fontSize: '12px', color: '#666', marginTop: '4px' }}>
+                  Lower numbers appear first (0 = highest priority, 99 = lowest)
+                </div>
               </div>
               <div style={{ display: 'flex', gap: '12px', justifyContent: 'flex-end' }}>
                 <button
