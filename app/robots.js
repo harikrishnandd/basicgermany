@@ -2,6 +2,8 @@
  * Robots.txt Configuration
  * Defines crawler access policies and sitemap location
  */
+export const dynamic = 'force-static';
+
 export default function robots() {
   return {
     rules: [

@@ -6,8 +6,8 @@ import { db } from '@/lib/firebase';
  * Automatically discovers all published articles from Firestore
  * Ensures new articles are found by crawlers within hours of publishing
  */
-export const dynamic = 'force-dynamic';
-export const revalidate = 3600; // Regenerate every hour
+export const dynamic = 'force-static';
+export const revalidate = false;
 
 export default async function sitemap() {
   const baseUrl = 'https://basicgermany.com';
