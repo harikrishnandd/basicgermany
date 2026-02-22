@@ -89,9 +89,9 @@ export async function upsertGlobalCategory(
   countChange: number = 1
 ): Promise<boolean> {
   try {
-    // Generate slug and ID
+    // Generate slug and ID with :: separator
     const slug = categoryName.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '');
-    const id = `${slug}-${type}`;
+    const id = `${slug}::${type}`;
     
     const docRef = doc(db, 'globalCategories', id);
     const docSnapshot = await getDoc(docRef);
@@ -129,9 +129,9 @@ export async function decrementGlobalCategory(
   countChange: number = 1
 ): Promise<boolean> {
   try {
-    // Generate slug and ID
+    // Generate slug and ID with :: separator
     const slug = categoryName.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '');
-    const id = `${slug}-${type}`;
+    const id = `${slug}::${type}`;
     
     const docRef = doc(db, 'globalCategories', id);
     const docSnapshot = await getDoc(docRef);
