@@ -172,7 +172,7 @@
 .faq-section {
     margin: var(--space-40) 0;
     padding: var(--space-32);
-    background: var(--systemQuinary);
+    background: transparent;
     border-radius: var(--radius-large);
 }
 
@@ -190,10 +190,10 @@
 }
 
 .faq-item {
-    background: var(--systemSenary);
+    background: var(--systemQuinary);
     border-radius: var(--radius-medium);
     overflow: hidden;
-    border: 1px solid var(--borderColor);
+    border: 1px solid var(--separatorNonOpaque);
 }
 
 .faq-question {
