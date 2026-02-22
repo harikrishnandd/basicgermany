@@ -1,0 +1,398 @@
+/* Today Homepage Styles - Mobile-First Design */
+
+/* Base Layout */
+.today-main {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 24px;
+  width: 100%;
+}
+
+/* Hero Carousel */
+.hero-carousel {
+  position: relative;
+  width: 100%;
+  height: 280px;
+  border-radius: 20px;
+  overflow: hidden;
+  background: var(--systemQuaternary);
+  margin-bottom: 32px;
+}
+
+.hero-slides {
+  display: flex;
+  height: 100%;
+  transition: transform 0.5s ease;
+}
+
+.hero-slide {
+  min-width: 100%;
+  height: 100%;
+  position: relative;
+  background-size: cover;
+  background-position: center;
+  display: flex;
+  align-items: flex-end;
+  padding: 24px;
+}
+
+.hero-dots {
+  position: absolute;
+  bottom: 16px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  gap: 8px;
+}
+
+.hero-dots button {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  border: none;
+  background: rgba(255,255,255,0.4);
+  cursor: pointer;
+  transition: background 0.3s ease;
+}
+
+.hero-dots button.active {
+  background: white;
+}
+
+/* Quick-Start Hub */
+.quick-start-hub {
+  margin-bottom: 48px;
+}
+
+.quick-start-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 20px;
+}
+
+.quick-start-card {
+  background: var(--cardBg);
+  border-radius: 18px;
+  padding: 20px;
+  border: 1px solid var(--borderColor);
+  min-height: 140px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.quick-start-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 32px rgba(0,0,0,0.1);
+}
+
+/* Recent Knowledge */
+.recent-knowledge {
+  margin-bottom: 48px;
+}
+
+.knowledge-grid {
+  display: grid;
+  gap: 16px;
+}
+
+.knowledge-card {
+  background: var(--cardBg);
+  border-radius: 16px;
+  padding: 20px;
+  border: 1px solid var(--borderColor);
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.knowledge-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 32px rgba(0,0,0,0.1);
+}
+
+/* Dynamic Search */
+.dynamic-search {
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  background: var(--navSidebarBG);
+  padding: 16px 0;
+  margin-bottom: 32px;
+}
+
+.search-wrapper {
+  max-width: 600px;
+  margin: 0 auto;
+  position: relative;
+}
+
+.search-input-container {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.search-input-container input {
+  width: 100%;
+  padding: 16px 16px 16px 48px;
+  border-radius: 24px;
+  border: 1px solid var(--borderColor);
+  background: var(--cardBg);
+  font-size: 16px;
+  color: var(--systemPrimary);
+  outline: none;
+  transition: all 0.2s ease;
+}
+
+.search-input-container input:focus {
+  border-color: var(--keyColor);
+  box-shadow: 0 0 0 3px rgba(0,122,255,0.1);
+}
+
+.search-results {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  right: 0;
+  background: var(--cardBg);
+  border: 1px solid var(--borderColor);
+  border-radius: 16px;
+  margin-top: 8px;
+  max-height: 400px;
+  overflow-y: auto;
+  box-shadow: 0 8px 32px rgba(0,0,0,0.1);
+}
+
+/* Featured Categories */
+.featured-categories {
+  margin-bottom: 48px;
+}
+
+.categories-scroll {
+  display: flex;
+  gap: 16px;
+  overflow-x: auto;
+  padding-bottom: 8px;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+
+.categories-scroll::-webkit-scrollbar {
+  display: none;
+}
+
+.category-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 12px 20px;
+  background: var(--systemQuaternary);
+  border: 1px solid var(--borderColor);
+  border-radius: 24px;
+  font-size: 15px;
+  font-weight: 500;
+  color: var(--systemPrimary);
+  white-space: nowrap;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  min-width: fit-content;
+}
+
+.category-pill:hover {
+  background: var(--systemQuinary);
+  transform: translateY(-1px);
+}
+
+/* Touch Targets - Minimum 44px */
+@media (pointer: coarse) {
+  .quick-start-card,
+  .knowledge-card,
+  .category-pill,
+  .hero-dots button {
+    min-height: 44px;
+    min-width: 44px;
+  }
+  
+  .search-input-container input {
+    padding: 20px 20px 20px 52px;
+    font-size: 16px; /* Prevents zoom on iOS */
+  }
+}
+
+/* Mobile Responsive Design */
+@media (max-width: 768px) {
+  .today-main {
+    padding: 16px;
+  }
+  
+  .hero-carousel {
+    height: 200px;
+    border-radius: 16px;
+    margin-bottom: 24px;
+  }
+  
+  .hero-slide {
+    padding: 16px;
+  }
+  
+  .hero-slide h2 {
+    font-size: 20px;
+  }
+  
+  .hero-slide p {
+    font-size: 14px;
+  }
+  
+  .quick-start-grid {
+    grid-template-columns: 1fr;
+    gap: 16px;
+  }
+  
+  .quick-start-hub,
+  .recent-knowledge,
+  .featured-categories {
+    margin-bottom: 32px;
+  }
+  
+  .quick-start-card,
+  .knowledge-card {
+    padding: 16px;
+    border-radius: 14px;
+  }
+  
+  .dynamic-search {
+    padding: 12px 0;
+    margin-bottom: 24px;
+  }
+  
+  .search-input-container input {
+    padding: 16px 16px 16px 44px;
+    font-size: 16px;
+  }
+  
+  .categories-scroll {
+    gap: 12px;
+  }
+  
+  .category-pill {
+    padding: 10px 16px;
+    font-size: 14px;
+  }
+}
+
+/* Tablet Responsive Design */
+@media (min-width: 769px) and (max-width: 1024px) {
+  .today-main {
+    padding: 20px;
+  }
+  
+  .quick-start-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  
+  .hero-carousel {
+    height: 240px;
+  }
+}
+
+/* Desktop Bento Grid Layout */
+@media (min-width: 1025px) {
+  .today-main {
+    display: grid;
+    grid-template-columns: 2fr 1fr;
+    gap: 32px;
+    align-items: start;
+  }
+  
+  .main-content {
+    grid-column: 1;
+  }
+  
+  .sidebar-content {
+    grid-column: 2;
+    position: sticky;
+    top: 24px;
+  }
+  
+  .quick-start-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+  
+  .hero-carousel {
+    height: 320px;
+  }
+}
+
+/* Loading Animation */
+@keyframes spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+.loading-spinner {
+  animation: spin 1s linear infinite;
+}
+
+/* Typography Scaling */
+@media (max-width: 480px) {
+  .quick-start-hub h2,
+  .recent-knowledge h2,
+  .featured-categories h2 {
+    font-size: 24px;
+  }
+  
+  .quick-start-card h3,
+  .knowledge-card h3 {
+    font-size: 16px;
+  }
+  
+  .quick-start-card p,
+  .knowledge-card p {
+    font-size: 13px;
+  }
+}
+
+/* Dark Mode Optimizations */
+@media (prefers-color-scheme: dark) {
+  .hero-carousel {
+    background: var(--systemQuaternary);
+  }
+  
+  .search-results {
+    box-shadow: 0 8px 32px rgba(0,0,0,0.3);
+  }
+  
+  .quick-start-card:hover,
+  .knowledge-card:hover {
+    box-shadow: 0 8px 32px rgba(0,0,0,0.2);
+  }
+}
+
+/* High Contrast Mode */
+@media (prefers-contrast: high) {
+  .quick-start-card,
+  .knowledge-card {
+    border-width: 2px;
+  }
+  
+  .category-pill {
+    border-width: 2px;
+  }
+  
+  .search-input-container input {
+    border-width: 2px;
+  }
+}
+
+/* Reduced Motion */
+@media (prefers-reduced-motion: reduce) {
+  .hero-slides,
+  .quick-start-card,
+  .knowledge-card,
+  .category-pill {
+    transition: none;
+  }
+  
+  .loading-spinner {
+    animation: none;
+  }
+}

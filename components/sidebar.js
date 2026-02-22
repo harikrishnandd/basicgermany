@@ -123,6 +123,20 @@ useEffect(() => {
         <nav className="navigation-content">
           <div className="navigation-items-primary">
             <ul className="navigation-list">
+              {/* Today Section - New Primary Navigation */}
+              <li className={`navigation-item ${currentPage === 'today' ? 'active' : ''}`}>
+                <a 
+                  href="/"
+                  className="navigation-link"
+                  onClick={() => setIsOpen(false)}
+                >
+                  <span className="navigation-icon">
+                    <span className="material-symbols-outlined">calendar_view_day</span>
+                  </span>
+                  <span className="navigation-text">Today</span>
+                </a>
+              </li>
+              
               <li className={`navigation-item ${activeCategory === 'all' && currentPage === 'home' ? 'active' : ''}`}>
                 {currentPage === 'home' ? (
                   <button 
@@ -136,7 +150,7 @@ useEffect(() => {
                   </button>
                 ) : (
                   <a 
-                    href="/"
+                    href="/apps"
                     className="navigation-link"
                     onClick={() => setIsOpen(false)}
                   >

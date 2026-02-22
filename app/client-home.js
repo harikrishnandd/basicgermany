@@ -156,7 +156,8 @@ export default function ClientHome() {
         activeCategory={activeCategory} 
         onCategoryChange={handleCategoryChange} 
         onSearch={setSearchQuery} 
-        currentPage="home"
+        currentPage="apps"
+        onProductCategoryChange={() => {}}
       />
       
       <main className="main-content">

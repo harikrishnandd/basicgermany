@@ -1,5 +1,5 @@
-import ClientHome from './client-home';
+import TodayHomepage from '@/components/TodayHomepage';
 
 export default function Home() {
-  return <ClientHome />;
+  return <TodayHomepage />;
 }
