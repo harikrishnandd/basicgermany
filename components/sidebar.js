@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from 'react';
 
-export default function Sidebar({ categories, activeCategory, onCategoryChange, onSearch, currentPage = 'home', productSections = [] }) {
+export default function Sidebar({ categories, activeCategory, onCategoryChange, onSearch, currentPage = 'home', productSections = [], onSectionChange }) {
   const [isOpen, setIsOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
   const [theme, setTheme] = useState('light');
@@ -202,16 +202,29 @@ export default function Sidebar({ categories, activeCategory, onCategoryChange, 
                   .filter(section => section.sidebar === true)
                   .map((section) => (
                     <li key={section.id} className="navigation-item">
-                      <a 
-                        href={`#${section.id}`}
+                      <button 
                         className="navigation-link"
-                        onClick={() => setIsOpen(false)}
+                        onClick={() => {
+                          if (onSectionChange) {
+                            onSectionChange(section.id);
+                          }
+                          setIsOpen(false);
+                        }}
+                        style={{
+                          background: 'none',
+                          border: 'none',
+                          width: '100%',
+                          textAlign: 'left',
+                          cursor: 'pointer',
+                          padding: '0',
+                          font: 'inherit'
+                        }}
                       >
                         <span className="navigation-icon">
                           <span className="material-symbols-outlined">{section.icon || 'inventory_2'}</span>
                         </span>
                         <span className="navigation-text">{section.name}</span>
-                      </a>
+                      </button>
                     </li>
                   ))}
               </ul>
