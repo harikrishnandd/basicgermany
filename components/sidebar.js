@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from 'react';
 
-export default function Sidebar({ categories, activeCategory, onCategoryChange, onSearch, currentPage = 'home', productSections = [], onSectionChange }) {
+export default function Sidebar({ categories, activeCategory, onCategoryChange, onSearch, currentPage = 'home', productSections = [], onProductCategoryChange }) {
   const [isOpen, setIsOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
   const [theme, setTheme] = useState('light');
@@ -205,8 +205,8 @@ export default function Sidebar({ categories, activeCategory, onCategoryChange, 
                       <button 
                         className="navigation-link"
                         onClick={() => {
-                          if (onSectionChange) {
-                            onSectionChange(section.id);
+                          if (onProductCategoryChange) {
+                            onProductCategoryChange(section.name);
                           }
                           setIsOpen(false);
                         }}

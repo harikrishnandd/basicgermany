@@ -10,42 +10,42 @@ import Link from 'next/link';
  * Client Component - Receives server-fetched data as props
  */
 export default function ClientProductsPage({ categories, banners, productSections }) {
-  const [selectedSection, setSelectedSection] = useState(null);
+  const [selectedCategory, setSelectedCategory] = useState(null);
 
   useEffect(() => {
-    // Check for section parameter in URL
+    // Check for category parameter in URL
     if (typeof window !== 'undefined') {
       const urlParams = new URLSearchParams(window.location.search);
-      const sectionParam = urlParams.get('section');
-      setSelectedSection(sectionParam);
+      const categoryParam = urlParams.get('category');
+      setSelectedCategory(categoryParam);
     }
   }, []);
 
-  // Handle section change with URL update (hybrid navigation)
-  const handleSectionChange = useCallback((section) => {
-    setSelectedSection(section);
+  // Handle category change with URL update (hybrid navigation)
+  const handleCategoryChange = useCallback((category) => {
+    setSelectedCategory(category);
     
     // Update URL without page reload
-    const url = section 
-      ? `/products?section=${encodeURIComponent(section)}`
+    const url = category 
+      ? `/products?category=${encodeURIComponent(category)}`
       : '/products';
-    window.history.pushState({ section }, '', url);
+    window.history.pushState({ category }, '', url);
   }, []);
 
   // Handle browser back/forward buttons
   useEffect(() => {
     const handlePopState = (event) => {
-      const section = event.state?.section || null;
-      setSelectedSection(section);
+      const category = event.state?.category || null;
+      setSelectedCategory(category);
     };
 
     window.addEventListener('popstate', handlePopState);
     return () => window.removeEventListener('popstate', handlePopState);
   }, []);
 
-  // Find the selected section data
-  const currentSection = selectedSection 
-    ? productSections.find(section => section.id === selectedSection)
+  // Find the section that matches the selected category (by name)
+  const currentSection = selectedCategory 
+    ? productSections.find(section => section.name === selectedCategory)
     : null;
   return (
     <div className="app-container">
@@ -56,12 +56,12 @@ export default function ClientProductsPage({ categories, banners, productSection
         onSearch={() => {}} 
         currentPage="products"
         productSections={productSections}
-        onSectionChange={handleSectionChange}
+        onProductCategoryChange={handleCategoryChange}
       />
       <main className="main-content">
         <div className="products-page">
-          {selectedSection && currentSection ? (
-            // Section Detail View
+          {selectedCategory && currentSection ? (
+            // Category Detail View
             <div>
               {/* Breadcrumb */}
               <div style={{ 
@@ -69,7 +69,7 @@ export default function ClientProductsPage({ categories, banners, productSection
                 marginBottom: 'var(--space-16)'
               }}>
                 <button 
-                  onClick={() => handleSectionChange(null)} 
+                  onClick={() => handleCategoryChange(null)} 
                   style={{
                     display: 'inline-flex',
                     alignItems: 'center',
@@ -220,7 +220,7 @@ export default function ClientProductsPage({ categories, banners, productSection
                         </div>
                         {section.items && section.items.length > 0 && (
                           <button
-                            onClick={() => handleSectionChange(section.id)}
+                            onClick={() => handleCategoryChange(section.name)}
                             style={{
                               fontSize: 'var(--fs-body)',
                               color: 'var(--keyColor)',
