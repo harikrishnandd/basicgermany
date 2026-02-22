@@ -1,12 +1,6 @@
 /* Today Homepage Styles - Mobile-First Design */
 
-/* Base Layout */
-.today-main {
-  max-width: 1200px;
-  margin: 0 auto;
-  padding: 24px;
-  width: 100%;
-}
+/* Today Homepage Styles - Works with appstore-layout.css structure */
 
 /* Hero Carousel */
 .hero-carousel {
@@ -218,12 +212,8 @@
   }
 }
 
-/* Mobile Responsive Design */
-@media (max-width: 768px) {
-  .today-main {
-    padding: 16px;
-  }
-  
+/* Mobile Responsive Design - Works with appstore-layout.css */
+@media (max-width: 1023px) {
   .hero-carousel {
     height: 200px;
     border-radius: 16px;
@@ -294,25 +284,8 @@
   }
 }
 
-/* Desktop Bento Grid Layout */
-@media (min-width: 1025px) {
-  .today-main {
-    display: grid;
-    grid-template-columns: 2fr 1fr;
-    gap: 32px;
-    align-items: start;
-  }
-  
-  .main-content {
-    grid-column: 1;
-  }
-  
-  .sidebar-content {
-    grid-column: 2;
-    position: sticky;
-    top: 24px;
-  }
-  
+/* Desktop Layout Enhancement - Works with appstore-layout.css */
+@media (min-width: 1024px) {
   .quick-start-grid {
     grid-template-columns: repeat(3, 1fr);
   }
@@ -320,6 +293,17 @@
   .hero-carousel {
     height: 320px;
   }
+}
+
+/* Hover Effects */
+.quick-start-card:hover,
+.knowledge-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 32px rgba(0,0,0,0.1);
+}
+
+.categories-scroll::-webkit-scrollbar {
+  display: none;
 }
 
 /* Loading Animation */

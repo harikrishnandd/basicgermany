@@ -745,20 +745,14 @@ export default function TodayHomepage() {
   }
 
   return (
-    <div style={{ display: 'flex', minHeight: '100vh' }}>
+    <div className="app-container">
       <Sidebar 
         categories={categories} 
         currentPage="today"
         onSearch={setSearchQuery}
       />
       
-      <main className="today-main" style={{
-        flex: 1,
-        padding: '24px',
-        maxWidth: '1200px',
-        margin: '0 auto',
-        width: '100%'
-      }}>
+      <main className="main-content">
         {/* Dynamic Search */}
         <DynamicSearch />
         
@@ -824,39 +818,6 @@ export default function TodayHomepage() {
           </section>
         </LazySection>
       </main>
-      
-      <style jsx>{`
-        .categories-scroll::-webkit-scrollbar {
-          display: none;
-        }
-        
-        .quick-start-card:hover,
-        .knowledge-card:hover {
-          transform: translateY(-2px);
-          box-shadow: 0 8px 32px rgba(0,0,0,0.1);
-        }
-        
-        @keyframes spin {
-          from { transform: rotate(0deg); }
-          to { transform: rotate(360deg); }
-        }
-        
-        @media (max-width: 768px) {
-          .today-main {
-            padding: 16px;
-          }
-          
-          .quick-start-grid {
-            grid-template-columns: 1fr;
-            gap: 16px;
-          }
-          
-          .hero-carousel {
-            height: 200px;
-            border-radius: '16px';
-          }
-        }
-      `}</style>
     </div>
   );
 }
