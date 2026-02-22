@@ -180,6 +180,7 @@
     font-size: var(--fs-title1);
     font-weight: var(--fw-bold);
     margin: 0 0 var(--space-24);
+    color: var(--systemPrimary);
 }
 
 .faq-list {
@@ -189,9 +190,10 @@
 }
 
 .faq-item {
-    background: var(--cardBg);
+    background: var(--systemSenary);
     border-radius: var(--radius-medium);
     overflow: hidden;
+    border: 1px solid var(--borderColor);
 }
 
 .faq-question {
