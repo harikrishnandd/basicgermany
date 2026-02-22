@@ -1,8 +1,9 @@
 'use client';
 
-import { useEffect, useState, useRef, useCallback } from 'react';
+import { useEffect, useState, useRef } from 'react';
 import { marked } from 'marked';
-import { parseShortcodes, fetchProductData, createProductCardHTML, createAdCardHTML } from '../../lib/shortcode-parser';
+import { createProductCardHTML, createAdCardHTML } from '../../lib/shortcode-parser';
+import { getProductSection } from '../../lib/services/productsService';
 
 // Configure marked for better HTML output
 if (typeof window !== 'undefined') {
@@ -14,9 +15,7 @@ if (typeof window !== 'undefined') {
 
 export default function BlogArticleContent({ content, onTocExtracted }) {
   const [html, setHtml] = useState('');
-  const [loading, setLoading] = useState(false);
   const [processed, setProcessed] = useState(false);
-  const contentRef = useRef(null);
   const onTocExtractedRef = useRef(onTocExtracted);
 
   // Update ref when callback changes
@@ -31,32 +30,12 @@ export default function BlogArticleContent({ content, onTocExtracted }) {
     }
   }, [content, processed]);
 
-  const processContent = async (content) => {
-    setLoading(true);
-    
-    console.log('Raw content length:', content?.length);
-    console.log('Content preview:', content?.substring(0, 500));
-    
-    // Check for shortcodes in raw content
-    const hasProduct = content?.includes('[PRODUCT:');
-    const hasAd = content?.includes('[AD:');
-    const adIndex = content?.indexOf('[AD:');
-    const productIndex = content?.indexOf('[PRODUCT:');
-    console.log('Shortcodes in raw content:', { 
-      hasProduct, 
-      hasAd, 
-      adIndex, 
-      productIndex,
-      contentAroundAd: adIndex >= 0 ? content.substring(adIndex, adIndex + 200) : 'not found',
-      contentAroundProduct: productIndex >= 0 ? content.substring(productIndex, productIndex + 100) : 'not found'
-    });
-    
+  const processContent = async (rawContent) => {
     // Parse markdown and extract headings for TOC
     const tocItems = [];
     
     // Custom renderer to extract headings
     const renderer = new marked.Renderer();
-    const originalHeading = renderer.heading;
     
     renderer.heading = function(text, level, raw) {
       const id = raw.toLowerCase().replace(/[^\w]+/g, '-');
@@ -64,7 +43,7 @@ export default function BlogArticleContent({ content, onTocExtracted }) {
       if (level >= 2 && level <= 3) {
         tocItems.push({
           id,
-          text: raw, // Use raw text instead of HTML-processed text
+          text: raw,
           level
         });
       }
@@ -72,123 +51,81 @@ export default function BlogArticleContent({ content, onTocExtracted }) {
       return `<h${level} id="${id}">${text}</h${level}>`;
     };
 
-    // Parse shortcodes first
-    const contentWithShortcodes = parseShortcodes(content);
-    console.log('After shortcode parsing:', contentWithShortcodes?.substring(0, 500));
+    // Step 1: Replace shortcodes with final HTML BEFORE markdown conversion
+    let processedContent = rawContent;
+
+    // Process PRODUCT shortcodes: [PRODUCT:docId:index|bg=#HEX]
+    const productRegex = /\[PRODUCT:([a-zA-Z0-9_-]+):(\d+)(?:\|bg=#([a-fA-F0-9]{3,6}))?\]/g;
+    const productMatches = [...rawContent.matchAll(productRegex)];
     
-    // Convert markdown to HTML
-    let htmlContent = marked(contentWithShortcodes, { renderer });
-    console.log('After markdown conversion:', htmlContent?.substring(0, 500));
+    for (const match of productMatches) {
+      const [fullMatch, docId, indexStr, bgColor] = match;
+      const bg = bgColor ? `#${bgColor}` : 'var(--systemQuinary)';
+      const index = parseInt(indexStr);
+      
+      try {
+        const section = await getProductSection(docId);
+        if (section && section.items && section.items[index]) {
+          const cardHtml = createProductCardHTML(section.items[index], bg);
+          processedContent = processedContent.replace(fullMatch, cardHtml);
+        } else {
+          processedContent = processedContent.replace(fullMatch, 
+            `<div style="padding: 16px; background: ${bg}; border-radius: 12px; text-align: center; color: var(--systemSecondary); border: 1px solid var(--borderColor);">
+              <span class="material-symbols-outlined" style="font-size: 32px; display: block; margin-bottom: 8px;">error</span>
+              <p style="margin: 0; font-size: 14px;">Product not found: ${docId}[${index}]</p>
+            </div>`
+          );
+        }
+      } catch (error) {
+        console.error('Error fetching product for shortcode:', error);
+        processedContent = processedContent.replace(fullMatch, 
+          `<div style="padding: 16px; background: ${bg}; border-radius: 12px; text-align: center; color: var(--systemSecondary); border: 1px solid var(--borderColor);">
+            <span class="material-symbols-outlined" style="font-size: 32px; display: block; margin-bottom: 8px;">error</span>
+            <p style="margin: 0; font-size: 14px;">Error loading product</p>
+          </div>`
+        );
+      }
+    }
+
+    // Process AD shortcodes: [AD:name=...|price=...|link=...|logo=...|bg=#HEX]
+    const adRegex = /\[AD:([^\]]+)\]/g;
+    const adMatches = [...rawContent.matchAll(adRegex)];
+    
+    for (const match of adMatches) {
+      const [fullMatch, paramString] = match;
+      const params = {};
+      paramString.split('|').forEach(pair => {
+        const eqIndex = pair.indexOf('=');
+        if (eqIndex > 0) {
+          const key = pair.substring(0, eqIndex).trim();
+          const value = pair.substring(eqIndex + 1).trim();
+          params[key] = value;
+        }
+      });
+      
+      // Normalize bg color
+      if (params.bg) {
+        params.bg = params.bg.startsWith('#') ? params.bg : `#${params.bg}`;
+      } else {
+        params.bg = 'var(--systemQuinary)';
+      }
+      
+      const cardHtml = createAdCardHTML(params);
+      processedContent = processedContent.replace(fullMatch, cardHtml);
+    }
+
+    // Step 2: Convert markdown to HTML
+    let htmlContent = marked(processedContent, { renderer });
     
     setHtml(htmlContent);
     
-    // Pass TOC items to parent using ref
+    // Pass TOC items to parent
     if (onTocExtractedRef.current) {
       onTocExtractedRef.current(tocItems);
     }
-    
-    // Process shortcodes after DOM is ready
-    setTimeout(() => {
-      processShortcodes();
-    }, 100);
-  };
-
-  const processShortcodes = async () => {
-    if (!contentRef.current) return;
-
-    // Find all shortcode elements
-    const productElements = contentRef.current.querySelectorAll('.shortcode-product');
-    const adElements = contentRef.current.querySelectorAll('.shortcode-ad');
-
-    console.log('Found shortcodes:', {
-      products: productElements.length,
-      ads: adElements.length
-    });
-
-    // Process PRODUCT shortcodes
-    if (productElements.length > 0) {
-      const productData = await fetchProductData(Array.from(productElements));
-      
-      productData.forEach(({ element, product, section, error }) => {
-        const bgColor = element.dataset.bg;
-        
-        if (product) {
-          element.innerHTML = createProductCardHTML(product, bgColor);
-        } else {
-          // Fallback for missing products
-          element.innerHTML = `<div style="
-            padding: 16px; 
-            background: ${bgColor}; 
-            border-radius: 12px; 
-            text-align: center; 
-            color: var(--systemSecondary);
-            border: var(--keylineBorder);
-          ">
-            <span class="material-symbols-outlined" style="font-size: 48px; display: block; margin-bottom: 8px;">
-              error
-            </span>
-            <p style="margin: 0; font-size: 14px;">${error || 'Product not available'}</p>
-          </div>`;
-        }
-      });
-    }
-
-    // Process AD shortcodes
-    adElements.forEach((element, index) => {
-      const params = {
-        name: element.dataset.name,
-        price: element.dataset.price,
-        link: element.dataset.link,
-        logo: element.dataset.logo,
-        bg: element.dataset.bg
-      };
-      
-      console.log(`Processing AD ${index}:`, params);
-      
-      if (params.name) {
-        element.innerHTML = createAdCardHTML(params);
-      } else {
-        // Fallback for missing required params
-        element.innerHTML = `<div style="
-          padding: 16px; 
-          background: ${params.bg || 'var(--systemQuinary)'}; 
-          border-radius: 12px; 
-          text-align: center; 
-          color: var(--systemSecondary);
-          border: var(--keylineBorder);
-        ">
-          <span class="material-symbols-outlined" style="font-size: 48px; display: block; margin-bottom: 8px;">
-            error
-          </span>
-          <p style="margin: 0; font-size: 14px;">AD card missing required parameters</p>
-        </div>`;
-      }
-    });
-
-    setLoading(false);
   };
 
   return (
-    <div>
-      {loading && (
-        <div style={{ 
-          display: 'flex', 
-          alignItems: 'center', 
-          gap: '8px', 
-          padding: '16px', 
-          color: 'var(--systemSecondary)',
-          fontSize: '14px'
-        }}>
-          <span className="material-symbols-outlined" style={{ fontSize: '16px' }}>
-            hourglass_empty
-          </span>
-          Loading product cards...
-        </div>
-      )}
-      <div 
-        ref={contentRef}
-        dangerouslySetInnerHTML={{ __html: html }} 
-      />
-    </div>
+    <div dangerouslySetInnerHTML={{ __html: html }} />
   );
 }
