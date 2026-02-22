@@ -51,8 +51,11 @@ export default function BlogArticleContent({ content, onTocExtracted }) {
       return `<h${level} id="${id}">${text}</h${level}>`;
     };
 
-    // Step 1: Replace shortcodes with final HTML BEFORE markdown conversion
+    // Step 1: Replace shortcodes with unique placeholders BEFORE markdown
+    // This prevents marked() from wrapping card HTML in <p> tags
     let processedContent = rawContent;
+    const cardMap = {};
+    let cardIndex = 0;
 
     // Process PRODUCT shortcodes: [PRODUCT:docId:index|bg=#HEX]
     const productRegex = /\[PRODUCT:([a-zA-Z0-9_-]+):(\d+)(?:\|bg=#([a-fA-F0-9]{3,6}))?\]/g;
@@ -62,29 +65,21 @@ export default function BlogArticleContent({ content, onTocExtracted }) {
       const [fullMatch, docId, indexStr, bgColor] = match;
       const bg = bgColor ? `#${bgColor}` : 'var(--systemQuinary)';
       const index = parseInt(indexStr);
+      const placeholder = `SHORTCODE_PLACEHOLDER_${cardIndex++}`;
       
       try {
         const section = await getProductSection(docId);
         if (section && section.items && section.items[index]) {
-          const cardHtml = createProductCardHTML(section.items[index], bg);
-          processedContent = processedContent.replace(fullMatch, cardHtml);
+          cardMap[placeholder] = createProductCardHTML(section.items[index], bg);
         } else {
-          processedContent = processedContent.replace(fullMatch, 
-            `<div style="padding: 16px; background: ${bg}; border-radius: 12px; text-align: center; color: var(--systemSecondary); border: 1px solid var(--borderColor);">
-              <span class="material-symbols-outlined" style="font-size: 32px; display: block; margin-bottom: 8px;">error</span>
-              <p style="margin: 0; font-size: 14px;">Product not found: ${docId}[${index}]</p>
-            </div>`
-          );
+          cardMap[placeholder] = `<div style="padding: 16px; background: ${bg}; border-radius: 12px; text-align: center; color: var(--systemSecondary); border: 1px solid var(--borderColor);"><span class="material-symbols-outlined" style="font-size: 32px; display: block; margin-bottom: 8px;">error</span><p style="margin: 0; font-size: 14px;">Product not found: ${docId}[${index}]</p></div>`;
         }
       } catch (error) {
         console.error('Error fetching product for shortcode:', error);
-        processedContent = processedContent.replace(fullMatch, 
-          `<div style="padding: 16px; background: ${bg}; border-radius: 12px; text-align: center; color: var(--systemSecondary); border: 1px solid var(--borderColor);">
-            <span class="material-symbols-outlined" style="font-size: 32px; display: block; margin-bottom: 8px;">error</span>
-            <p style="margin: 0; font-size: 14px;">Error loading product</p>
-          </div>`
-        );
+        cardMap[placeholder] = `<div style="padding: 16px; background: ${bg}; border-radius: 12px; text-align: center; color: var(--systemSecondary); border: 1px solid var(--borderColor);"><span class="material-symbols-outlined" style="font-size: 32px; display: block; margin-bottom: 8px;">error</span><p style="margin: 0; font-size: 14px;">Error loading product</p></div>`;
       }
+      
+      processedContent = processedContent.replace(fullMatch, `\n\n${placeholder}\n\n`);
     }
 
     // Process AD shortcodes: [AD:name=...|price=...|link=...|logo=...|bg=#HEX]
@@ -93,6 +88,7 @@ export default function BlogArticleContent({ content, onTocExtracted }) {
     
     for (const match of adMatches) {
       const [fullMatch, paramString] = match;
+      const placeholder = `SHORTCODE_PLACEHOLDER_${cardIndex++}`;
       const params = {};
       paramString.split('|').forEach(pair => {
         const eqIndex = pair.indexOf('=');
@@ -110,12 +106,21 @@ export default function BlogArticleContent({ content, onTocExtracted }) {
         params.bg = 'var(--systemQuinary)';
       }
       
-      const cardHtml = createAdCardHTML(params);
-      processedContent = processedContent.replace(fullMatch, cardHtml);
+      cardMap[placeholder] = createAdCardHTML(params);
+      processedContent = processedContent.replace(fullMatch, `\n\n${placeholder}\n\n`);
     }
 
     // Step 2: Convert markdown to HTML
     let htmlContent = marked(processedContent, { renderer });
+    
+    // Step 3: Replace placeholders with actual card HTML AFTER markdown conversion
+    // This ensures cards are not wrapped in <p> tags
+    for (const [placeholder, cardHtml] of Object.entries(cardMap)) {
+      // marked wraps the placeholder text in <p> tags, so remove those
+      htmlContent = htmlContent.replace(`<p>${placeholder}</p>`, cardHtml);
+      // Fallback if marked didn't wrap it
+      htmlContent = htmlContent.replace(placeholder, cardHtml);
+    }
     
     setHtml(htmlContent);
     
