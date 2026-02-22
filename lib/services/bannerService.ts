@@ -13,6 +13,7 @@ import {
   updateDoc, 
   deleteDoc, 
   query, 
+  where,
   orderBy,
   Timestamp 
 } from 'firebase/firestore';
@@ -27,6 +28,8 @@ export interface Banner {
   imageUrl: string;
   theme: 'green' | 'dark' | 'purple';
   position: number;
+  placement: string;
+  isActive: boolean;
   createdAt?: Date | Timestamp;
   updatedAt?: Date | Timestamp;
 }
@@ -58,6 +61,8 @@ export async function getBanners(): Promise<Banner[]> {
         imageUrl: data.imageUrl || '',
         theme: data.theme || 'green',
         position: data.position || 0,
+        placement: data.placement || 'products',
+        isActive: data.isActive !== undefined ? data.isActive : true,
         createdAt: data.createdAt?.toDate?.() || data.createdAt,
         updatedAt: data.updatedAt?.toDate?.() || data.updatedAt
       });
@@ -89,6 +94,8 @@ export async function getBannerById(bannerId: string): Promise<Banner | null> {
         imageUrl: data.imageUrl || '',
         theme: data.theme || 'green',
         position: data.position || 0,
+        placement: data.placement || 'products',
+        isActive: data.isActive !== undefined ? data.isActive : true,
         createdAt: data.createdAt?.toDate?.() || data.createdAt,
         updatedAt: data.updatedAt?.toDate?.() || data.updatedAt
       };
@@ -144,6 +151,47 @@ export async function updateBanner(
       success: false, 
       error: error instanceof Error ? error.message : 'Unknown error' 
     };
+  }
+}
+
+/**
+ * Get banners by placement and active status
+ */
+export async function getBannersByPlacement(placement: string): Promise<Banner[]> {
+  try {
+    const bannersQuery = query(
+      collection(db, BANNERS_COLLECTION),
+      where('placement', '==', placement),
+      where('isActive', '==', true),
+      orderBy('position', 'asc')
+    );
+    
+    const querySnapshot = await getDocs(bannersQuery);
+    
+    const banners: Banner[] = [];
+    querySnapshot.forEach((doc) => {
+      const data = doc.data();
+      banners.push({
+        id: doc.id,
+        category: data.category || '',
+        title: data.title || '',
+        subtitle: data.subtitle || '',
+        ctaText: data.ctaText || '',
+        ctaLink: data.ctaLink || '',
+        imageUrl: data.imageUrl || '',
+        theme: data.theme || 'green',
+        position: data.position || 0,
+        placement: data.placement || placement,
+        isActive: data.isActive !== undefined ? data.isActive : true,
+        createdAt: data.createdAt?.toDate?.() || data.createdAt,
+        updatedAt: data.updatedAt?.toDate?.() || data.updatedAt
+      });
+    });
+    
+    return banners;
+  } catch (error) {
+    console.error('Error fetching banners by placement:', error);
+    return [];
   }
 }
 

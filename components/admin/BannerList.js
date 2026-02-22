@@ -104,7 +104,7 @@ export default function BannerList({ banners, onEdit, onDelete }) {
                 display: 'flex',
                 alignItems: 'center',
                 gap: 'var(--space-8)',
-                marginBottom: 'var(--space-16)',
+                marginBottom: 'var(--space-8)',
                 paddingTop: 'var(--space-12)',
                 borderTop: '1px solid var(--systemQuinary)'
               }}>
@@ -120,6 +120,50 @@ export default function BannerList({ banners, onEdit, onDelete }) {
                 }}>
                   {banner.ctaLink}
                 </span>
+              </div>
+
+              {/* Placement and Status */}
+              <div style={{
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'space-between',
+                marginBottom: 'var(--space-16)'
+              }}>
+                <div style={{
+                  display: 'flex',
+                  alignItems: 'center',
+                  gap: 'var(--space-8)'
+                }}>
+                  <span className="material-symbols-outlined" style={{ fontSize: '16px', color: 'var(--systemTertiary)' }}>
+                    location_on
+                  </span>
+                  <span style={{
+                    fontSize: 'var(--fs-caption)',
+                    color: 'var(--systemTertiary)',
+                    textTransform: 'capitalize'
+                  }}>
+                    {banner.placement || 'products'}
+                  </span>
+                </div>
+                <div style={{
+                  display: 'flex',
+                  alignItems: 'center',
+                  gap: 'var(--space-4)'
+                }}>
+                  <div style={{
+                    width: '8px',
+                    height: '8px',
+                    borderRadius: '50%',
+                    background: banner.isActive ? '#10b981' : '#ef4444'
+                  }} />
+                  <span style={{
+                    fontSize: 'var(--fs-caption)',
+                    color: banner.isActive ? '#10b981' : '#ef4444',
+                    fontWeight: 'var(--fw-medium'
+                  }}>
+                    {banner.isActive ? 'Active' : 'Inactive'}
+                  </span>
+                </div>
               </div>
 
               {/* Actions */}

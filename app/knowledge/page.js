@@ -4,6 +4,7 @@ import { useState, useEffect, useCallback } from 'react';
 import { getPublishedBlogArticles, getArticleCategories } from '../../lib/blog-firestore';
 import { getCategories, globalSearch } from '../../lib/firestore';
 import Sidebar from '@/components/sidebar';
+import GlobalBannerCarousel from '@/components/GlobalBannerCarousel';
 import BlogArticleTable from '@/components/BlogArticleTable';
 import GlobalSearchResults from '@/components/GlobalSearchResults';
 import { HeroSkeleton, TopicCardSkeleton, ArticleTableSkeleton, SectionHeaderSkeleton, LoadingSpinner } from '@/components/Skeleton';
@@ -221,68 +222,71 @@ export default function BlogPage() {
         ) : (
           /* Homepage view */
           <div className="blog-page-new">
-          {/* Hero Section - Same as app home page */}
-          <section className="hero-section">
-            <div className="hero-card">
-              <div className="hero-content">
-                <h1 className="hero-title">Your First Days in Germany, Sorted.</h1>
-                <p className="hero-subtitle">Complete guides to help you navigate life in Germany</p>
-                <p className="hero-creator">
-                  From the creator of
-                  <span className="hero-logos">
-                    <a href="https://expatova.com" target="_blank" rel="noopener noreferrer" className="hero-logo-link">
-                      <img src="/assets/Expatova.png" alt="Expatova" className="hero-logo" />
-                    </a>
-                    <a href="https://bullettin.app" target="_blank" rel="noopener noreferrer" className="hero-logo-link">
-                      <img src="/assets/Bullettin.applogo.png" alt="Bullettin" className="hero-logo" />
-                    </a>
-                    <a href="https://www.youtube.com/@expatova" target="_blank" rel="noopener noreferrer" className="hero-logo-link">
-                      <img src="/assets/YouTube.png" alt="YouTube" className="hero-logo" />
-                    </a>
-                  </span>
-                </p>
+            {/* Hero Section - Same as app home page */}
+            <section className="hero-section">
+              <div className="hero-card">
+                <div className="hero-content">
+                  <h1 className="hero-title">Your First Days in Germany, Sorted.</h1>
+                  <p className="hero-subtitle">Complete guides to help you navigate life in Germany</p>
+                  <p className="hero-creator">
+                    From the creator of
+                    <span className="hero-logos">
+                      <a href="https://expatova.com" target="_blank" rel="noopener noreferrer" className="hero-logo-link">
+                        <img src="/assets/Expatova.png" alt="Expatova" className="hero-logo" />
+                      </a>
+                      <a href="https://bullettin.app" target="_blank" rel="noopener noreferrer" className="hero-logo-link">
+                        <img src="/assets/Bullettin.applogo.png" alt="Bullettin" className="hero-logo" />
+                      </a>
+                      <a href="https://www.youtube.com/@expatova" target="_blank" rel="noopener noreferrer" className="hero-logo-link">
+                        <img src="/assets/YouTube.png" alt="YouTube" className="hero-logo" />
+                      </a>
+                    </span>
+                  </p>
+                </div>
               </div>
-            </div>
-          </section>
+            </section>
+
+            {/* Global Banner Carousel */}
+            <GlobalBannerCarousel placement="knowledge" />
 
           {/* Topic Cards - Detailed App-Style Cards */}
-          <section className="topic-cards-section">
-            <div className="topic-cards-container">
-              <h2 className="section-title">What do you need help with?</h2>
-              
-              <div className="topic-cards-grid">
-                {topics.map((topic) => (
-                  <button 
-                    key={topic.title} 
-                    onClick={() => handleCategoryChange(topic.title)}
-                    className="topic-card"
-                  >
-                    {/* Large Icon with Border */}
-                    <div className="topic-icon-container">
-                      <span className="material-symbols-outlined topic-icon">
-                        {topic.icon}
-                      </span>
-                    </div>
-                    
-                    {/* Category Info */}
-                    <div className="topic-info">
-                      <h3 className="topic-title">{topic.title}</h3>
-                      <p className="topic-description">{topic.description}</p>
-                      <p className="topic-count">{topic.count} {topic.count === 1 ? 'guide' : 'guides'}</p>
-                      <span className="topic-button">Read More</span>
-                    </div>
-                  </button>
-                ))}
+            <section className="topic-cards-section">
+              <div className="topic-cards-container">
+                <h2 className="section-title">What do you need help with?</h2>
+                
+                <div className="topic-cards-grid">
+                  {topics.map((topic) => (
+                    <button 
+                      key={topic.title} 
+                      onClick={() => handleCategoryChange(topic.title)}
+                      className="topic-card"
+                    >
+                      {/* Large Icon with Border */}
+                      <div className="topic-icon-container">
+                        <span className="material-symbols-outlined topic-icon">
+                          {topic.icon}
+                        </span>
+                      </div>
+                      
+                      {/* Category Info */}
+                      <div className="topic-info">
+                        <h3 className="topic-title">{topic.title}</h3>
+                        <p className="topic-description">{topic.description}</p>
+                        <p className="topic-count">{topic.count} {topic.count === 1 ? 'guide' : 'guides'}</p>
+                        <span className="topic-button">Read More</span>
+                      </div>
+                    </button>
+                  ))}
+                </div>
+                
+                <div className="view-all-container">
+                  <Link href="/knowledge/all" className="view-all-btn">
+                    View all guides →
+                  </Link>
+                </div>
               </div>
-              
-              <div className="view-all-container">
-                <Link href="/knowledge/all" className="view-all-btn">
-                  View all guides →
-                </Link>
-              </div>
-            </div>
-          </section>
-        </div>
+            </section>
+          </div>
         )}
       </main>
     </div>

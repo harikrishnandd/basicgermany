@@ -12,10 +12,21 @@ export default function BannerForm({ banner, onSuccess, onCancel }) {
     imageUrl: '',
     ctaText: '',
     ctaLink: '',
-    position: 1
+    position: 1,
+    placement: 'apps',
+    isActive: true
   });
   const [saving, setSaving] = useState(false);
   const [error, setError] = useState('');
+
+  const placementOptions = [
+    { value: 'apps', label: 'Apps Page' },
+    { value: 'knowledge', label: 'Knowledge Page' },
+    { value: 'products', label: 'Products Page' },
+    { value: 'today', label: 'Today Page' },
+    { value: 'news', label: 'News Page' },
+    { value: 'jobs', label: 'Jobs Page' }
+  ];
 
   useEffect(() => {
     if (banner) {
@@ -27,16 +38,19 @@ export default function BannerForm({ banner, onSuccess, onCancel }) {
         imageUrl: banner.imageUrl || '',
         ctaText: banner.ctaText || '',
         ctaLink: banner.ctaLink || '',
-        position: banner.position || 1
+        position: banner.position || 1,
+        placement: banner.placement || 'apps',
+        isActive: banner.isActive !== undefined ? banner.isActive : true
       });
     }
   }, [banner]);
 
   const handleChange = (e) => {
-    const { name, value } = e.target;
+    const { name, value, type } = e.target;
     setFormData(prev => ({
       ...prev,
-      [name]: name === 'position' ? parseInt(value) || 1 : value
+      [name]: type === 'checkbox' ? e.target.checked : 
+              name === 'position' ? parseInt(value) || 1 : value
     }));
   };
 
@@ -395,7 +409,7 @@ export default function BannerForm({ banner, onSuccess, onCancel }) {
           </div>
 
           {/* Position */}
-          <div style={{ marginBottom: 'var(--space-24)' }}>
+          <div style={{ marginBottom: 'var(--space-20)' }}>
             <label style={{
               display: 'block',
               fontSize: 'var(--fs-body)',
@@ -428,6 +442,81 @@ export default function BannerForm({ banner, onSuccess, onCancel }) {
               marginTop: 'var(--space-4)'
             }}>
               Controls the order in the carousel (1 = first)
+            </p>
+          </div>
+
+          {/* Placement */}
+          <div style={{ marginBottom: 'var(--space-20)' }}>
+            <label style={{
+              display: 'block',
+              fontSize: 'var(--fs-body)',
+              fontWeight: 'var(--fw-semibold)',
+              color: 'var(--systemPrimary)',
+              marginBottom: 'var(--space-8)'
+            }}>
+              Placement <span style={{ color: 'var(--systemRed)' }}>*</span>
+            </label>
+            <select
+              name="placement"
+              value={formData.placement}
+              onChange={handleChange}
+              style={{
+                width: '100%',
+                padding: 'var(--space-12) var(--space-16)',
+                background: 'var(--systemSenary)',
+                border: 'var(--keylineBorder)',
+                borderRadius: 'var(--radius-medium)',
+                fontSize: 'var(--fs-body)',
+                color: 'var(--systemPrimary)',
+                outline: 'none'
+              }}
+            >
+              {placementOptions.map((option) => (
+                <option key={option.value} value={option.value}>
+                  {option.label}
+                </option>
+              ))}
+            </select>
+            <p style={{
+              fontSize: 'var(--fs-caption)',
+              color: 'var(--systemTertiary)',
+              marginTop: 'var(--space-4)'
+            }}>
+              Which page this banner should appear on
+            </p>
+          </div>
+
+          {/* Active Status */}
+          <div style={{ marginBottom: 'var(--space-24)' }}>
+            <label style={{
+              display: 'flex',
+              alignItems: 'center',
+              gap: 'var(--space-12)',
+              cursor: 'pointer',
+              fontSize: 'var(--fs-body)',
+              fontWeight: 'var(--fw-semibold)',
+              color: 'var(--systemPrimary)'
+            }}>
+              <input
+                type="checkbox"
+                name="isActive"
+                checked={formData.isActive}
+                onChange={handleChange}
+                style={{
+                  width: '20px',
+                  height: '20px',
+                  cursor: 'pointer'
+                }}
+              />
+              <span>Active</span>
+            </label>
+            <p style={{
+              fontSize: 'var(--fs-caption)',
+              color: 'var(--systemTertiary)',
+              marginTop: 'var(--space-4)',
+              marginLeft: '32px'
+            }}>
+              Whether this banner is currently visible on the frontend
             </p>
           </div>
 

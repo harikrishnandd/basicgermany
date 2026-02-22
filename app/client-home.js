@@ -2,6 +2,7 @@
 
 import { useState, useMemo, useEffect, useCallback } from 'react';
 import Sidebar from '@/components/sidebar';
+import GlobalBannerCarousel from '@/components/GlobalBannerCarousel';
 import AppCard from '@/components/app-card';
 import AppCardCompact from '@/components/app-card-compact';
 import ScrollNav from '@/components/scroll-nav';
@@ -194,6 +195,11 @@ export default function ClientHome() {
               </div>
             </div>
           </section>
+        )}
+
+        {/* Global Banner Carousel - Only show on home page */}
+        {activeCategory === 'all' && !searchQuery && (
+          <GlobalBannerCarousel placement="apps" />
         )}
 
         {/* Horizontal Categories - Only show on home page */}
