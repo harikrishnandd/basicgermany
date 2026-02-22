@@ -190,10 +190,10 @@
 }
 
 .faq-item {
-    background: var(--cardBg);
+    background: var(--navSidebarBG);
     border-radius: var(--radius-medium);
     overflow: hidden;
-    border: 1px solid var(--separatorNonOpaque);
+    border: 2px solid var(--borderColor);
 }
 
 .faq-question {
