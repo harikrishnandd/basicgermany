@@ -34,7 +34,8 @@ export default function ItemsManagementPage() {
     link: '',
     price: 0,
     free: true,
-    currency: 'euro_symbol'
+    currency: 'euro_symbol',
+    targetSection: ''
   });
 
   useEffect(() => {
@@ -91,7 +92,8 @@ export default function ItemsManagementPage() {
       link: '',
       price: 0,
       free: true,
-      currency: 'euro_symbol'
+      currency: 'euro_symbol',
+      targetSection: ''
     });
     setEditingItem(null);
   };
@@ -106,10 +108,16 @@ export default function ItemsManagementPage() {
         link: item.link || '',
         price: item.price || 0,
         free: item.free !== false,
-        currency: item.currency || 'euro_symbol'
+        currency: item.currency || 'euro_symbol',
+        targetSection: selectedSection?.id || ''
       });
     } else {
       resetItemForm();
+      // Set default target section to currently selected section
+      setItemForm(prev => ({
+        ...prev,
+        targetSection: selectedSection?.id || ''
+      }));
     }
     setShowItemModal(true);
   };
@@ -121,7 +129,7 @@ export default function ItemsManagementPage() {
 
   const handleItemSubmit = async (e) => {
     e.preventDefault();
-    if (!selectedSection) return;
+    if (!itemForm.targetSection) return;
 
     const itemData = {
       name: itemForm.name,
@@ -136,16 +144,24 @@ export default function ItemsManagementPage() {
       if (editingItem) {
         // Remove old item and add new one (edit)
         await removeProductItem(selectedSection.id, editingItem);
-        await addProductItem(selectedSection.id, itemData);
+        await addProductItem(itemForm.targetSection, itemData);
         alert('Item updated successfully!');
       } else {
         // Add new item
-        await addProductItem(selectedSection.id, itemData);
+        await addProductItem(itemForm.targetSection, itemData);
         alert('Item added successfully!');
       }
 
       closeItemModal();
       loadSections(); // Refresh data
+      
+      // If we added to a different section, switch to that section
+      if (itemForm.targetSection !== selectedSection?.id) {
+        const newSection = sections.find(s => s.id === itemForm.targetSection);
+        if (newSection) {
+          setSelectedSection(newSection);
+        }
+      }
     } catch (error) {
       console.error('Error saving item:', error);
       alert('Failed to save item');
@@ -623,11 +639,48 @@ export default function ItemsManagementPage() {
                     color: 'var(--systemSecondary)',
                     margin: 'var(--space-8) 0 0 0'
                   }}>
-                    {selectedSection?.name} section
+                    {editingItem ? `Editing in ${selectedSection?.name} section` : 'Select target section below'}
                   </p>
                 </div>
 
                 <form onSubmit={handleItemSubmit} style={{ padding: 'var(--space-24)' }}>
+                  {!editingItem && (
+                    <div style={{ marginBottom: 'var(--space-20)' }}>
+                      <label style={{
+                        display: 'block',
+                        fontSize: 'var(--fs-footnote)',
+                        fontWeight: 'var(--fw-medium)',
+                        color: 'var(--systemPrimary)',
+                        marginBottom: 'var(--space-8)'
+                      }}>
+                        Target Section *
+                      </label>
+                      <select
+                        value={itemForm.targetSection}
+                        onChange={(e) => setItemForm({ ...itemForm, targetSection: e.target.value })}
+                        required
+                        style={{
+                          width: '100%',
+                          padding: 'var(--space-12) var(--space-16)',
+                          background: 'var(--systemSenary)',
+                          border: 'var(--keylineBorder)',
+                          borderRadius: 'var(--radius-medium)',
+                          fontSize: 'var(--fs-body)',
+                          color: 'var(--systemPrimary)',
+                          outline: 'none',
+                          cursor: 'pointer'
+                        }}
+                      >
+                        <option value="">Select a section...</option>
+                        {sections.map((section) => (
+                          <option key={section.id} value={section.id}>
+                            {section.name} ({section.items?.length || 0} items)
+                          </option>
+                        ))}
+                      </select>
+                    </div>
+                  )}
+
                   <div style={{ marginBottom: 'var(--space-20)' }}>
                     <label style={{
                       display: 'block',
