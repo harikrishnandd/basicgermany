@@ -591,7 +591,7 @@ const DynamicSearch = () => {
           <span className="material-symbols-outlined" style={{
             position: 'absolute',
             left: '16px',
-            color: 'var(--systemSecondary)',
+            color: 'var(--keyColor)',
             fontSize: '20px',
             pointerEvents: 'none'
           }}>
@@ -606,8 +606,8 @@ const DynamicSearch = () => {
               width: '100%',
               padding: '16px 16px 16px 48px',
               borderRadius: '24px',
-              border: '1px solid var(--borderColor)',
-              background: 'var(--systemSecondary)',
+              border: '1px solid var(--keyColor)',
+              background: 'transparent',
               fontSize: '16px',
               color: 'var(--systemPrimary)',
               outline: 'none',
@@ -762,28 +762,9 @@ export default function TodayHomepage() {
           <HeroBanner banners={banners} />
         </LazySection>
         
-        {/* Quick-Start Hub */}
-        <LazySection>
-          <QuickStartHub />
-        </LazySection>
-        
-        {/* Recent Knowledge */}
-        <LazySection>
-          <RecentKnowledge />
-        </LazySection>
-        
         {/* Featured Categories */}
         <LazySection>
-          <section className="featured-categories" style={{ marginBottom: '48px' }}>
-            <h2 style={{
-              fontSize: '28px',
-              fontWeight: '600',
-              color: 'var(--systemPrimary)',
-              margin: '0 0 20px 0'
-            }}>
-              Explore Categories
-            </h2>
-            
+          <section className="featured-categories" style={{ marginBottom: '32px' }}>
             <div className="categories-scroll" style={{
               display: 'flex',
               gap: '16px',
@@ -817,6 +798,16 @@ export default function TodayHomepage() {
               ))}
             </div>
           </section>
+        </LazySection>
+        
+        {/* Quick-Start Hub */}
+        <LazySection>
+          <QuickStartHub />
+        </LazySection>
+        
+        {/* Recent Knowledge */}
+        <LazySection>
+          <RecentKnowledge />
         </LazySection>
       </main>
     </div>

@@ -38,12 +38,28 @@
 .hero-slide > div {
   position: relative;
   z-index: 2;
-  background: rgba(0,0,0,0.6);
-  backdrop-filter: blur(10px);
+  background: rgba(0,0,0,0.7);
+  backdrop-filter: blur(12px);
   padding: 20px;
   border-radius: 16px;
   width: 100%;
-  border: 1px solid rgba(255,255,255,0.1);
+  border: 1px solid rgba(255,255,255,0.15);
+}
+
+/* Light mode banner adjustments */
+@media (prefers-color-scheme: light) {
+  .hero-slide > div {
+    background: rgba(255,255,255,0.9);
+    border: 1px solid rgba(0,0,0,0.1);
+  }
+  
+  .hero-slide > div h2 {
+    color: var(--systemPrimary);
+  }
+  
+  .hero-slide > div p {
+    color: var(--systemSecondary);
+  }
 }
 
 .hero-slides {
@@ -153,8 +169,8 @@
   width: 100%;
   padding: 16px 16px 16px 48px;
   border-radius: 24px;
-  border: 1px solid var(--borderColor);
-  background: var(--systemSecondary);
+  border: 1px solid var(--keyColor);
+  background: transparent;
   font-size: 16px;
   color: var(--systemPrimary);
   outline: none;
@@ -164,7 +180,7 @@
 .search-input-container input:focus {
   border-color: var(--keyColor);
   box-shadow: 0 0 0 3px rgba(0,122,255,0.1);
-  background: var(--cardBg);
+  background: transparent;
 }
 
 .search-results {
@@ -242,7 +258,7 @@
   .hero-carousel {
     height: 200px;
     border-radius: 16px;
-    margin-bottom: 24px;
+    margin-bottom: 16px;
   }
   
   .hero-slide {
@@ -261,9 +277,18 @@
     font-size: 14px;
   }
   
+  .dynamic-search {
+    margin-bottom: 16px;
+  }
+  
   .dynamic-search .search-wrapper {
-    width: 90%;
+    width: 100%;
     max-width: none;
+  }
+  
+  .hero-dots button {
+    width: 6px;
+    height: 6px;
   }
   
   .quick-start-grid {
