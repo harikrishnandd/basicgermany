@@ -3,6 +3,7 @@
 import { useState, useEffect, useCallback } from 'react';
 import { getPublishedBlogArticles, getArticleCategories } from '../../lib/blog-firestore';
 import { getCategories, globalSearch } from '../../lib/firestore';
+import { getAllProductSections } from '@/lib/services/productsService';
 import Sidebar from '@/components/sidebar';
 import BlogArticleTable from '@/components/BlogArticleTable';
 import GlobalSearchResults from '@/components/GlobalSearchResults';
@@ -14,6 +15,7 @@ export default function BlogPage() {
   const [articles, setArticles] = useState([]);
   const [categories, setCategories] = useState([]);
   const [appCategories, setAppCategories] = useState([]);
+  const [productSections, setProductSections] = useState([]);
   const [loading, setLoading] = useState(true);
   const [selectedCategory, setSelectedCategory] = useState(null);
   const [searchQuery, setSearchQuery] = useState('');
@@ -56,14 +58,16 @@ export default function BlogPage() {
   const loadData = async () => {
     setLoading(true);
     try {
-      const [articlesData, categoriesData, appCategoriesData] = await Promise.all([
+      const [articlesData, categoriesData, appCategoriesData, productSectionsData] = await Promise.all([
         getPublishedBlogArticles({ sortBy: 'datePublished', sortOrder: 'desc' }),
         getArticleCategories(),
-        getCategories()
+        getCategories(),
+        getAllProductSections()
       ]);
       setArticles(articlesData);
       setCategories(categoriesData);
       setAppCategories(appCategoriesData);
+      setProductSections(productSectionsData);
     } catch (error) {
       console.error('Error loading blog data:', error);
     }
@@ -185,6 +189,7 @@ export default function BlogPage() {
         onCategoryChange={() => {}} 
         onSearch={setSearchQuery} 
         currentPage="knowledge"
+        productSections={productSections}
       />
       <main className="main-content">
         {/* Show search results when searching */}

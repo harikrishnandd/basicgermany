@@ -194,8 +194,8 @@ export default function Sidebar({ categories, activeCategory, onCategoryChange, 
             </ul>
           </div>
 
-          {/* Product Sections - Only show if sidebar: true */}
-          {currentPage === 'products' && productSections && productSections.length > 0 && (
+          {/* Product Sections - Show on all pages if sidebar: true */}
+          {productSections && productSections.length > 0 && (
             <div className="navigation-section">
               <ul className="navigation-list categories-list">
                 {productSections
