@@ -1,6 +1,7 @@
 // Server component wrapper (no 'use client')
 import ArticlePageClient from './ArticlePageClient';
 import { getArticleSlugs, getArticleData, getRelatedArticlesData } from './utils';
+import { getRecommendedAppsForArticle } from '@/lib/services/relatedContentService';
 import JsonLd from '@/components/SEO/JsonLd';
 
 // Allow dynamic generation for new/updated articles
@@ -98,15 +99,19 @@ export default async function ArticlePage(props) {
 
   // Handle case where slug might be undefined or placeholder
   if (!params?.slug || params.slug === 'placeholder-article') {
-    return <ArticlePageClient article={null} content="" relatedArticles={[]} />;
+    return <ArticlePageClient article={null} content="" relatedArticles={[]} recommendedApps={[]} />;
   }
 
   const { article, content } = await getArticleData(params.slug);
 
-  // Fetch related articles if article exists
+  // Fetch related content if article exists
   let relatedArticles = [];
+  let recommendedApps = [];
   if (article) {
-    relatedArticles = await getRelatedArticlesData(article.id, article.category, 3);
+    [relatedArticles, recommendedApps] = await Promise.all([
+      getRelatedArticlesData(article.id, article.category, 3),
+      getRecommendedAppsForArticle(article.category, 3)
+    ]);
   }
 
   // Automated SEO: Generate all schema markup using reusable JsonLd component
@@ -123,7 +128,7 @@ export default async function ArticlePage(props) {
         </>
       )}
 
-      <ArticlePageClient article={article} content={content} relatedArticles={relatedArticles} />
+      <ArticlePageClient article={article} content={content} relatedArticles={relatedArticles} recommendedApps={recommendedApps} />
     </>
   );
 }

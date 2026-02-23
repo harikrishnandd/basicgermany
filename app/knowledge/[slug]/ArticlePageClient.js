@@ -8,6 +8,7 @@ import SocialShare from '@/components/SocialShare';
 import Sidebar from '@/components/sidebar';
 import Breadcrumbs from '@/components/Breadcrumbs';
 import FAQSection from '@/components/Article/FAQSection';
+import RecommendedApps from '@/components/RecommendedApps';
 import BlogArticleContent from '@/components/blog/BlogArticleContent';
 import { getCategories } from '@/lib/firestore';
 import '../../../app/styles/blog-article.css';
@@ -25,7 +26,7 @@ function slugify(text) {
     .replace(/-+$/, '');         // Trim - from end of text
 }
 
-export default function ArticlePageClient({ article: initialArticle, content: initialContent, relatedArticles: initialRelatedArticles }) {
+export default function ArticlePageClient({ article: initialArticle, content: initialContent, relatedArticles: initialRelatedArticles, recommendedApps: initialRecommendedApps }) {
   // Whitelist: Extract ONLY public fields that should be visible to users
   // Everything else (SEO metadata, affiliate, improvements, etc.) is hidden
   const extractPublicData = (articleData) => {
@@ -50,6 +51,7 @@ export default function ArticlePageClient({ article: initialArticle, content: in
   const [publicData, setPublicData] = useState(extractPublicData(initialArticle));
   const [content, setContent] = useState(initialContent);
   const [relatedArticles, setRelatedArticles] = useState(initialRelatedArticles || []);
+  const [recommendedApps, setRecommendedApps] = useState(initialRecommendedApps || []);
   const [loading, setLoading] = useState(false);
   const [appCategories, setAppCategories] = useState([]);
   const [tocItems, setTocItems] = useState([]);
@@ -341,6 +343,11 @@ export default function ArticlePageClient({ article: initialArticle, content: in
 
         {/* FAQ Accordion Section with SEO Schema */}
         <FAQSection faqs={publicData.faqs} articleTitle={publicData.title} />
+
+        {/* Recommended Apps - Cross-category internal linking */}
+        {recommendedApps.length > 0 && (
+          <RecommendedApps apps={recommendedApps} category={publicData.category} />
+        )}
 
         {/* Author Bio with Stats - E-E-A-T Signal */}
         <AuthorBio 
