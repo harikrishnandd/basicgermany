@@ -32,24 +32,17 @@ export default function ClientHome() {
 
   useEffect(() => {
     async function fetchData() {
-      console.log('[ClientHome] Starting data fetch...');
       try {
-        console.log('[ClientHome] Fetching apps and categories...');
         const [appsData, categoriesData] = await Promise.all([
           getAllApps(),
           getCategories()
         ]);
-        console.log('[ClientHome] Apps data:', appsData);
-        console.log('[ClientHome] Categories data:', categoriesData);
         setApps(appsData.apps || []);
         setCategories(categoriesData || []);
-        console.log('[ClientHome] Data set successfully');
       } catch (error) {
-        console.error('[ClientHome] Error fetching data:', error);
-        console.error('[ClientHome] Error details:', error.message, error.stack);
+        console.error('Error fetching data:', error);
       } finally {
         setLoading(false);
-        console.log('[ClientHome] Loading complete');
       }
     }
     fetchData();
