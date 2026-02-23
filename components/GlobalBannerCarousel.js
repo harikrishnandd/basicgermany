@@ -3,12 +3,19 @@
 import { useState, useEffect, memo } from 'react';
 import { getBannersByPlacement } from '../lib/services/bannerService';
 
-function GlobalBannerCarousel({ placement }) {
-  const [banners, setBanners] = useState([]);
+function GlobalBannerCarousel({ placement, banners: initialBanners }) {
+  const [banners, setBanners] = useState(initialBanners || []);
   const [currentSlide, setCurrentSlide] = useState(0);
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(!initialBanners);
 
   useEffect(() => {
+    // Skip fetching if banners are already provided (server-side)
+    if (initialBanners && Array.isArray(initialBanners)) {
+      setLoading(false);
+      return;
+    }
+
+    // Client-side fetching fallback
     const loadBanners = async () => {
       try {
         const fetchedBanners = await getBannersByPlacement(placement);
@@ -26,7 +33,7 @@ function GlobalBannerCarousel({ placement }) {
     };
 
     loadBanners();
-  }, [placement]);
+  }, [placement, initialBanners]);
 
   useEffect(() => {
     if (banners.length <= 1) return;

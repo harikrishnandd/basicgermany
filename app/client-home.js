@@ -11,7 +11,7 @@ import DynamicBreadcrumbs, { generateAppsBreadcrumbs } from '@/components/Dynami
 import { AppGridSkeleton, CategoryPillSkeleton, HeroSkeleton, SectionHeaderSkeleton, LoadingSpinner } from '@/components/Skeleton';
 import { getAllApps, getCategories, globalSearch } from '@/lib/firestore';
 
-export default function ClientHome() {
+export default function ClientHome({ banners: initialBanners }) {
   const [activeCategory, setActiveCategory] = useState('all');
   const [searchQuery, setSearchQuery] = useState('');
   const [apps, setApps] = useState([]);
@@ -19,6 +19,7 @@ export default function ClientHome() {
   const [loading, setLoading] = useState(true);
   const [searchResults, setSearchResults] = useState({ apps: [], knowledge: [], news: [], products: [] });
   const [isSearching, setIsSearching] = useState(false);
+  const [banners, setBanners] = useState(initialBanners || []);
 
   // Handle category change with URL update (hybrid navigation)
   const handleCategoryChange = useCallback((category) => {
@@ -200,7 +201,7 @@ export default function ClientHome() {
 
         {/* Global Banner Carousel - Only show on home page */}
         {activeCategory === 'all' && !searchQuery && (
-          <GlobalBannerCarousel placement="apps" />
+          <GlobalBannerCarousel placement="apps" banners={banners} />
         )}
 
         {/* Horizontal Categories - Only show on home page */}

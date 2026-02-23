@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import { addBanner, updateBanner } from '../../lib/services/bannerService';
+import BannerPreview from './BannerPreview';
 
 export default function BannerForm({ banner, onSuccess, onCancel }) {
   const [formData, setFormData] = useState({
@@ -21,6 +22,7 @@ export default function BannerForm({ banner, onSuccess, onCancel }) {
   });
   const [saving, setSaving] = useState(false);
   const [error, setError] = useState('');
+  const [showPreview, setShowPreview] = useState(false);
 
   const placementOptions = [
     { value: 'apps', label: 'Apps Page' },
@@ -741,12 +743,7 @@ export default function BannerForm({ banner, onSuccess, onCancel }) {
           </div>
 
           {/* Action Buttons */}
-          <div style={{
-            display: 'flex',
-            gap: 'var(--space-12)',
-            paddingTop: 'var(--space-24)',
-            borderTop: '1px solid var(--systemQuinary)'
-          }}>
+          <div style={{ display: 'flex', gap: 'var(--space-12)', marginTop: 'var(--space-24)' }}>
             <button
               type="button"
               onClick={onCancel}
@@ -766,6 +763,31 @@ export default function BannerForm({ banner, onSuccess, onCancel }) {
               }}
             >
               Cancel
+            </button>
+            <button
+              type="button"
+              onClick={() => setShowPreview(true)}
+              disabled={saving}
+              style={{
+                flex: 1,
+                padding: 'var(--space-12) var(--space-24)',
+                background: 'var(--systemTertiary)',
+                color: 'var(--systemPrimary)',
+                border: 'none',
+                borderRadius: 'var(--radius-medium)',
+                fontSize: 'var(--fs-body)',
+                fontWeight: 'var(--fw-semibold)',
+                cursor: saving ? 'not-allowed' : 'pointer',
+                opacity: saving ? 0.5 : 1,
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                gap: 'var(--space-8)',
+                transition: 'opacity var(--transition-fast)'
+              }}
+            >
+              <span className="material-symbols-outlined" style={{ fontSize: '20px' }}>visibility</span>
+              Preview
             </button>
             <button
               type="submit"
@@ -803,6 +825,13 @@ export default function BannerForm({ banner, onSuccess, onCancel }) {
           </div>
         </div>
       </form>
+
+      {/* Preview Modal */}
+      <BannerPreview 
+        banner={formData} 
+        isOpen={showPreview} 
+        onClose={() => setShowPreview(false)} 
+      />
     </div>
   );
 }
