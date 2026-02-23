@@ -4,6 +4,7 @@ import { useState, useEffect, useCallback } from 'react';
 import Sidebar from '@/components/sidebar';
 import ProductCarousel from '@/components/ProductCarousel';
 import ProductCard from '@/components/Products/product-card';
+import DynamicBreadcrumbs, { generateProductsBreadcrumbs } from '@/components/DynamicBreadcrumbs';
 import Link from 'next/link';
 
 /**
@@ -62,35 +63,10 @@ export default function ClientProductsPage({ categories, banners, productSection
           {selectedCategory && currentSection ? (
             // Category Detail View
             <div>
-              {/* Breadcrumb */}
-              <div style={{ 
-                padding: 'var(--space-16) 0',
-                marginBottom: 'var(--space-16)'
-              }}>
-                <button 
-                  onClick={() => handleCategoryChange(null)} 
-                  style={{
-                    display: 'inline-flex',
-                    alignItems: 'center',
-                    gap: 'var(--space-8)',
-                    color: 'var(--keyColor)',
-                    background: 'none',
-                    border: 'none',
-                    textDecoration: 'none',
-                    fontSize: 'var(--fs-body)',
-                    fontWeight: 'var(--fw-medium)',
-                    cursor: 'pointer',
-                    transition: 'opacity var(--transition-fast)'
-                  }}
-                  onMouseOver={(e) => e.currentTarget.style.opacity = '0.7'}
-                  onMouseOut={(e) => e.currentTarget.style.opacity = '1'}
-                >
-                  <span className="material-symbols-outlined" style={{ fontSize: '20px' }}>
-                    arrow_back
-                  </span>
-                  Back to Products
-                </button>
-              </div>
+              {/* Breadcrumbs */}
+              <DynamicBreadcrumbs 
+                items={generateProductsBreadcrumbs(selectedCategory, null)}
+              />
 
               {/* Section Header */}
               <section className="apps-section">

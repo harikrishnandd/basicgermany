@@ -7,6 +7,7 @@ import AppCard from '@/components/app-card';
 import AppCardCompact from '@/components/app-card-compact';
 import ScrollNav from '@/components/scroll-nav';
 import GlobalSearchResults from '@/components/GlobalSearchResults';
+import DynamicBreadcrumbs, { generateAppsBreadcrumbs } from '@/components/DynamicBreadcrumbs';
 import { AppGridSkeleton, CategoryPillSkeleton, HeroSkeleton, SectionHeaderSkeleton, LoadingSpinner } from '@/components/Skeleton';
 import { getAllApps, getCategories, globalSearch } from '@/lib/firestore';
 
@@ -255,6 +256,16 @@ export default function ClientHome() {
               ))}
             </ScrollNav>
           </section>
+        )}
+
+        {/* Breadcrumbs - Show when category is selected */}
+        {activeCategory !== 'all' && !searchQuery && (
+          <DynamicBreadcrumbs 
+            items={generateAppsBreadcrumbs(
+              categories.find(c => c.id === activeCategory)?.name || activeCategory,
+              null
+            )}
+          />
         )}
 
         {/* Section Header */}

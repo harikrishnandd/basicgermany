@@ -98,8 +98,33 @@ function generateArticleSchema(data) {
 
 /**
  * Generate BreadcrumbList schema with full hierarchy
+ * Supports dynamic breadcrumb items for Apps, Products, and Knowledge pages
  */
 function generateBreadcrumbSchema(data) {
+  // Support both legacy format and new dynamic items format
+  if (data.items) {
+    // New format: dynamic breadcrumb items
+    const schemaItems = data.items.map((item, index) => ({
+      "@type": "ListItem",
+      "position": index + 1,
+      "name": sanitizeForJSON(item.label),
+      "item": item.href ? {
+        "@type": "WebPage",
+        "@id": `https://basicgermany.com${item.href}`,
+        "url": `https://basicgermany.com${item.href}`,
+        "name": sanitizeForJSON(item.label)
+      } : undefined
+    }));
+
+    return {
+      "@context": "https://schema.org",
+      "@type": "BreadcrumbList",
+      "numberOfItems": schemaItems.length,
+      "itemListElement": schemaItems
+    };
+  }
+
+  // Legacy format: Knowledge Hub articles
   const { category, slug, title } = data;
 
   const items = [
