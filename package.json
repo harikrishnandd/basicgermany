@@ -4,10 +4,9 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
-    "build": "next build && rm -f out/favicon.ico",
+    "build": "next build",
     "start": "next start",
-    "lint": "eslint",
-    "deploy": "npm run build && firebase deploy"
+    "lint": "eslint"
   },
   "dependencies": {
     "firebase": "^12.9.0",
