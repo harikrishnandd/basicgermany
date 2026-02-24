@@ -743,85 +743,126 @@ export default function BannerForm({ banner, onSuccess, onCancel }) {
           </div>
 
           {/* Action Buttons */}
-          <div style={{ display: 'flex', gap: 'var(--space-12)', marginTop: 'var(--space-24)' }}>
-            <button
-              type="button"
-              onClick={onCancel}
-              disabled={saving}
-              style={{
-                flex: 1,
-                padding: 'var(--space-12) var(--space-24)',
-                background: 'var(--systemQuaternary)',
-                color: 'var(--systemPrimary)',
-                border: 'none',
-                borderRadius: 'var(--radius-medium)',
-                fontSize: 'var(--fs-body)',
-                fontWeight: 'var(--fw-semibold)',
-                cursor: saving ? 'not-allowed' : 'pointer',
-                opacity: saving ? 0.5 : 1,
-                transition: 'opacity var(--transition-fast)'
-              }}
-            >
-              Cancel
-            </button>
-            <button
-              type="button"
-              onClick={() => setShowPreview(true)}
-              disabled={saving}
-              style={{
-                flex: 1,
-                padding: 'var(--space-12) var(--space-24)',
-                background: 'var(--systemTertiary)',
-                color: 'var(--systemPrimary)',
-                border: 'none',
-                borderRadius: 'var(--radius-medium)',
-                fontSize: 'var(--fs-body)',
-                fontWeight: 'var(--fw-semibold)',
-                cursor: saving ? 'not-allowed' : 'pointer',
-                opacity: saving ? 0.5 : 1,
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-                gap: 'var(--space-8)',
-                transition: 'opacity var(--transition-fast)'
-              }}
-            >
-              <span className="material-symbols-outlined" style={{ fontSize: '20px' }}>visibility</span>
-              Preview
-            </button>
-            <button
-              type="submit"
-              disabled={saving}
-              style={{
-                flex: 1,
-                padding: 'var(--space-12) var(--space-24)',
-                background: 'var(--keyColor)',
-                color: 'white',
-                border: 'none',
-                borderRadius: 'var(--radius-medium)',
-                fontSize: 'var(--fs-body)',
-                fontWeight: 'var(--fw-semibold)',
-                cursor: saving ? 'not-allowed' : 'pointer',
-                opacity: saving ? 0.7 : 1,
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-                gap: 'var(--space-8)',
-                transition: 'opacity var(--transition-fast)'
-              }}
-            >
-              {saving ? (
-                <>
-                  <div className="spinner" style={{ width: '16px', height: '16px' }} />
-                  Saving...
-                </>
-              ) : (
-                <>
-                  <span className="material-symbols-outlined" style={{ fontSize: '20px' }}>save</span>
-                  {banner ? 'Update Banner' : 'Create Banner'}
-                </>
-              )}
-            </button>
+          <div style={{
+            display: 'flex',
+            gap: 'var(--space-12)',
+            marginTop: 'var(--space-24)'
+          }}>
+            {/* Delete Button - Only show when editing */}
+            {banner && (
+              <button
+                type="button"
+                onClick={() => {
+                  if (confirm('Are you sure you want to delete this banner? This action cannot be undone.')) {
+                    // Call the delete handler passed from parent
+                    if (window.handleDeleteBanner) {
+                      window.handleDeleteBanner(banner.id);
+                    }
+                  }
+                }}
+                disabled={saving}
+                style={{
+                  padding: 'var(--space-12) var(--space-16)',
+                  background: 'var(--systemRed)',
+                  color: 'white',
+                  border: 'none',
+                  borderRadius: 'var(--radius-medium)',
+                  fontSize: 'var(--fs-body)',
+                  fontWeight: 'var(--fw-semibold)',
+                  cursor: saving ? 'not-allowed' : 'pointer',
+                  opacity: saving ? 0.5 : 1,
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  gap: 'var(--space-6)',
+                  transition: 'opacity var(--transition-fast)'
+                }}
+              >
+                <span className="material-symbols-outlined" style={{ fontSize: '20px' }}>delete</span>
+                Delete
+              </button>
+            )}
+            
+            <div style={{ flex: 1, display: 'flex', gap: 'var(--space-12)' }}>
+              <button
+                type="button"
+                onClick={onCancel}
+                disabled={saving}
+                style={{
+                  flex: 1,
+                  padding: 'var(--space-12) var(--space-24)',
+                  background: 'var(--systemQuaternary)',
+                  color: 'var(--systemPrimary)',
+                  border: 'none',
+                  borderRadius: 'var(--radius-medium)',
+                  fontSize: 'var(--fs-body)',
+                  fontWeight: 'var(--fw-semibold)',
+                  cursor: saving ? 'not-allowed' : 'pointer',
+                  opacity: saving ? 0.5 : 1,
+                  transition: 'opacity var(--transition-fast)'
+                }}
+              >
+                Cancel
+              </button>
+              <button
+                type="button"
+                onClick={() => setShowPreview(true)}
+                disabled={saving}
+                style={{
+                  flex: 1,
+                  padding: 'var(--space-12) var(--space-24)',
+                  background: 'var(--systemTertiary)',
+                  color: 'var(--systemPrimary)',
+                  border: 'none',
+                  borderRadius: 'var(--radius-medium)',
+                  fontSize: 'var(--fs-body)',
+                  fontWeight: 'var(--fw-semibold)',
+                  cursor: saving ? 'not-allowed' : 'pointer',
+                  opacity: saving ? 0.5 : 1,
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  gap: 'var(--space-8)',
+                  transition: 'opacity var(--transition-fast)'
+                }}
+              >
+                <span className="material-symbols-outlined" style={{ fontSize: '20px' }}>visibility</span>
+                Preview
+              </button>
+              <button
+                type="submit"
+                disabled={saving}
+                style={{
+                  flex: 1,
+                  padding: 'var(--space-12) var(--space-24)',
+                  background: 'var(--keyColor)',
+                  color: 'white',
+                  border: 'none',
+                  borderRadius: 'var(--radius-medium)',
+                  fontSize: 'var(--fs-body)',
+                  fontWeight: 'var(--fw-semibold)',
+                  cursor: saving ? 'not-allowed' : 'pointer',
+                  opacity: saving ? 0.7 : 1,
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  gap: 'var(--space-8)',
+                  transition: 'opacity var(--transition-fast)'
+                }}
+              >
+                {saving ? (
+                  <>
+                    <div className="spinner" style={{ width: '16px', height: '16px' }} />
+                    Saving...
+                  </>
+                ) : (
+                  <>
+                    <span className="material-symbols-outlined" style={{ fontSize: '20px' }}>save</span>
+                    {banner ? 'Update Banner' : 'Create Banner'}
+                  </>
+                )}
+              </button>
+            </div>
           </div>
         </div>
       </form>
@@ -831,6 +872,11 @@ export default function BannerForm({ banner, onSuccess, onCancel }) {
         banner={formData} 
         isOpen={showPreview} 
         onClose={() => setShowPreview(false)} 
+        onDelete={(bannerId) => {
+          if (window.handleDeleteBanner) {
+            window.handleDeleteBanner(bannerId);
+          }
+        }}
       />
     </div>
   );

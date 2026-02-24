@@ -22,6 +22,16 @@ export default function BannerManagementPage() {
     setAuthenticated(isAuthenticated());
   }, []);
 
+  // Set up window handler for BannerForm delete functionality
+  useEffect(() => {
+    window.handleDeleteBanner = handleDelete;
+    
+    // Cleanup when component unmounts
+    return () => {
+      delete window.handleDeleteBanner;
+    };
+  }, [handleDelete]);
+
   useEffect(() => {
     if (authenticated) {
       loadBanners();

@@ -7,7 +7,7 @@ import { useState } from 'react';
  * Shows how the banner will look in its intended placement
  * Used in the admin panel for live preview before activation
  */
-export default function BannerPreview({ banner, isOpen, onClose }) {
+export default function BannerPreview({ banner, isOpen, onClose, onDelete }) {
   if (!isOpen || !banner) return null;
 
   const getThemeStyles = (theme, backgroundType, gradientColors, gradientAngle) => {
@@ -96,23 +96,54 @@ export default function BannerPreview({ banner, isOpen, onClose }) {
               {banner.isActive ? ' (Active)' : ' (Inactive)'}
             </p>
           </div>
-          <button
-            onClick={onClose}
-            style={{
-              background: 'none',
-              border: 'none',
-              fontSize: '24px',
-              cursor: 'pointer',
-              color: '#6b7280',
-              padding: '4px',
-              borderRadius: '4px',
-              transition: 'background-color 0.2s'
-            }}
-            onMouseOver={(e) => e.target.style.backgroundColor = '#f3f4f6'}
-            onMouseOut={(e) => e.target.style.backgroundColor = 'transparent'}
-          >
-            ×
-          </button>
+          <div style={{ display: 'flex', gap: '8px', alignItems: 'center' }}>
+            {onDelete && (
+              <button
+                onClick={() => {
+                  if (confirm('Are you sure you want to delete this banner? This action cannot be undone.')) {
+                    onDelete(banner.id);
+                    onClose();
+                  }
+                }}
+                style={{
+                  padding: '8px 12px',
+                  background: '#ef4444',
+                  color: 'white',
+                  border: 'none',
+                  borderRadius: '6px',
+                  fontSize: '14px',
+                  fontWeight: '500',
+                  cursor: 'pointer',
+                  display: 'flex',
+                  alignItems: 'center',
+                  gap: '6px',
+                  transition: 'background-color 0.2s'
+                }}
+                onMouseOver={(e) => e.target.style.backgroundColor = '#dc2626'}
+                onMouseOut={(e) => e.target.style.backgroundColor = '#ef4444'}
+              >
+                <span className="material-symbols-outlined" style={{ fontSize: '16px' }}>delete</span>
+                Delete
+              </button>
+            )}
+            <button
+              onClick={onClose}
+              style={{
+                background: 'none',
+                border: 'none',
+                fontSize: '24px',
+                cursor: 'pointer',
+                color: '#6b7280',
+                padding: '4px',
+                borderRadius: '4px',
+                transition: 'background-color 0.2s'
+              }}
+              onMouseOver={(e) => e.target.style.backgroundColor = '#f3f4f6'}
+              onMouseOut={(e) => e.target.style.backgroundColor = 'transparent'}
+            >
+              ×
+            </button>
+          </div>
         </div>
 
         {/* Preview Container */}
