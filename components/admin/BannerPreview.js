@@ -61,6 +61,12 @@ export default function BannerPreview({ banner, isOpen, onClose, onDelete }) {
       justifyContent: 'center',
       zIndex: 1000
     }}>
+      <style>{`
+        .preview-delete-btn {
+          background: #d32f2f !important;
+          background-color: #d32f2f !important;
+        }
+      `}</style>
       <div style={{
         background: 'white',
         borderRadius: '12px',
@@ -110,12 +116,11 @@ export default function BannerPreview({ banner, isOpen, onClose, onDelete }) {
                     onClose();
                   }
                 }}
+                className="preview-delete-btn"
                 style={{
                   padding: '8px 16px',
-                  background: '#d32f2f !important',
-                  backgroundColor: '#d32f2f !important',
-                  color: '#ffffff !important',
-                  border: '2px solid #b71c1c !important',
+                  color: '#ffffff',
+                  border: '2px solid #b71c1c',
                   borderRadius: '8px',
                   fontSize: '14px',
                   fontWeight: '600',
@@ -126,14 +131,13 @@ export default function BannerPreview({ banner, isOpen, onClose, onDelete }) {
                   gap: '6px',
                   minWidth: '100px',
                   height: '40px',
-                  opacity: '1 !important',
-                  visibility: 'visible !important',
+                  opacity: 1,
+                  visibility: 'visible',
                   position: 'relative',
                   zIndex: 10000,
-                  boxShadow: '0 2px 8px rgba(211, 47, 47, 0.4) !important',
+                  boxShadow: '0 2px 8px rgba(211, 47, 47, 0.4)',
                   transition: 'all 0.2s ease'
                 }}
-                className=""
                 onMouseOver={(e) => {
                   e.target.style.background = '#dc2626';
                   e.target.style.transform = 'translateY(-1px)';
