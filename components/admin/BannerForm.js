@@ -793,7 +793,7 @@ export default function BannerForm({ banner, onSuccess, onCancel }) {
                   e.target.style.boxShadow = '0 2px 4px rgba(239, 68, 68, 0.2)';
                 }}
               >
-                <span className="material-symbols-outlined" style={{ fontSize: '20px' }}>delete</span>
+                <span style={{ fontSize: '20px', fontWeight: 'bold' }}>🗑️</span>
                 Delete
               </button>
             )}

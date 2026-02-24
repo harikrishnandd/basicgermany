@@ -140,7 +140,7 @@ export default function BannerPreview({ banner, isOpen, onClose, onDelete }) {
                   e.target.style.boxShadow = '0 2px 4px rgba(239, 68, 68, 0.2)';
                 }}
               >
-                <span className="material-symbols-outlined" style={{ fontSize: '16px' }}>delete</span>
+                <span style={{ fontSize: '16px', fontWeight: 'bold' }}>🗑️</span>
                 Delete
               </button>
             <button
