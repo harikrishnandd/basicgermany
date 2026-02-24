@@ -13,6 +13,15 @@ import Link from 'next/link';
 export default function ClientProductsPage({ categories, banners, productSections }) {
   const [selectedCategory, setSelectedCategory] = useState(null);
 
+  // Debug: Log banner data
+  useEffect(() => {
+    console.log('Products Page - Banner Data:', {
+      count: banners.length,
+      banners: banners,
+      placement: 'products'
+    });
+  }, [banners]);
+
   useEffect(() => {
     // Check for category parameter in URL
     if (typeof window !== 'undefined') {

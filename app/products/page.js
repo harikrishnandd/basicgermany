@@ -18,6 +18,12 @@ export default async function ProductsPage() {
     getAllProductSections()
   ]);
 
+  // Debug: Log what we're getting
+  console.log('Products Page Server - Fetched Banners:', {
+    count: banners.length,
+    banners: banners.map(b => ({ id: b.id, title: b.title, placement: b.placement, isActive: b.isActive }))
+  });
+
   return <ClientProductsPage 
     categories={categories} 
     banners={banners} 
