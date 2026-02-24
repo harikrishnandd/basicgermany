@@ -109,7 +109,7 @@ export default function BannerPreview({ banner, isOpen, onClose, onDelete }) {
                   padding: '8px 12px',
                   background: '#ef4444',
                   color: 'white',
-                  border: 'none',
+                  border: '1px solid #dc2626',
                   borderRadius: '6px',
                   fontSize: '14px',
                   fontWeight: '500',
@@ -117,10 +117,23 @@ export default function BannerPreview({ banner, isOpen, onClose, onDelete }) {
                   display: 'flex',
                   alignItems: 'center',
                   gap: '6px',
-                  transition: 'background-color 0.2s'
+                  transition: 'all 0.2s ease',
+                  visibility: 'visible',
+                  position: 'relative',
+                  height: '36px',
+                  minWidth: '70px',
+                  boxShadow: '0 2px 4px rgba(239, 68, 68, 0.2)'
                 }}
-                onMouseOver={(e) => e.target.style.backgroundColor = '#dc2626'}
-                onMouseOut={(e) => e.target.style.backgroundColor = '#ef4444'}
+                onMouseOver={(e) => {
+                  e.target.style.backgroundColor = '#dc2626';
+                  e.target.style.transform = 'translateY(-1px)';
+                  e.target.style.boxShadow = '0 4px 8px rgba(239, 68, 68, 0.3)';
+                }}
+                onMouseOut={(e) => {
+                  e.target.style.backgroundColor = '#ef4444';
+                  e.target.style.transform = 'translateY(0)';
+                  e.target.style.boxShadow = '0 2px 4px rgba(239, 68, 68, 0.2)';
+                }}
               >
                 <span className="material-symbols-outlined" style={{ fontSize: '16px' }}>delete</span>
                 Delete
