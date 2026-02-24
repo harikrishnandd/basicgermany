@@ -11,7 +11,7 @@ export default function AdminSidebar({ onSearch, activePage = '', onLogout }) {
   const getInitialExpandedSections = () => {
     if (activePage === 'content-management') {
       return { apps: false, news: false, knowledge: true, products: false };
-    } else if (activePage === 'banner' || activePage === 'items') {
+    } else if (activePage === 'banners' || activePage === 'items') {
       return { apps: false, news: false, knowledge: false, products: true };
     }
     // Default: all collapsed
@@ -236,9 +236,9 @@ export default function AdminSidebar({ onSearch, activePage = '', onLogout }) {
                 </button>
                 {expandedSections.products && (
                   <ul className="navigation-submenu">
-                    <li className={`navigation-item submenu-item ${activePage === 'banner' ? 'active' : ''}`}>
+                    <li className={`navigation-item submenu-item ${activePage === 'banners' ? 'active' : ''}`}>
                       <a
-                        href="/admin/products/banner"
+                        href="/admin/banners"
                         className="navigation-link"
                         style={{ paddingLeft: 'var(--space-48)' }}
                         onClick={() => setIsOpen(false)}
@@ -246,7 +246,7 @@ export default function AdminSidebar({ onSearch, activePage = '', onLogout }) {
                         <span className="navigation-icon">
                           <span className="material-symbols-outlined">view_carousel</span>
                         </span>
-                        <span className="navigation-text">Banner</span>
+                        <span className="navigation-text">Global Banners</span>
                       </a>
                     </li>
                     <li className={`navigation-item submenu-item ${activePage === 'items' ? 'active' : ''}`}>
