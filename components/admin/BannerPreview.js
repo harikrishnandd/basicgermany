@@ -110,26 +110,21 @@ export default function BannerPreview({ banner, isOpen, onClose, onDelete }) {
                   }
                 }}
                 style={{
-                  padding: '12px 16px',
-                  background: 'rgb(239, 68, 68)',
+                  background: '#d32f2f',
                   color: 'white',
-                  border: '1px solid rgb(220, 38, 38)',
-                  borderRadius: '8px',
-                  fontSize: '14px',
-                  fontWeight: '600',
+                  flex: '1 1 0%',
+                  padding: 'var(--space-8) var(--space-13)',
+                  border: 'none',
+                  borderRadius: 'var(--radius-medium)',
+                  fontSize: 'var(--fs-footnote)',
+                  fontWeight: 'var(--fw-semibold)',
                   cursor: 'pointer',
-                  opacity: 1,
                   display: 'flex',
                   alignItems: 'center',
                   justifyContent: 'center',
-                  gap: '6px',
-                  transition: '0.2s',
-                  minWidth: '80px',
-                  height: '44px',
-                  boxShadow: 'rgba(239, 68, 68, 0.2) 0px 2px 4px',
-                  visibility: 'visible',
-                  position: 'relative',
-                  transform: 'translateY(0px)'
+                  gap: 'var(--space-4)',
+                  transition: 'opacity var(--transition-fast)',
+                  opacity: 1
                 }}
                 onMouseOver={(e) => {
                   e.target.style.background = '#dc2626';
@@ -142,7 +137,7 @@ export default function BannerPreview({ banner, isOpen, onClose, onDelete }) {
                   e.target.style.boxShadow = '0 2px 4px rgba(239, 68, 68, 0.2)';
                 }}
               >
-                <span className="material-symbols-outlined" style={{ fontSize: '20px' }}>delete</span>
+                <span className="material-symbols-outlined" style={{ fontSize: '16px', opacity: 1 }}>delete</span>
                 <span style={{ 
                   color: 'white',
                   fontSize: '14px',
