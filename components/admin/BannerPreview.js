@@ -99,6 +99,7 @@ export default function BannerPreview({ banner, isOpen, onClose, onDelete }) {
           <div style={{ display: 'flex', gap: '8px', alignItems: 'center' }}>
             {/* Delete Button - Full red button with Material Symbols icon */}
               <button
+                data-testid="preview-delete-button-v2"
                 onClick={() => {
                   if (confirm('Are you sure you want to delete this banner? This action cannot be undone.')) {
                     if (onDelete) {
@@ -111,10 +112,10 @@ export default function BannerPreview({ banner, isOpen, onClose, onDelete }) {
                 }}
                 style={{
                   padding: '8px 16px',
-                  background: '#d32f2f',
-                  backgroundColor: '#d32f2f',
-                  color: '#ffffff',
-                  border: '2px solid #b71c1c',
+                  background: '#d32f2f !important',
+                  backgroundColor: '#d32f2f !important',
+                  color: '#ffffff !important',
+                  border: '2px solid #b71c1c !important',
                   borderRadius: '8px',
                   fontSize: '14px',
                   fontWeight: '600',
@@ -125,13 +126,14 @@ export default function BannerPreview({ banner, isOpen, onClose, onDelete }) {
                   gap: '6px',
                   minWidth: '100px',
                   height: '40px',
-                  opacity: '1',
-                  visibility: 'visible',
+                  opacity: '1 !important',
+                  visibility: 'visible !important',
                   position: 'relative',
                   zIndex: 10000,
-                  boxShadow: '0 2px 8px rgba(211, 47, 47, 0.4)',
+                  boxShadow: '0 2px 8px rgba(211, 47, 47, 0.4) !important',
                   transition: 'all 0.2s ease'
                 }}
+                className=""
                 onMouseOver={(e) => {
                   e.target.style.background = '#dc2626';
                   e.target.style.transform = 'translateY(-1px)';
