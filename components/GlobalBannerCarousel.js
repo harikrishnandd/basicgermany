@@ -143,6 +143,25 @@ function GlobalBannerCarousel({ placement, banners: initialBanners }) {
                 maxWidth: '600px',
                 color: 'white'
               }}>
+                {/* Category Capsule */}
+                {banner.category && (
+                  <div style={{
+                    display: 'inline-block',
+                    padding: '4px 12px',
+                    background: 'rgba(255, 255, 255, 0.2)',
+                    backdropFilter: 'blur(8px)',
+                    border: '1px solid rgba(255, 255, 255, 0.3)',
+                    borderRadius: '12px',
+                    fontSize: '12px',
+                    fontWeight: '600',
+                    color: 'white',
+                    textTransform: 'uppercase',
+                    letterSpacing: '0.5px',
+                    marginBottom: '12px'
+                  }}>
+                    {banner.category}
+                  </div>
+                )}
                 <h2 style={{
                   fontSize: '32px',
                   fontWeight: '700',
