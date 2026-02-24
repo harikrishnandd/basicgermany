@@ -97,11 +97,15 @@ export default function BannerPreview({ banner, isOpen, onClose, onDelete }) {
             </p>
           </div>
           <div style={{ display: 'flex', gap: '8px', alignItems: 'center' }}>
-            {onDelete && (
+            {/* Always show delete button for debugging */}
               <button
                 onClick={() => {
                   if (confirm('Are you sure you want to delete this banner? This action cannot be undone.')) {
-                    onDelete(banner.id);
+                    if (onDelete) {
+                      onDelete(banner.id);
+                    } else {
+                      console.log('Delete handler not available');
+                    }
                     onClose();
                   }
                 }}
@@ -109,7 +113,7 @@ export default function BannerPreview({ banner, isOpen, onClose, onDelete }) {
                   padding: '8px 12px',
                   background: '#ef4444',
                   color: 'white',
-                  border: '1px solid #dc2626',
+                  border: '2px solid #dc2626',
                   borderRadius: '6px',
                   fontSize: '14px',
                   fontWeight: '500',
@@ -122,7 +126,8 @@ export default function BannerPreview({ banner, isOpen, onClose, onDelete }) {
                   position: 'relative',
                   height: '36px',
                   minWidth: '70px',
-                  boxShadow: '0 2px 4px rgba(239, 68, 68, 0.2)'
+                  boxShadow: '0 2px 4px rgba(239, 68, 68, 0.2)',
+                  zIndex: 10
                 }}
                 onMouseOver={(e) => {
                   e.target.style.backgroundColor = '#dc2626';
@@ -138,7 +143,6 @@ export default function BannerPreview({ banner, isOpen, onClose, onDelete }) {
                 <span className="material-symbols-outlined" style={{ fontSize: '16px' }}>delete</span>
                 Delete
               </button>
-            )}
             <button
               onClick={onClose}
               style={{
