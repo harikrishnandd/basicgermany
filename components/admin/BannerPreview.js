@@ -110,10 +110,11 @@ export default function BannerPreview({ banner, isOpen, onClose, onDelete }) {
                   }
                 }}
                 style={{
+                  // Force visibility with multiple approaches
                   padding: '12px 16px',
                   background: '#ef4444',
                   color: 'white',
-                  border: '1px solid #dc2626',
+                  border: '2px solid #dc2626',
                   borderRadius: '8px',
                   fontSize: '14px',
                   fontWeight: '600',
@@ -128,7 +129,17 @@ export default function BannerPreview({ banner, isOpen, onClose, onDelete }) {
                   height: '44px',
                   boxShadow: '0 2px 4px rgba(239, 68, 68, 0.2)',
                   visibility: 'visible',
-                  position: 'relative'
+                  position: 'relative',
+                  zIndex: 9999,
+                  // Additional debugging styles
+                  backgroundColor: '#ef4444',
+                  color: '#ffffff',
+                  borderStyle: 'solid',
+                  borderColor: '#dc2626',
+                  // Override any potential CSS conflicts
+                  pointerEvents: 'auto',
+                  userSelect: 'none',
+                  outline: 'none'
                 }}
                 onMouseOver={(e) => {
                   e.target.style.background = '#dc2626';
@@ -141,8 +152,16 @@ export default function BannerPreview({ banner, isOpen, onClose, onDelete }) {
                   e.target.style.boxShadow = '0 2px 4px rgba(239, 68, 68, 0.2)';
                 }}
               >
-                <span className="material-symbols-outlined" style={{ fontSize: '20px' }}>delete</span>
-                Delete
+                <span className="material-symbols-outlined" style={{ 
+                  fontSize: '20px',
+                  color: 'white',
+                  display: 'inline-block'
+                }}>delete</span>
+                <span style={{ 
+                  color: 'white',
+                  fontSize: '14px',
+                  fontWeight: '600'
+                }}>Delete</span>
               </button>
             <button
               onClick={onClose}
