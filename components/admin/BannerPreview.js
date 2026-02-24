@@ -110,21 +110,27 @@ export default function BannerPreview({ banner, isOpen, onClose, onDelete }) {
                   }
                 }}
                 style={{
-                  flex: '1 1 0%',
-                  padding: 'var(--space-8) var(--space-16)',
+                  padding: '8px 16px',
                   background: '#d32f2f',
-                  color: 'white',
-                  border: 'none',
-                  borderRadius: 'var(--radius-medium)',
-                  fontSize: 'var(--fs-footnote)',
-                  fontWeight: 'var(--fw-semibold)',
+                  backgroundColor: '#d32f2f',
+                  color: '#ffffff',
+                  border: '2px solid #b71c1c',
+                  borderRadius: '8px',
+                  fontSize: '14px',
+                  fontWeight: '600',
                   cursor: 'pointer',
-                  display: 'flex',
+                  display: 'inline-flex',
                   alignItems: 'center',
                   justifyContent: 'center',
-                  gap: 'var(--space-4)',
-                  transition: 'opacity var(--transition-fast)',
-                  opacity: 1
+                  gap: '6px',
+                  minWidth: '100px',
+                  height: '40px',
+                  opacity: '1',
+                  visibility: 'visible',
+                  position: 'relative',
+                  zIndex: 10000,
+                  boxShadow: '0 2px 8px rgba(211, 47, 47, 0.4)',
+                  transition: 'all 0.2s ease'
                 }}
                 onMouseOver={(e) => {
                   e.target.style.background = '#dc2626';
