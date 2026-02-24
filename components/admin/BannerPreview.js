@@ -110,37 +110,38 @@ export default function BannerPreview({ banner, isOpen, onClose, onDelete }) {
                   }
                 }}
                 style={{
-                  padding: '8px 12px',
+                  padding: '12px 16px',
                   background: '#ef4444',
                   color: 'white',
-                  border: '2px solid #dc2626',
-                  borderRadius: '6px',
+                  border: '1px solid #dc2626',
+                  borderRadius: '8px',
                   fontSize: '14px',
-                  fontWeight: '500',
+                  fontWeight: '600',
                   cursor: 'pointer',
+                  opacity: 1,
                   display: 'flex',
                   alignItems: 'center',
+                  justifyContent: 'center',
                   gap: '6px',
                   transition: 'all 0.2s ease',
-                  visibility: 'visible',
-                  position: 'relative',
-                  height: '36px',
-                  minWidth: '70px',
+                  minWidth: '80px',
+                  height: '44px',
                   boxShadow: '0 2px 4px rgba(239, 68, 68, 0.2)',
-                  zIndex: 10
+                  visibility: 'visible',
+                  position: 'relative'
                 }}
                 onMouseOver={(e) => {
-                  e.target.style.backgroundColor = '#dc2626';
+                  e.target.style.background = '#dc2626';
                   e.target.style.transform = 'translateY(-1px)';
                   e.target.style.boxShadow = '0 4px 8px rgba(239, 68, 68, 0.3)';
                 }}
                 onMouseOut={(e) => {
-                  e.target.style.backgroundColor = '#ef4444';
+                  e.target.style.background = '#ef4444';
                   e.target.style.transform = 'translateY(0)';
                   e.target.style.boxShadow = '0 2px 4px rgba(239, 68, 68, 0.2)';
                 }}
               >
-                <span style={{ fontSize: '16px', fontWeight: 'bold' }}>🗑️</span>
+                <span style={{ fontSize: '20px', fontWeight: 'bold' }}>🗑️</span>
                 Delete
               </button>
             <button
