@@ -11,7 +11,7 @@ export default function AdminSidebar({ onSearch, activePage = '', onLogout }) {
   const getInitialExpandedSections = () => {
     if (activePage === 'content-management') {
       return { apps: false, news: false, knowledge: true, products: false };
-    } else if (activePage === 'banners' || activePage === 'items') {
+    } else if (activePage === 'items') {
       return { apps: false, news: false, knowledge: false, products: true };
     }
     // Default: all collapsed
@@ -153,32 +153,18 @@ export default function AdminSidebar({ onSearch, activePage = '', onLogout }) {
                 )}
               </li>
 
-              {/* News Section - Expandable */}
-              <li className="navigation-item">
-                <button
-                  onClick={() => toggleSection('news')}
+              {/* Global Banners - Main Menu Item */}
+              <li className={`navigation-item ${activePage === 'banners' ? 'active' : ''}`}>
+                <a
+                  href="/admin/banners"
                   className="navigation-link"
-                  style={{ justifyContent: 'space-between', width: '100%' }}
+                  onClick={() => setIsOpen(false)}
                 >
-                  <div style={{ display: 'flex', alignItems: 'center' }}>
-                    <span className="navigation-icon">
-                      <span className="material-symbols-outlined">newsmode</span>
-                    </span>
-                    <span className="navigation-text">News</span>
-                  </div>
-                  <span className="material-symbols-outlined" style={{ fontSize: '20px', transition: 'transform var(--transition-fast)', transform: expandedSections.news ? 'rotate(180deg)' : 'rotate(0deg)' }}>
-                    expand_more
+                  <span className="navigation-icon">
+                    <span className="material-symbols-outlined">view_carousel</span>
                   </span>
-                </button>
-                {expandedSections.news && (
-                  <ul className="navigation-submenu">
-                    <li className="navigation-item submenu-item">
-                      <span className="navigation-link disabled" style={{ paddingLeft: 'var(--space-48)', color: 'var(--systemTertiary)', cursor: 'default' }}>
-                        <span className="navigation-text">No items yet</span>
-                      </span>
-                    </li>
-                  </ul>
-                )}
+                  <span className="navigation-text">Global Banners</span>
+                </a>
               </li>
 
               {/* Knowledge Hub Section - Expandable with Content Management */}
@@ -217,6 +203,34 @@ export default function AdminSidebar({ onSearch, activePage = '', onLogout }) {
                 )}
               </li>
 
+              {/* News Section - Expandable */}
+              <li className="navigation-item">
+                <button
+                  onClick={() => toggleSection('news')}
+                  className="navigation-link"
+                  style={{ justifyContent: 'space-between', width: '100%' }}
+                >
+                  <div style={{ display: 'flex', alignItems: 'center' }}>
+                    <span className="navigation-icon">
+                      <span className="material-symbols-outlined">newsmode</span>
+                    </span>
+                    <span className="navigation-text">News</span>
+                  </div>
+                  <span className="material-symbols-outlined" style={{ fontSize: '20px', transition: 'transform var(--transition-fast)', transform: expandedSections.news ? 'rotate(180deg)' : 'rotate(0deg)' }}>
+                    expand_more
+                  </span>
+                </button>
+                {expandedSections.news && (
+                  <ul className="navigation-submenu">
+                    <li className="navigation-item submenu-item">
+                      <span className="navigation-link disabled" style={{ paddingLeft: 'var(--space-48)', color: 'var(--systemTertiary)', cursor: 'default' }}>
+                        <span className="navigation-text">No items yet</span>
+                      </span>
+                    </li>
+                  </ul>
+                )}
+              </li>
+
               {/* Products Section - Expandable */}
               <li className="navigation-item">
                 <button
@@ -236,19 +250,6 @@ export default function AdminSidebar({ onSearch, activePage = '', onLogout }) {
                 </button>
                 {expandedSections.products && (
                   <ul className="navigation-submenu">
-                    <li className={`navigation-item submenu-item ${activePage === 'banners' ? 'active' : ''}`}>
-                      <a
-                        href="/admin/banners"
-                        className="navigation-link"
-                        style={{ paddingLeft: 'var(--space-48)' }}
-                        onClick={() => setIsOpen(false)}
-                      >
-                        <span className="navigation-icon">
-                          <span className="material-symbols-outlined">view_carousel</span>
-                        </span>
-                        <span className="navigation-text">Global Banners</span>
-                      </a>
-                    </li>
                     <li className={`navigation-item submenu-item ${activePage === 'items' ? 'active' : ''}`}>
                       <a
                         href="/admin/products/items"
