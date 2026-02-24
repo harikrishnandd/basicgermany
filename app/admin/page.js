@@ -188,9 +188,9 @@ export default function AdminDashboard() {
                 </p>
               </a>
 
-              {/* Products - Banner Card */}
+              {/* Global Banner Management */}
               <a
-                href="/admin/products/banner"
+                href="/admin/banners"
                 style={{
                   display: 'block',
                   background: 'var(--cardBg)',
@@ -223,14 +223,14 @@ export default function AdminDashboard() {
                   color: 'var(--systemPrimary)',
                   marginBottom: 'var(--space-8)'
                 }}>
-                  Product Banners
+                  Global Banners
                 </h3>
                 <p style={{
                   fontSize: 'var(--fs-footnote)',
                   color: 'var(--systemSecondary)',
                   lineHeight: '1.5'
                 }}>
-                  Manage carousel banners on the products page
+                  Manage carousel banners across all pages (Apps, Knowledge, Products)
                 </p>
               </a>
 
