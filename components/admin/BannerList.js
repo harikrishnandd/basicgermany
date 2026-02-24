@@ -204,7 +204,7 @@ export default function BannerList({ banners, onEdit, onDelete }) {
                   style={{
                     flex: 1,
                     padding: 'var(--space-8) var(--space-16)',
-                    background: 'var(--systemRed)',
+                    background: '#d32f2f',
                     color: 'white',
                     border: 'none',
                     borderRadius: 'var(--radius-medium)',
