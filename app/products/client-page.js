@@ -2,7 +2,7 @@
 
 import { useState, useEffect, useCallback } from 'react';
 import Sidebar from '@/components/sidebar';
-import ProductCarousel from '@/components/ProductCarousel';
+import GlobalBannerCarousel from '@/components/GlobalBannerCarousel';
 import ProductCard from '@/components/Products/product-card';
 import DynamicBreadcrumbs, { generateProductsBreadcrumbs } from '@/components/DynamicBreadcrumbs';
 import Link from 'next/link';
@@ -137,28 +137,8 @@ export default function ClientProductsPage({ categories, banners, productSection
           ) : (
             // Overview View
             <div>
-              {/* Hero Carousel Section */}
-              <section className="w-full bg-gradient-to-b from-gray-50 to-white dark:from-gray-900 dark:to-gray-950">
-                {banners.length > 0 ? (
-                  <ProductCarousel cards={banners} />
-                ) : (
-                  <div style={{
-                    minHeight: '400px',
-                    display: 'flex',
-                    flexDirection: 'column',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                    color: 'var(--systemTertiary)'
-                  }}>
-                    <span className="material-symbols-outlined" style={{ fontSize: '48px', color: 'var(--systemTertiary)' }}>
-                      view_carousel
-                    </span>
-                    <p style={{ color: 'var(--systemSecondary)', fontSize: 'var(--fs-body)' }}>
-                      No banners available yet
-                    </p>
-                  </div>
-                )}
-              </section>
+              {/* Global Banner Carousel */}
+              <GlobalBannerCarousel placement="products" banners={banners} />
               
               {/* Product Sections */}
               {productSections && productSections.length > 0 ? (
