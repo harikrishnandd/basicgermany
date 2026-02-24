@@ -110,11 +110,10 @@ export default function BannerPreview({ banner, isOpen, onClose, onDelete }) {
                   }
                 }}
                 style={{
-                  // Force visibility with multiple approaches
                   padding: '12px 16px',
-                  background: '#ef4444',
+                  background: 'rgb(239, 68, 68)',
                   color: 'white',
-                  border: '2px solid #dc2626',
+                  border: '1px solid rgb(220, 38, 38)',
                   borderRadius: '8px',
                   fontSize: '14px',
                   fontWeight: '600',
@@ -124,22 +123,13 @@ export default function BannerPreview({ banner, isOpen, onClose, onDelete }) {
                   alignItems: 'center',
                   justifyContent: 'center',
                   gap: '6px',
-                  transition: 'all 0.2s ease',
+                  transition: '0.2s',
                   minWidth: '80px',
                   height: '44px',
-                  boxShadow: '0 2px 4px rgba(239, 68, 68, 0.2)',
+                  boxShadow: 'rgba(239, 68, 68, 0.2) 0px 2px 4px',
                   visibility: 'visible',
                   position: 'relative',
-                  zIndex: 9999,
-                  // Additional debugging styles
-                  backgroundColor: '#ef4444',
-                  color: '#ffffff',
-                  borderStyle: 'solid',
-                  borderColor: '#dc2626',
-                  // Override any potential CSS conflicts
-                  pointerEvents: 'auto',
-                  userSelect: 'none',
-                  outline: 'none'
+                  transform: 'translateY(0px)'
                 }}
                 onMouseOver={(e) => {
                   e.target.style.background = '#dc2626';
@@ -152,11 +142,7 @@ export default function BannerPreview({ banner, isOpen, onClose, onDelete }) {
                   e.target.style.boxShadow = '0 2px 4px rgba(239, 68, 68, 0.2)';
                 }}
               >
-                <span className="material-symbols-outlined" style={{ 
-                  fontSize: '20px',
-                  color: 'white',
-                  display: 'inline-block'
-                }}>delete</span>
+                <span className="material-symbols-outlined" style={{ fontSize: '20px' }}>delete</span>
                 <span style={{ 
                   color: 'white',
                   fontSize: '14px',
