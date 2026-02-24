@@ -762,20 +762,35 @@ export default function BannerForm({ banner, onSuccess, onCancel }) {
                 }}
                 disabled={saving}
                 style={{
-                  padding: 'var(--space-12) var(--space-16)',
-                  background: 'var(--systemRed)',
+                  padding: '12px 16px',
+                  background: '#ef4444',
                   color: 'white',
-                  border: 'none',
-                  borderRadius: 'var(--radius-medium)',
-                  fontSize: 'var(--fs-body)',
-                  fontWeight: 'var(--fw-semibold)',
+                  border: '1px solid #dc2626',
+                  borderRadius: '8px',
+                  fontSize: '14px',
+                  fontWeight: '600',
                   cursor: saving ? 'not-allowed' : 'pointer',
                   opacity: saving ? 0.5 : 1,
                   display: 'flex',
                   alignItems: 'center',
                   justifyContent: 'center',
-                  gap: 'var(--space-6)',
-                  transition: 'opacity var(--transition-fast)'
+                  gap: '6px',
+                  transition: 'all 0.2s ease',
+                  minWidth: '80px',
+                  height: '44px',
+                  boxShadow: '0 2px 4px rgba(239, 68, 68, 0.2)',
+                  visibility: 'visible',
+                  position: 'relative'
+                }}
+                onMouseOver={(e) => {
+                  e.target.style.background = '#dc2626';
+                  e.target.style.transform = 'translateY(-1px)';
+                  e.target.style.boxShadow = '0 4px 8px rgba(239, 68, 68, 0.3)';
+                }}
+                onMouseOut={(e) => {
+                  e.target.style.background = '#ef4444';
+                  e.target.style.transform = 'translateY(0)';
+                  e.target.style.boxShadow = '0 2px 4px rgba(239, 68, 68, 0.2)';
                 }}
               >
                 <span className="material-symbols-outlined" style={{ fontSize: '20px' }}>delete</span>
