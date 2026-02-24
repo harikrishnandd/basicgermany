@@ -173,32 +173,6 @@ export default function ClientHome({ banners: initialBanners }) {
           )
         ) : (
           <>
-        {/* Hero Section - Only show on home page */}
-        {activeCategory === 'all' && !searchQuery && (
-          <section className="hero-section">
-            <div className="hero-card">
-              <div className="hero-content">
-                <h1 className="hero-title">Your First Days in Germany, Sorted.</h1>
-                <p className="hero-subtitle">Find the best services curated for expats in Germany</p>
-                <p className="hero-creator">
-                  From the creator of
-                  <span className="hero-logos">
-                    <a href="https://expatova.com" target="_blank" rel="noopener noreferrer" className="hero-logo-link">
-                      <img src="/assets/Expatova.png" alt="Expatova" className="hero-logo" />
-                    </a>
-                    <a href="https://bullettin.app" target="_blank" rel="noopener noreferrer" className="hero-logo-link">
-                      <img src="/assets/Bullettin.applogo.png" alt="Bullettin" className="hero-logo" />
-                    </a>
-                    <a href="https://www.youtube.com/@expatova" target="_blank" rel="noopener noreferrer" className="hero-logo-link">
-                      <img src="/assets/YouTube.png" alt="YouTube" className="hero-logo" />
-                    </a>
-                  </span>
-                </p>
-              </div>
-            </div>
-          </section>
-        )}
-
         {/* Global Banner Carousel - Only show on home page */}
         {activeCategory === 'all' && !searchQuery && (
           <GlobalBannerCarousel placement="apps" banners={banners} />
