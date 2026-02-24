@@ -110,10 +110,10 @@ export default function BannerPreview({ banner, isOpen, onClose, onDelete }) {
                   }
                 }}
                 style={{
+                  flex: '1 1 0%',
+                  padding: 'var(--space-8) var(--space-16)',
                   background: '#d32f2f',
                   color: 'white',
-                  flex: '1 1 0%',
-                  padding: 'var(--space-8) var(--space-13)',
                   border: 'none',
                   borderRadius: 'var(--radius-medium)',
                   fontSize: 'var(--fs-footnote)',
