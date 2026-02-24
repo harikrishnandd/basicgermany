@@ -97,7 +97,7 @@ export default function BannerPreview({ banner, isOpen, onClose, onDelete }) {
             </p>
           </div>
           <div style={{ display: 'flex', gap: '8px', alignItems: 'center' }}>
-            {/* Always show delete button for debugging */}
+            {/* Delete Button - Full red button with Material Symbols icon */}
               <button
                 onClick={() => {
                   if (confirm('Are you sure you want to delete this banner? This action cannot be undone.')) {
@@ -141,7 +141,7 @@ export default function BannerPreview({ banner, isOpen, onClose, onDelete }) {
                   e.target.style.boxShadow = '0 2px 4px rgba(239, 68, 68, 0.2)';
                 }}
               >
-                <span style={{ fontSize: '20px', fontWeight: 'bold' }}>🗑️</span>
+                <span className="material-symbols-outlined" style={{ fontSize: '20px' }}>delete</span>
                 Delete
               </button>
             <button

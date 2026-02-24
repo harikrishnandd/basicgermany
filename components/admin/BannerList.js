@@ -220,7 +220,7 @@ export default function BannerList({ banners, onEdit, onDelete }) {
                   onMouseOver={(e) => e.target.style.opacity = '0.8'}
                   onMouseOut={(e) => e.target.style.opacity = '1'}
                 >
-                  <span style={{ fontSize: '16px', fontWeight: 'bold' }}>🗑️</span>
+                  <span className="material-symbols-outlined" style={{ fontSize: '16px' }}>delete</span>
                   Delete
                 </button>
               </div>
