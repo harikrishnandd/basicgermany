@@ -22,16 +22,6 @@ export default function BannerManagementPage() {
     setAuthenticated(isAuthenticated());
   }, []);
 
-  // Set up window handler for BannerForm delete functionality
-  useEffect(() => {
-    window.handleDeleteBanner = handleDelete;
-    
-    // Cleanup when component unmounts
-    return () => {
-      delete window.handleDeleteBanner;
-    };
-  }, [handleDelete]);
-
   useEffect(() => {
     if (authenticated) {
       loadBanners();
@@ -94,6 +84,16 @@ export default function BannerManagementPage() {
       alert('Error deleting banner: ' + result.error);
     }
   };
+
+  // Set up window handler for BannerForm delete functionality
+  useEffect(() => {
+    window.handleDeleteBanner = handleDelete;
+    
+    // Cleanup when component unmounts
+    return () => {
+      delete window.handleDeleteBanner;
+    };
+  }, [handleDelete]);
 
   const handleFormSuccess = async () => {
     await loadBanners();
