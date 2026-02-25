@@ -85,7 +85,6 @@ function GlobalBannerCarousel({ placement, banners: initialBanners }) {
     <div className="global-banner-carousel" style={{
       position: 'relative',
       width: '100%',
-      height: '280px',
       borderRadius: '20px',
       overflow: 'hidden',
       background: themeStyles.background,
