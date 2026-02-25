@@ -110,28 +110,15 @@ function GlobalBannerCarousel({ placement, banners: initialBanners }) {
               alignItems: 'center',
               padding: '48px'
             }}>
-              {/* Overlay for better text readability */}
-              {banner.imageUrl && (
+              {/* Diagonal glass gradient overlay for enhanced text readability */}
+              {(banner.imageUrl || banner.backgroundType === 'customGradient') && (
                 <div style={{
                   position: 'absolute',
                   top: 0,
                   left: 0,
                   right: 0,
                   bottom: 0,
-                  background: 'rgba(0,0,0,0.3)',
-                  zIndex: 1
-                }} />
-              )}
-              
-              {/* Dark overlay for custom gradients to ensure text readability */}
-              {banner.backgroundType === 'customGradient' && (
-                <div style={{
-                  position: 'absolute',
-                  top: 0,
-                  left: 0,
-                  right: 0,
-                  bottom: 0,
-                  background: 'rgba(0,0,0,0.2)',
+                  background: 'linear-gradient(135deg, rgba(255,255,255,0.3) 0%, rgba(255,255,255,0.2) 30%, rgba(255,255,255,0.1) 60%, transparent 100%)',
                   zIndex: 1
                 }} />
               )}
