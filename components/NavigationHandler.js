@@ -84,10 +84,15 @@ export default function NavigationHandler() {
         return;
       }
 
-      // Set a timeout to detect if navigation failed
-      // Use longer timeout for News route (external Firebase data fetching)
+      // Skip timeout detection for News route - let it load naturally
+      if (href.includes('/news')) {
+        return;
+      }
+
+      // Set a timeout to detect if navigation failed for other routes
       const currentPath = window.location.pathname;
-      const timeoutMs = href.includes('/news') ? 8000 : 2000; // 8 seconds for news, 2 seconds for others
+      const timeoutMs = 3000; // 3 seconds for non-news routes
+      
       const timeoutId = setTimeout(() => {
         if (window.location.pathname === currentPath && href !== currentPath) {
           console.warn('Navigation timeout detected, forcing hard navigation to:', href);
@@ -95,19 +100,24 @@ export default function NavigationHandler() {
         }
       }, timeoutMs);
 
-      // Clear timeout if navigation succeeds
-      const clearTimeoutOnNavigation = () => {
-        clearTimeout(timeoutId);
+      // Clear timeout if URL changes
+      const checkUrl = () => {
+        if (window.location.pathname !== currentPath) {
+          clearTimeout(timeoutId);
+        }
       };
 
-      // Listen for successful navigation
-      window.addEventListener('popstate', clearTimeoutOnNavigation, { once: true });
-
+      // Monitor for URL changes
+      const intervalId = setInterval(checkUrl, 200);
+      
       // Cleanup
-      return () => {
+      const cleanup = () => {
         clearTimeout(timeoutId);
-        window.removeEventListener('popstate', clearTimeoutOnNavigation);
+        clearInterval(intervalId);
       };
+
+      // Auto cleanup after timeout
+      setTimeout(cleanup, timeoutMs + 500);
     };
 
     // Add click listener to document
