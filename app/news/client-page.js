@@ -248,7 +248,7 @@ const NewsClient = () => {
         </motion.button>
 
         {/* Dynamic Area Tabs */}
-        {uniqueAreas.map((area) => (
+        {areas.map((area) => (
           <motion.button
             key={area}
             variants={tabVariants}
