@@ -14,10 +14,21 @@ const NewsCard = ({ newsItem, index }) => {
     formattedDate
   } = newsItem;
 
+  const [imageError, setImageError] = React.useState(false);
+  const [logoError, setLogoError] = React.useState(false);
+
   const handleReadMore = () => {
     if (readMoreUrl) {
       window.open(readMoreUrl, '_blank', 'noopener,noreferrer');
     }
+  };
+
+  const handleImageError = () => {
+    setImageError(true);
+  };
+
+  const handleLogoError = () => {
+    setLogoError(true);
   };
 
   return (
@@ -45,10 +56,11 @@ const NewsCard = ({ newsItem, index }) => {
         overflow: 'hidden',
         background: 'var(--systemQuaternary)'
       }}>
-        {heroImage ? (
+        {heroImage && !imageError ? (
           <img
             src={heroImage}
             alt={headline}
+            onError={handleImageError}
             style={{
               position: 'absolute',
               top: 0,
@@ -68,10 +80,11 @@ const NewsCard = ({ newsItem, index }) => {
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'center',
-            color: 'var(--systemTertiary)'
+            color: 'var(--systemTertiary)',
+            background: 'var(--systemQuaternary)'
           }}>
             <span className="material-symbols-outlined" style={{ fontSize: '48px' }}>
-              article
+              {imageError ? 'broken_image' : 'article'}
             </span>
           </div>
         )}
@@ -87,10 +100,11 @@ const NewsCard = ({ newsItem, index }) => {
           marginBottom: '16px'
         }}>
           {/* Source Logo */}
-          {sourceLogo ? (
+          {sourceLogo && !logoError ? (
             <img
               src={sourceLogo}
               alt={agencyName}
+              onError={handleLogoError}
               style={{
                 width: '32px',
                 height: '32px',
@@ -112,7 +126,7 @@ const NewsCard = ({ newsItem, index }) => {
               color: 'white'
             }}>
               <span className="material-symbols-outlined" style={{ fontSize: '16px' }}>
-                business
+                {logoError ? 'broken_image' : 'business'}
               </span>
             </div>
           )}

@@ -163,12 +163,12 @@ useEffect(() => {
               </li>
               <li className={`navigation-item ${currentPage === 'news' ? 'active' : ''}`}>
                 <a 
-                  href="#"
+                  href="/news"
                   className="navigation-link"
-                  onClick={(e) => { e.preventDefault(); setIsOpen(false); }}
+                  onClick={() => setIsOpen(false)}
                 >
                   <span className="navigation-icon">
-                    <span className="material-symbols-outlined">newsmode</span>
+                    <span className="material-symbols-outlined">newspaper</span>
                   </span>
                   <span className="navigation-text">News</span>
                 </a>

@@ -8,12 +8,12 @@ export default async function NewsPage() {
   try {
     // Create timeout promise for server-side data fetching
     const timeoutPromise = new Promise((_, reject) => 
-      setTimeout(() => reject(new Error('Server-side data fetch timeout')), 10000)
+      setTimeout(() => reject(new Error('Server-side data fetch timeout')), 20000)
     );
 
     // Fetch initial data server-side with timeout
     const dataPromise = Promise.all([
-      getNewsForSSR('all', 20),
+      getNewsForSSR('all', 50),
       getUniqueAreas(),
       getBanners('news')
     ]);
