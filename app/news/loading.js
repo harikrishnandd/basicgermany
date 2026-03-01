@@ -170,17 +170,19 @@ export default function NewsLoading() {
         ))}
       </div>
 
-      {/* Pulse animation */}
-      <style jsx>{`
-        @keyframes pulse {
-          0%, 100% {
-            opacity: 0.6;
+      {/* Pulse animation using global styles */}
+      <style dangerouslySetInnerHTML={{
+        __html: `
+          @keyframes pulse {
+            0%, 100% {
+              opacity: 0.6;
+            }
+            50% {
+              opacity: 1;
+            }
           }
-          50% {
-            opacity: 1;
-          }
-        }
-      `}</style>
+        `
+      }} />
     </div>
   );
 }
