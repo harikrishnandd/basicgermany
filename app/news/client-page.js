@@ -3,13 +3,17 @@
 import React, { useState, useEffect, useCallback, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import NewsCard from '@/components/NewsCard';
+import NewsHeroBanner from '@/components/NewsHeroBanner';
 import DynamicBreadcrumbs, { generateNewsBreadcrumbs } from '@/components/DynamicBreadcrumbs';
-import { getNewsItems } from '@/lib/services/newsService';
+import { getNewsItems, getUniqueAreas } from '@/lib/services/newsService';
+import { getBanners } from '@/lib/services/bannerService';
 
-const NewsClient = ({ initialNews, uniqueAreas }) => {
-  const [newsItems, setNewsItems] = useState(initialNews);
+const NewsClient = () => {
+  const [newsItems, setNewsItems] = useState([]);
+  const [areas, setAreas] = useState([]);
+  const [banners, setBanners] = useState([]);
+  const [loading, setLoading] = useState(true);
   const [selectedArea, setSelectedArea] = useState('all');
-  const [loading, setLoading] = useState(false);
   const [hasMore, setHasMore] = useState(true);
   const [lastDoc, setLastDoc] = useState(null);
   const observerRef = useRef();
@@ -98,6 +102,39 @@ const NewsClient = ({ initialNews, uniqueAreas }) => {
     }
   };
 
+  // Fetch initial data on component mount
+  useEffect(() => {
+    const fetchInitialData = async () => {
+      try {
+        setLoading(true);
+        
+        // Fetch all data in parallel
+        const [newsResult, areasData, bannersData] = await Promise.all([
+          getNewsItems(null, 50, null),
+          getUniqueAreas(),
+          getBanners('news')
+        ]);
+        
+        setNewsItems(newsResult.items);
+        setLastDoc(newsResult.lastDoc);
+        setHasMore(newsResult.hasMore);
+        setAreas(['all', ...areasData]);
+        setBanners(bannersData || []);
+      } catch (error) {
+        console.error('Error fetching initial data:', error);
+        // Set empty state on error
+        setNewsItems([]);
+        setAreas(['all']);
+        setBanners([]);
+        setHasMore(false);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchInitialData();
+  }, []);
+
   // Intersection observer for infinite scroll
   useEffect(() => {
     const observer = new IntersectionObserver(
@@ -124,6 +161,11 @@ const NewsClient = ({ initialNews, uniqueAreas }) => {
       {/* Breadcrumbs */}
       <DynamicBreadcrumbs items={generateNewsBreadcrumbs(selectedArea)} />
 
+      {/* Hero Banner */}
+      {banners && banners.length > 0 && (
+        <NewsHeroBanner banners={banners} />
+      )}
+
       {/* Page Header */}
       <div style={{
         marginBottom: '48px'
@@ -145,6 +187,29 @@ const NewsClient = ({ initialNews, uniqueAreas }) => {
           Stay updated with the latest news and developments from across Germany
         </p>
       </div>
+
+      {/* Loading State */}
+      {loading && newsItems.length === 0 && (
+        <div style={{
+          display: 'flex',
+          flexDirection: 'column',
+          alignItems: 'center',
+          justifyContent: 'center',
+          padding: '60px 20px',
+          color: 'var(--systemSecondary)'
+        }}>
+          <div style={{
+            width: '40px',
+            height: '40px',
+            border: '3px solid var(--systemQuaternary)',
+            borderTop: '3px solid var(--keyColor)',
+            borderRadius: '50%',
+            animation: 'spin 1s linear infinite',
+            marginBottom: '16px'
+          }} />
+          <p style={{ margin: 0, fontSize: '16px' }}>Loading news...</p>
+        </div>
+      )}
 
       {/* Tab Navigation */}
       <div style={{
