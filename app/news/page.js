@@ -7,8 +7,9 @@ import NewsHeroBanner from '@/components/NewsHeroBanner';
 export default async function NewsPage() {
   try {
     // Create timeout promise for server-side data fetching
+    const serverTimeoutMs = process.env.NODE_ENV === 'development' ? 45000 : 20000;
     const timeoutPromise = new Promise((_, reject) => 
-      setTimeout(() => reject(new Error('Server-side data fetch timeout')), 20000)
+      setTimeout(() => reject(new Error('Server-side data fetch timeout')), serverTimeoutMs)
     );
 
     // Fetch initial data server-side with timeout
