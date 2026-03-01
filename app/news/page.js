@@ -3,15 +3,22 @@ import { getBanners } from '@/lib/services/bannerService';
 import GlobalBannerCarousel from '@/components/GlobalBannerCarousel';
 import NewsClient from './client-page';
 
-// Server component for SSR/ISR
+// Server component for SSR/ISR with timeout protection
 export default async function NewsPage() {
   try {
-    // Fetch initial data server-side
-    const [initialNews, uniqueAreas, banners] = await Promise.all([
+    // Create timeout promise for server-side data fetching
+    const timeoutPromise = new Promise((_, reject) => 
+      setTimeout(() => reject(new Error('Server-side data fetch timeout')), 10000)
+    );
+
+    // Fetch initial data server-side with timeout
+    const dataPromise = Promise.all([
       getNewsForSSR('all', 20),
       getUniqueAreas(),
       getBanners('news')
     ]);
+
+    const [initialNews, uniqueAreas, banners] = await Promise.race([dataPromise, timeoutPromise]);
 
     return (
       <div className="news-page">
@@ -29,6 +36,8 @@ export default async function NewsPage() {
     );
   } catch (error) {
     console.error('Error loading news page:', error);
+    
+    // Return fallback page on timeout or error
     return (
       <div className="news-page">
         <div style={{

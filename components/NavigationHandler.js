@@ -85,14 +85,15 @@ export default function NavigationHandler() {
       }
 
       // Set a timeout to detect if navigation failed
-      // If the URL hasn't changed after 2 seconds, force a reload
+      // Use longer timeout for News route (external Firebase data fetching)
       const currentPath = window.location.pathname;
+      const timeoutMs = href.includes('/news') ? 8000 : 2000; // 8 seconds for news, 2 seconds for others
       const timeoutId = setTimeout(() => {
         if (window.location.pathname === currentPath && href !== currentPath) {
           console.warn('Navigation timeout detected, forcing hard navigation to:', href);
           window.location.href = href;
         }
-      }, 2000);
+      }, timeoutMs);
 
       // Clear timeout if navigation succeeds
       const clearTimeoutOnNavigation = () => {
