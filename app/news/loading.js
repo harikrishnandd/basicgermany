@@ -3,8 +3,7 @@ export default function NewsLoading() {
   return (
     <div style={{
       maxWidth: '1200px',
-      margin: '0 auto',
-      padding: '48px 24px'
+      margin: '0 auto'
     }}>
       {/* Loading skeleton for page header */}
       <div style={{

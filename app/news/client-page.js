@@ -119,8 +119,7 @@ const NewsClient = ({ initialNews, uniqueAreas }) => {
   return (
     <div style={{
       maxWidth: '1200px',
-      margin: '0 auto',
-      padding: '48px 24px'
+      margin: '0 auto'
     }}>
       {/* Breadcrumbs */}
       <DynamicBreadcrumbs items={generateNewsBreadcrumbs(selectedArea)} />
