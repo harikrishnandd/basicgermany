@@ -102,24 +102,43 @@ const NewsClient = () => {
     }
   };
 
-  // Fetch initial data on component mount
+  // Fetch initial data on component mount with progressive loading
   useEffect(() => {
     const fetchInitialData = async () => {
       try {
         setLoading(true);
         
-        // Fetch all data in parallel
-        const [newsResult, areasData, bannersData] = await Promise.all([
-          getNewsItems(null, 50, null),
-          getUniqueAreas(),
-          getBanners('news')
-        ]);
+        // Step 1: Load critical data first (areas for tabs)
+        const areasData = await getUniqueAreas();
+        setAreas(['all', ...areasData]);
         
+        // Step 2: Load initial news (smaller batch for faster initial load)
+        const newsResult = await getNewsItems(null, 25, null); // Load 25 first, then load more
         setNewsItems(newsResult.items);
         setLastDoc(newsResult.lastDoc);
         setHasMore(newsResult.hasMore);
-        setAreas(['all', ...areasData]);
-        setBanners(bannersData || []);
+        
+        // Step 3: Load banners in background
+        getBanners('news').then(bannersData => {
+          setBanners(bannersData || []);
+        }).catch(error => {
+          console.error('Error fetching banners:', error);
+        });
+        
+        // Step 4: Load additional news in background if we have more
+        if (newsResult.hasMore && newsResult.items.length > 0) {
+          setTimeout(async () => {
+            try {
+              const additionalNews = await getNewsItems(newsResult.lastDoc, 25, null);
+              setNewsItems(prev => [...prev, ...additionalNews.items]);
+              setLastDoc(additionalNews.lastDoc);
+              setHasMore(additionalNews.hasMore);
+            } catch (error) {
+              console.error('Error loading additional news:', error);
+            }
+          }, 100); // Small delay to not block initial render
+        }
+        
       } catch (error) {
         console.error('Error fetching initial data:', error);
         // Set empty state on error
@@ -193,21 +212,64 @@ const NewsClient = () => {
         <div style={{
           display: 'flex',
           flexDirection: 'column',
-          alignItems: 'center',
-          justifyContent: 'center',
-          padding: '60px 20px',
-          color: 'var(--systemSecondary)'
+          gap: '24px'
         }}>
+          {/* Skeleton for tabs */}
           <div style={{
-            width: '40px',
-            height: '40px',
-            border: '3px solid var(--systemQuaternary)',
-            borderTop: '3px solid var(--keyColor)',
-            borderRadius: '50%',
-            animation: 'spin 1s linear infinite',
-            marginBottom: '16px'
-          }} />
-          <p style={{ margin: 0, fontSize: '16px' }}>Loading news...</p>
+            display: 'flex',
+            gap: '8px',
+            borderBottom: '1px solid var(--systemQuinary)',
+            paddingBottom: '0'
+          }}>
+            {[1, 2, 3, 4, 5].map(i => (
+              <div key={i} style={{
+                width: `${60 + Math.random() * 40}px`,
+                height: '48px',
+                background: 'var(--systemQuaternary)',
+                borderRadius: '8px',
+                animation: 'pulse 1.5s ease-in-out infinite'
+              }} />
+            ))}
+          </div>
+          
+          {/* Skeleton for news cards */}
+          {[1, 2, 3].map(i => (
+            <div key={i} style={{
+              background: 'var(--cardBg)',
+              border: '1px solid var(--borderColor)',
+              borderRadius: '16px',
+              overflow: 'hidden',
+              animation: 'pulse 1.5s ease-in-out infinite'
+            }}>
+              <div style={{
+                width: '100%',
+                height: '200px',
+                background: 'var(--systemQuaternary)'
+              }} />
+              <div style={{ padding: '24px' }}>
+                <div style={{
+                  width: '80%',
+                  height: '20px',
+                  background: 'var(--systemQuaternary)',
+                  borderRadius: '8px',
+                  marginBottom: '12px'
+                }} />
+                <div style={{
+                  width: '100%',
+                  height: '16px',
+                  background: 'var(--systemQuaternary)',
+                  borderRadius: '6px',
+                  marginBottom: '8px'
+                }} />
+                <div style={{
+                  width: '60%',
+                  height: '16px',
+                  background: 'var(--systemQuaternary)',
+                  borderRadius: '6px'
+                }} />
+              </div>
+            </div>
+          ))}
         </div>
       )}
 
@@ -384,6 +446,11 @@ const NewsClient = () => {
         @keyframes spin {
           0% { transform: rotate(0deg); }
           100% { transform: rotate(360deg); }
+        }
+        
+        @keyframes pulse {
+          0%, 100% { opacity: 1; }
+          50% { opacity: 0.5; }
         }
       `}</style>
     </div>
