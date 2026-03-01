@@ -37,11 +37,11 @@ function GlobalBannerCarousel({ placement, banners: initialBanners }) {
 
   useEffect(() => {
     if (banners.length <= 1) return;
-    
+
     const interval = setInterval(() => {
       setCurrentSlide((prev) => (prev + 1) % banners.length);
     }, 5000);
-    
+
     return () => clearInterval(interval);
   }, [banners.length]);
 
@@ -57,7 +57,7 @@ function GlobalBannerCarousel({ placement, banners: initialBanners }) {
         accent: gradientColors[0]
       };
     }
-    
+
     switch (theme) {
       case 'green':
         return {
@@ -118,11 +118,15 @@ function GlobalBannerCarousel({ placement, banners: initialBanners }) {
                   left: 0,
                   right: 0,
                   bottom: 0,
-                  background: 'linear-gradient(135deg, rgba(255,255,255,0.3) 0%, rgba(255,255,255,0.2) 30%, rgba(255,255,255,0.1) 60%, transparent 100%)',
+                  backdropFilter: 'blur(16px) saturate(150%)',
+                  WebkitBackdropFilter: 'blur(60px) saturate(150%)',
+                  maskImage: 'linear-gradient(135deg, rgba(0,0,0,1) 0%, rgba(0,0,0,0.8) 0%, rgba(0,0,0,0.4) 20%, rgba(0,0,0,0.1) 20%, transparent 35%)',
+                  WebkitMaskImage: 'linear-gradient(135deg, rgba(0,0,0,1) 0%, rgba(0,0,0,0.8) 20%, rgba(0,0,0,0.4) 40%, rgba(0,0,0,0.1) 60%, transparent 75%)',
+                  background: 'linear-gradient(135deg, rgba(255, 255, 255, 0.3) 0%, rgba(255, 255, 255, 0.2) 40%, rgba(255, 255, 255, 0.1) 70%, transparent 100%)',
                   zIndex: 1
                 }} />
               )}
-              
+
               <div style={{
                 position: 'relative',
                 zIndex: 2,

@@ -13,6 +13,8 @@ export default function AdminSidebar({ onSearch, activePage = '', onLogout }) {
       return { apps: false, news: false, knowledge: true, products: false };
     } else if (activePage === 'items') {
       return { apps: false, news: false, knowledge: false, products: true };
+    } else if (activePage === 'news') {
+      return { apps: false, news: true, knowledge: false, products: false };
     }
     // Default: all collapsed
     return { apps: false, news: false, knowledge: false, products: false };
@@ -229,6 +231,20 @@ export default function AdminSidebar({ onSearch, activePage = '', onLogout }) {
                     </li>
                   </ul>
                 )}
+              </li>
+
+              {/* News Section */}
+              <li className="navigation-item">
+                <a
+                  href="/news"
+                  className={`navigation-link ${activePage === 'news' ? 'active' : ''}`}
+                  onClick={() => setIsOpen(false)}
+                >
+                  <span className="navigation-icon">
+                    <span className="material-symbols-outlined">newspaper</span>
+                  </span>
+                  <span className="navigation-text">News</span>
+                </a>
               </li>
 
               {/* Products Section - Expandable */}

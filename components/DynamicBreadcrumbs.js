@@ -275,3 +275,22 @@ export function generateProductsBreadcrumbs(category, productName) {
 
   return items;
 }
+
+/**
+ * Utility: Generate breadcrumb items for News
+ */
+export function generateNewsBreadcrumbs(area) {
+  const items = [
+    { label: 'Home', href: '/' },
+    { label: 'News', href: '/news' },
+  ];
+
+  if (area && area !== 'all') {
+    items.push({
+      label: area,
+      href: `/news?area=${encodeURIComponent(area)}`,
+    });
+  }
+
+  return items;
+}
