@@ -223,7 +223,7 @@ const NewsClient = () => {
           }}>
             {[1, 2, 3, 4, 5].map(i => (
               <div key={i} style={{
-                width: `${60 + Math.random() * 40}px`,
+                width: [80, 65, 90, 75, 85][i - 1],
                 height: '48px',
                 background: 'var(--systemQuaternary)',
                 borderRadius: '8px',

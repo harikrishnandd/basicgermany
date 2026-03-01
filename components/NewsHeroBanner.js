@@ -39,7 +39,7 @@ const NewsHeroBanner = ({ banners }) => {
             minWidth: '100%',
             height: '100%',
             position: 'relative',
-            backgroundImage: `url(${banner.image || '/placeholder-banner.jpg'})`,
+            backgroundImage: `url(${banner.image || '/assets/Expatova.png'})`,
             backgroundSize: 'cover',
             backgroundPosition: 'center',
             display: 'flex',
