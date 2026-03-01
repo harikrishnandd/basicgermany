@@ -223,7 +223,7 @@ const NewsClient = () => {
           }}>
             {[1, 2, 3, 4, 5].map(i => (
               <div key={i} style={{
-                width: [80, 65, 90, 75, 85][i - 1],
+                width: [70, 65, 90, 75, 85][i - 1],
                 height: '48px',
                 background: 'var(--systemQuaternary)',
                 borderRadius: '8px',
@@ -306,11 +306,11 @@ const NewsClient = () => {
             position: 'relative'
           }}
         >
-          All News
+          Latest
         </motion.button>
 
         {/* Dynamic Area Tabs */}
-        {areas.map((area) => (
+        {areas.filter(area => area !== 'all').map((area) => (
           <motion.button
             key={area}
             variants={tabVariants}
