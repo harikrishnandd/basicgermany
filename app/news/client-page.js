@@ -424,41 +424,22 @@ const NewsClient = () => {
           animate="center"
           exit="exit"
         >
-          {/* News Grid - Responsive */}
+          {/* News Grid - Mobile First */}
           <div style={{
             display: 'flex',
             flexDirection: 'column',
             gap: '0'
           }}>
-            {/* Mobile: Single column, Desktop: Masonry grid */}
-            <style jsx>{`
-              @media (min-width: 768px) {
-                .news-grid {
-                  display: grid;
-                  grid-template-columns: repeat(auto-fit, minmax(380px, 1fr));
-                  gap: 32px;
-                  align-items: start;
-                }
-                
-                .hero-card {
-                  grid-column: 1 / -1;
-                }
-              }
-            `}</style>
-            
-            <div className="news-grid">
-              <AnimatePresence mode="wait">
-                {newsItems.map((newsItem, index) => (
-                  <div key={`${newsItem.id}-${selectedArea}-${index}`} className={index === 0 ? 'hero-card' : ''}>
-                    <ModernNewsCard 
-                      newsItem={newsItem} 
-                      index={index}
-                      isHero={index === 0}
-                    />
-                  </div>
-                ))}
-              </AnimatePresence>
-            </div>
+            <AnimatePresence mode="wait">
+              {newsItems.map((newsItem, index) => (
+                <ModernNewsCard 
+                  key={`${newsItem.id}-${selectedArea}-${index}`}
+                  newsItem={newsItem} 
+                  index={index}
+                  isHero={index === 0}
+                />
+              ))}
+            </AnimatePresence>
           </div>
 
           {/* Loading State */}

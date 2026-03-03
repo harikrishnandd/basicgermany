@@ -191,6 +191,14 @@ const ModernNewsCard = ({ newsItem, index, isHero = false }) => {
         transition: 'all 0.3s ease'
       }}
     >
+      {/* Responsive styles */}
+      <style jsx>{`
+        @media (min-width: 768px) {
+          .standard-news-card {
+            margin-bottom: 32px;
+          }
+        }
+      `}</style>
       {/* Metadata Row */}
       <div style={{
         display: 'flex',
