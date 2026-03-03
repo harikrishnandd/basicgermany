@@ -2,7 +2,7 @@
 
 import React, { useState, useEffect, useCallback, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import NewsCard from '@/components/NewsCard';
+import ModernNewsCard from '@/components/ModernNewsCard';
 import NewsHeroBanner from '@/components/NewsHeroBanner';
 import DynamicBreadcrumbs, { generateNewsBreadcrumbs } from '@/components/DynamicBreadcrumbs';
 import { getNewsItems, getUniqueAreas } from '@/lib/services/newsService';
@@ -233,41 +233,119 @@ const NewsClient = () => {
           </div>
           
           {/* Skeleton for news cards */}
-          {[1, 2, 3].map(i => (
+          {/* Hero Card Skeleton */}
+          <div style={{
+            position: 'relative',
+            width: '100%',
+            height: '280px',
+            borderRadius: '24px',
+            overflow: 'hidden',
+            background: 'var(--systemQuaternary)',
+            marginBottom: '32px',
+            animation: 'pulse 1.5s ease-in-out infinite'
+          }}>
+            <div style={{
+              position: 'absolute',
+              bottom: 0,
+              left: 0,
+              right: 0,
+              height: '60%',
+              background: 'linear-gradient(to top, rgba(0,0,0,0.8) 0%, rgba(0,0,0,0.4) 50%, transparent 100%)',
+              padding: '24px'
+            }}>
+              <div style={{
+                width: '60%',
+                height: '20px',
+                background: 'rgba(255,255,255,0.3)',
+                borderRadius: '4px',
+                marginBottom: '12px'
+              }} />
+              <div style={{
+                width: '90%',
+                height: '24px',
+                background: 'rgba(255,255,255,0.3)',
+                borderRadius: '4px',
+                marginBottom: '8px'
+              }} />
+              <div style={{
+                width: '80%',
+                height: '16px',
+                background: 'rgba(255,255,255,0.2)',
+                borderRadius: '4px'
+              }} />
+            </div>
+          </div>
+
+          {/* Standard Card Skeletons */}
+          {[1, 2].map(i => (
             <div key={i} style={{
               background: 'var(--cardBg)',
+              borderRadius: '24px',
+              padding: '24px',
+              marginBottom: '16px',
+              boxShadow: '0 4px 20px rgba(0,0,0,0.05)',
               border: '1px solid var(--borderColor)',
-              borderRadius: '16px',
-              overflow: 'hidden',
               animation: 'pulse 1.5s ease-in-out infinite'
             }}>
               <div style={{
-                width: '100%',
-                height: '200px',
-                background: 'var(--systemQuaternary)'
-              }} />
-              <div style={{ padding: '24px' }}>
+                display: 'flex',
+                alignItems: 'center',
+                gap: '8px',
+                marginBottom: '12px'
+              }}>
                 <div style={{
-                  width: '80%',
-                  height: '20px',
-                  background: 'var(--systemQuaternary)',
-                  borderRadius: '8px',
-                  marginBottom: '12px'
-                }} />
-                <div style={{
-                  width: '100%',
+                  width: '16px',
                   height: '16px',
                   background: 'var(--systemQuaternary)',
-                  borderRadius: '6px',
-                  marginBottom: '8px'
+                  borderRadius: '3px'
                 }} />
                 <div style={{
-                  width: '60%',
-                  height: '16px',
+                  width: '80px',
+                  height: '13px',
                   background: 'var(--systemQuaternary)',
-                  borderRadius: '6px'
+                  borderRadius: '4px'
+                }} />
+                <div style={{
+                  width: '60px',
+                  height: '13px',
+                  background: 'var(--systemQuaternary)',
+                  borderRadius: '4px'
                 }} />
               </div>
+              <div style={{
+                width: '85%',
+                height: '18px',
+                background: 'var(--systemQuaternary)',
+                borderRadius: '4px',
+                marginBottom: '8px'
+              }} />
+              <div style={{
+                width: '100%',
+                height: '15px',
+                background: 'var(--systemQuaternary)',
+                borderRadius: '4px',
+                marginBottom: '4px'
+              }} />
+              <div style={{
+                width: '100%',
+                height: '15px',
+                background: 'var(--systemQuaternary)',
+                borderRadius: '4px',
+                marginBottom: '4px'
+              }} />
+              <div style={{
+                width: '70%',
+                height: '15px',
+                background: 'var(--systemQuaternary)',
+                borderRadius: '4px',
+                marginBottom: '12px'
+              }} />
+              <div style={{
+                width: '80px',
+                height: '14px',
+                background: 'var(--systemQuaternary)',
+                borderRadius: '4px'
+              }} />
             </div>
           ))}
         </div>
@@ -346,19 +424,41 @@ const NewsClient = () => {
           animate="center"
           exit="exit"
         >
-          {/* News Grid */}
+          {/* News Grid - Responsive */}
           <div style={{
-            display: 'grid',
-            gap: '32px',
-            gridTemplateColumns: 'repeat(auto-fill, minmax(400px, 1fr))'
+            display: 'flex',
+            flexDirection: 'column',
+            gap: '0'
           }}>
-            {newsItems.map((newsItem, index) => (
-              <NewsCard 
-                key={`${newsItem.id}-${index}`} 
-                newsItem={newsItem} 
-                index={index}
-              />
-            ))}
+            {/* Mobile: Single column, Desktop: Masonry grid */}
+            <style jsx>{`
+              @media (min-width: 768px) {
+                .news-grid {
+                  display: grid;
+                  grid-template-columns: repeat(auto-fit, minmax(380px, 1fr));
+                  gap: 32px;
+                  align-items: start;
+                }
+                
+                .hero-card {
+                  grid-column: 1 / -1;
+                }
+              }
+            `}</style>
+            
+            <div className="news-grid">
+              <AnimatePresence mode="wait">
+                {newsItems.map((newsItem, index) => (
+                  <div key={`${newsItem.id}-${selectedArea}-${index}`} className={index === 0 ? 'hero-card' : ''}>
+                    <ModernNewsCard 
+                      newsItem={newsItem} 
+                      index={index}
+                      isHero={index === 0}
+                    />
+                  </div>
+                ))}
+              </AnimatePresence>
+            </div>
           </div>
 
           {/* Loading State */}
