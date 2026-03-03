@@ -65,3 +65,40 @@ env:
     availability:
       - BUILD
       - RUNTIME
+
+  # Bulletin Firebase config
+  - variable: NEXT_PUBLIC_BULLETIN_API_KEY
+    value: AIzaSyDvCoF0ARLMwWDfdblVaOdw-WbhdjSvV3U
+    availability:
+      - BUILD
+      - RUNTIME
+
+  - variable: NEXT_PUBLIC_BULLETIN_AUTH_DOMAIN
+    value: bullettin-hzqbvq.firebaseapp.com
+    availability:
+      - BUILD
+      - RUNTIME
+
+  - variable: NEXT_PUBLIC_BULLETIN_PROJECT_ID
+    value: bullettin-hzqbvq
+    availability:
+      - BUILD
+      - RUNTIME
+
+  - variable: NEXT_PUBLIC_BULLETIN_STORAGE_BUCKET
+    value: bullettin-hzqbvq.appspot.com
+    availability:
+      - BUILD
+      - RUNTIME
+
+  - variable: NEXT_PUBLIC_BULLETIN_MESSAGING_SENDER_ID
+    value: "664060285424"
+    availability:
+      - BUILD
+      - RUNTIME
+
+  - variable: NEXT_PUBLIC_BULLETIN_APP_ID
+    value: 1:664060285424:web:e830794f34844fb8ee0d35
+    availability:
+      - BUILD
+      - RUNTIME
